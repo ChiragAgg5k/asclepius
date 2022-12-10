@@ -1,1 +1,2 @@
 customtkinter==5.0.2
+black==22.10.0
