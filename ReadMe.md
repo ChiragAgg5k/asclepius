@@ -1,13 +1,13 @@
 # Asclepius
 
-Work in progress.
+Asclepius is a medical record management system for the students of Bennett University. It is a desktop application built using Python and Custom Tkinter. It allows the students to view available medicines at the University's wellness center, view the medicine's details, check the availability of the medicine, and request for the medicine. It also allows the students to order medicines from the wellness center to their hostel rooms.
 
 ## Installation
 
 1) Clone the repository:
 
 ```bash
-cd /path/where/you/want/to/clone
+cd {path}
 git clone https://github.com/ChiragAgg5k/asclepius.git
 cd asclepius
 ```
@@ -21,8 +21,7 @@ pip install -r requirements.txt
 3) Run the main script:
 
 ```bash
-cd src
-python -u main.py
+python -u src/main.py
 ```
 
 ## Usage
