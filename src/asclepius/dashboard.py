@@ -18,7 +18,7 @@ class Dashboard:
         )
 
         self.bg = ctk.CTkImage(
-            dark_image=Image.open("assets/images/dashboard_bg.jpg"),
+            dark_image=Image.open("assets/images/dashboard_bg.png"),
             size=(self.width, self.height),
         )
 
