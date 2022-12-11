@@ -6,6 +6,7 @@ ctk.set_appearance_mode("system")
 ctk.set_default_color_theme("dark-blue")
 
 root = ctk.CTk()
+root.title("Log In Here!")
 root.geometry("450x350")
 
 bgimage = PhotoImage(file = "lgnbg.png")
