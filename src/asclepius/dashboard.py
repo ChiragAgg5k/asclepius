@@ -17,11 +17,6 @@ class Dashboard:
             family="Microsoft Sans Serifs", size=60, weight="bold"
         )
 
-        self.bg = ctk.CTkImage(
-            dark_image=Image.open("assets/images/dashboard_bg.png"),
-            size=(self.width, self.height),
-        )
-
     def center_window(self) -> None:
         """Center the window."""
         screen_width = self.root.winfo_screenwidth()
@@ -33,10 +28,10 @@ class Dashboard:
     def options_frame(self) -> None:
         """Create the options frame."""
         self.options_frame = ctk.CTkFrame(
-            self.root, width=200, height=self.height, corner_radius=5
+            self.root, width=200, height=self.height, corner_radius=15
         )
 
-        self.options_frame.pack(side="left", fill="y", padx=(10, 0), pady=10)
+        self.options_frame.pack(side="left", fill="y", padx=(20, 0), pady=20)
         options_title = ctk.CTkLabel(
             self.options_frame, text="Options", font=self.op_font, corner_radius=10
         )
@@ -47,7 +42,7 @@ class Dashboard:
         self.title_frame = ctk.CTkFrame(
             self.root, width=self.width - 200, height=50, corner_radius=10
         )
-        self.title_frame.pack(side="top", fill="x", padx=10, pady=10)
+        self.title_frame.pack(side="top", fill="x", padx=20, pady=20)
         title_label = ctk.CTkLabel(self.title_frame, text=title, font=self.title_font)
         title_label.grid(row=0, column=0, padx=20, pady=20)
 
@@ -55,10 +50,7 @@ class Dashboard:
         self.main_frame = ctk.CTkFrame(
             self.root, width=self.width - 200, height=self.height - 50, corner_radius=10
         )
-        self.main_frame.pack(side="bottom", fill="both", padx=10, pady=10)
-
-        background_label = ctk.CTkLabel(self.main_frame, image=self.bg, text="")
-        background_label.place(x=0, y=0, relwidth=1, relheight=1)
+        self.main_frame.pack(side="bottom", fill="both", padx=20, pady=(0, 20))
 
     def show_dashboard(self) -> None:
         self.options_frame()
