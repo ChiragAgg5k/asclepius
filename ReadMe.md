@@ -2,9 +2,11 @@
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![License: MIT](https://img.shields.io/github/license/ChiragAgg5k/asclepius)](https://github.com/ChiragAgg5k/asclepius/blob/master/LICENSE.md) [![Github Repo Size](https://img.shields.io/github/repo-size/ChiragAgg5k/asclepius)](https://github.com/ChiragAgg5k/asclepius)
 
-Asclepius is a medical record management system for the students of Bennett University. It is a desktop application built using Python and Custom Tkinter. It allows the students to view available medicines at the University's wellness center, view the medicine's details, check the availability of the medicine, and request for the medicine. It also allows the students to order medicines from the wellness center to their hostel rooms.
+Asclepius is a medical record management system for the students of Bennett University. It is a desktop application built using Python and Custom Tkinter. It allows the students to view available medicines at the University's Wellness center, look the medicine's details, check the availability of the medicine, and request for it. It also allows the students to order medicines from the Wellness center to their hostel rooms.
 
 ## Installation
+
+Make sure you have Python 3.8 or above installed on your system. If not, you can download it from [here](https://www.python.org/downloads/).
 
 1) Clone the repository:
 
@@ -30,10 +32,6 @@ python -u src/main.py
 
 work in progress.
 
-## Contributing
-
-work in progress.
-
 ## Tools Used
 
 1) Text Editor: [Visual Studio Code](https://code.visualstudio.com/)
@@ -45,6 +43,11 @@ work in progress.
 
 ## Contributors
 
-<a href="https://github.com/ChiragAgg5k/asclepius/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=ChiragAgg5k/asclepius" />
-</a>
+This project was a team effort by a group of 6 students from Bennett University. The team members are:
+
+###### Chirag Aggarwal - [Github](https://github.com/ChiragAgg5k) | [LinkedIn](https://www.linkedin.com/in/chirag-aggarwal-066b97248/) | [Twitter](https://twitter.com/ChiragAgg5k)
+###### Shivangi Tripathi - 
+###### Divesh Saini - 
+###### Akshay Negi - 
+###### Aditi Chaturvedi -
+###### Aman Boora -

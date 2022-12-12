@@ -1,45 +1,41 @@
 from tkinter import *
+
 import customtkinter as ctk
+from PIL import Image
 
 
-ctk.set_appearance_mode("system")
-ctk.set_default_color_theme("dark-blue")
+class LoginScreen:
+    def __init__(self, appearance: str, color_theme: str) -> None:
 
-root = ctk.CTk()
-root.title("Log In Here!")
-root.geometry("450x350")
+        ctk.set_appearance_mode(appearance)
+        ctk.set_default_color_theme(color_theme)
 
-bgimage = PhotoImage(file = "lgnbg.png")
+        self.login_root = ctk.CTk()
+        self.login_root.title("Asclepius - Log in")
+        self.login_root.geometry("800x600")
+        self.login_root.resizable(False, False)
 
-bgLabel = Label(root, image=bgimage)
-bgLabel.place(x = 0, y=0)
+        self.login_bg = ctk.CTkImage(Image.open("assets/images/background.png"))
 
-label2 = Label(root, text = "Welcome to Asclepius!", font = ("Elephant", 25))
-label2.pack(pady = 50, padx =50)
+        self.__id = ctk.StringVar()
+        self.__password = ctk.StringVar()
 
-id_var= ctk.StringVar()
-pw_var= ctk.StringVar()
+    def submit(self) -> None:
+        print(self.__id.get())
+        print(self.__password.get())
 
-def submit():
-    id= id_var.get()
-    password = pw_var.get()
+    def display_login_screen(self) -> None:
 
-    id_var.set("")
-    pw_var.set("")
+        background_label = ctk.CTkLabel(self.login_root, image=self.login_bg)
+        title_label = ctk.CTkLabel(
+            self.login_root, text="Welcome to Asclepius!", font=("Elephant", 25)
+        )
 
-label3 = Label(root, text= "User ID:", font = ("Times New Roman", 18, 'bold'))
-label3.place(relx = 0.1, rely =0.25, anchor= NW)
+        submit_button = ctk.CTkButton(
+            self.login_root, text="Submit", command=self.submit
+        )
 
-entry1 = ctk.CTkEntry(root, textvariable= id_var, font=('Arial', 18, 'normal'))
-entry1.place(relx =0.1, rely = 0.35, anchor= NW )
+        title_label.pack(side="top", fill="both", expand="yes")
+        submit_button.pack(side="bottom", pady=100)
 
-label4 = Label(root, text = "Password:", font = ("Times New Roman", 18, 'bold'))
-label4.place(relx = 0.1, rely = 0.48, anchor = NW)
-
-entry2 = ctk.CTkEntry(root, textvariable= pw_var, show = "*" )
-entry2.place(relx =0.1, rely = 0.58, anchor= NW )
-
-sub_btn = ctk.CTkButton(root, text = "Submit", command = submit)
-sub_btn.place(relx = 0.35, rely = 0.80)
-
-root.mainloop()
+        self.login_root.mainloop()

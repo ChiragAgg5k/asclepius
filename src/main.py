@@ -1,8 +1,4 @@
-from asclepius import dashboard, database
+from asclepius import dashboard, database, login_screen
 
-db = database.Database()
-
-dashboard = dashboard.Dashboard(
-    width=1280, height=720, appearance="System", theme_color="green"
-)
-dashboard.show_dashboard()
+login_screen = login_screen.LoginScreen(appearance="System", color_theme="green")
+login_screen.display_login_screen()

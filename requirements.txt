@@ -1,3 +1,4 @@
 customtkinter==5.0.3
 black==22.10.0
 Pillow==9.3.0
+captcha==0.4
