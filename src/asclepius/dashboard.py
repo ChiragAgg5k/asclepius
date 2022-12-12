@@ -5,6 +5,14 @@ class Dashboard:
     def __init__(
         self, width: int, height: int, appearance: str, theme_color: str
     ) -> None:
+        """Constructor for Dashboard class for Asclepius.
+
+        Args:
+            width (int): witdh of the window
+            height (int): height of the window
+            appearance (str): ['light', 'Dark','System']
+            theme_color (str): ['blue','green','dark-blue']
+        """
         self.root = ctk.CTk()
         self.root.title("Asclepius")
         self.root.resizable(False, False)
@@ -29,59 +37,84 @@ class Dashboard:
         y_coord = (screen_height / 2) - (self.height / 2)
         self.root.geometry(f"{self.width}x{self.height}+{int(x_coord)}+{int(y_coord)}")
 
-    def quit_button(self) -> None:
-        """Create the quit button."""
+    def navigation_frame(self) -> None:
+        """Create the navigation frame."""
 
-        quit_button = ctk.CTkButton(
-            self.options_frame,
-            text="Quit",
-            font=self.button_font,
-            command=self.root.destroy,
-            corner_radius=10,
-            height=50,
+        navigation_frame = ctk.CTkFrame(
+            self.root, width=100, height=self.height, corner_radius=15
         )
-        quit_button.pack(side="bottom", fill="x", padx=20, pady=20)
+
+        navigation_frame.pack(fill="both", padx=20, pady=(0, 20))
+
+        tabview = ctk.CTkTabview(
+            navigation_frame,
+            corner_radius=10,
+        )
+        tabview.pack(fill="both", padx=20, pady=20)
+        tabview.add("Dashboard")
+        tabview.add("Profile")
+        tabview.add("Medical Records")
 
     def options_frame(self) -> None:
         """Create the options frame."""
 
-        self.options_frame = ctk.CTkFrame(
+        options_frame = ctk.CTkFrame(
             self.root, width=200, height=self.height, corner_radius=15
         )
 
-        self.options_frame.pack(side="left", fill="y", padx=(20, 0), pady=20)
+        options_frame.pack(side="left", fill="y", padx=(20, 0), pady=20)
+
         options_title = ctk.CTkLabel(
-            self.options_frame, text="Options", font=self.op_font, corner_radius=10
+            options_frame, text="Options", font=self.op_font, corner_radius=10
         )
 
-        options_title.pack(side="top", fill="x", padx=20, pady=20)
-        self.quit_button()
+        appearance_mode_optionemenu = ctk.CTkOptionMenu(
+            options_frame,
+            values=["System", "Dark", "Light"],
+            command=self.change_appearance_mode_event,
+            font=self.button_font,
+            height=30,
+        )
+
+        quit_button = ctk.CTkButton(
+            options_frame,
+            text="Quit",
+            font=self.button_font,
+            command=self.root.destroy,
+            corner_radius=10,
+            height=30,
+        )
+
+        options_title.pack(side="top", fill="x", padx=10, pady=20)
+        quit_button.pack(side="bottom", fill="x", padx=10, pady=(0, 20))
+        appearance_mode_optionemenu.pack(side="bottom", fill="x", padx=10, pady=20)
 
     def title_frame(self, title):
         """Create the title frame."""
 
-        self.title_frame = ctk.CTkFrame(
+        title_frame = ctk.CTkFrame(
             self.root, width=self.width - 200, height=50, corner_radius=10
         )
-        self.title_frame.pack(side="top", fill="x", padx=20, pady=20)
-        title_label = ctk.CTkLabel(self.title_frame, text=title, font=self.title_font)
+        title_frame.pack(side="top", fill="x", padx=20, pady=20, anchor=ctk.NE)
+        title_label = ctk.CTkLabel(title_frame, text=title, font=self.title_font)
         title_label.grid(row=0, column=0, padx=20, pady=20)
 
-    def main_frame(self):
-        """Create the main frame."""
+    def change_appearance_mode_event(self, new_appearance_mode: str):
+        """Change the appearance mode.
 
-        self.main_frame = ctk.CTkFrame(
-            self.root, width=self.width - 200, height=self.height - 50, corner_radius=10
-        )
-        self.main_frame.pack(side="bottom", fill="both", padx=20, pady=(0, 20))
+        Args:
+            new_appearance_mode (str): The new appearance mode.
+        """
+
+        ctk.set_appearance_mode(new_appearance_mode)
 
     def show_dashboard(self) -> None:
         """Show the dashboard."""
 
         # frames
         self.options_frame()
-        self.title_frame("Dashboard")
-        self.main_frame()
+        self.title_frame("Asclepius")
+        self.navigation_frame()
 
         self.center_window()
         self.root.mainloop()
