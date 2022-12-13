@@ -31,10 +31,17 @@ class Dashboard:
         )
         self.title_font = ctk.CTkFont(family="Copperplate", size=60, weight="bold")
         self.button_font = ctk.CTkFont(family="Copperplate", size=20, weight="bold")
+        self.text_font = ctk.CTkFont(family="Copperplate", size=20, weight="normal")
 
-        self.dashboard_frame = ctk.CTkFrame(
-            self.root,
+        self.dashboard_frame = ctk.CTkFrame(self.root)
+        ctk.CTkLabel(self.dashboard_frame, text="Dashboard", font=self.op_font).pack(
+            padx=20, pady=20
         )
+        ctk.CTkLabel(
+            self.dashboard_frame, text="Welcome to Asclepius", font=self.text_font
+        ).pack(anchor=ctk.W, padx=20, pady=20)
+
+        self.meds_frame = ctk.CTkFrame(self.root)
 
     def center_window(self) -> None:
         """Center the window."""
@@ -58,19 +65,32 @@ class Dashboard:
             font=self.button_font,
             command=lambda: self.reset_frame("home"),
             corner_radius=10,
-            height=30,
+            height=40,
+        )
+
+        self.meds_button = ctk.CTkButton(
+            navigation_frame,
+            text=" Meds ",
+            font=self.button_font,
+            command=lambda: self.reset_frame("meds"),
+            corner_radius=10,
+            height=40,
         )
 
         navigation_frame.pack(fill="y", side="left", padx=20, pady=(0, 20))
         self.dashboard_button.pack(fill="x", padx=10, pady=20)
+        self.meds_button.pack(fill="x", padx=10, pady=20)
 
     def reset_frame(self, frame_name) -> None:
         self.dashboard_frame.pack_forget()
+        self.meds_frame.pack_forget()
 
         if frame_name == "home":
             self.dashboard_frame.pack(
                 fill="both", expand=True, padx=(0, 20), pady=(0, 20)
             )
+        elif frame_name == "meds":
+            self.meds_frame.pack(fill="both", expand=True, padx=(0, 20), pady=(0, 20))
 
     def options_frame(self) -> None:
         """Create the options frame."""
