@@ -46,8 +46,8 @@ work in progress.
 This project was a team effort by a group of 6 students from Bennett University. The team members are:
 
 ###### Chirag Aggarwal - [Github](https://github.com/ChiragAgg5k) | [LinkedIn](https://www.linkedin.com/in/chirag-aggarwal-066b97248/) | [Twitter](https://twitter.com/ChiragAgg5k)
-###### Shivangi Tripathi - 
-###### Divesh Saini - 
-###### Akshay Negi - 
+###### Shivangi Tripathi - [Github](https://github.com/ShiviTripathi13) | [LinkedIn](https://www.linkedin.com/in/shivangi-tripathi-bu/)
+###### Divesh Saini - [Github](https://github.com/divesh0001) | [LinkedIn](https://www.linkedin.com/in/divesh-saini-a38610216/) | [Twitter](https://twitter.com/Diveshs05718024)
+###### Akshay Negi - [Github](https://github.com/akshubawa) 
 ###### Aditi Chaturvedi -
-###### Aman Boora -
+###### Aman Boora - [Github](https://github.com/boora-aman) | [Linked](https://www.linkedin.com/in/boora-aman/)

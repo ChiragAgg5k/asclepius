@@ -1,4 +1,4 @@
-from asclepius import dashboard, database, login_screen
+from asclepius import dashboard, database
 
-dashboard = dashboard.Dashboard(1200, 720, "dark", "green")
+dashboard = dashboard.Dashboard(1280, 720, "dark", "green")
 dashboard.show_dashboard()
