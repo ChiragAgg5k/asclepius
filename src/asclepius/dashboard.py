@@ -38,7 +38,7 @@ class Dashboard:
         self.text_font = ctk.CTkFont(family="Rockwell", size=20, weight="normal")
         self.small_text_font = ctk.CTkFont(family="Arial", size=17, weight="normal")
 
-        # User Dashboard
+        # ------------------------ User Dashboard ------------------------#
         self.dashboard_frame = ctk.CTkFrame(self.root)
 
         ctk.CTkLabel(
@@ -66,8 +66,9 @@ class Dashboard:
         ctk.CTkLabel(
             self.dashboard_frame, text="Registered Since - ", font=self.small_text_font
         ).pack(anchor=ctk.W, padx=20, pady=20)
+        # ------------------------ User Dashboard ------------------------#
 
-        # Medicines Dashboard
+        # ----------------------- Medicines Dashboard -----------------------#
         self.meds_frame = ctk.CTkFrame(self.root)
         ctk.CTkLabel(self.meds_frame, text="Meds List", font=self.op_font).grid(
             row=0, column=0, columnspan=7, padx=20, pady=20
@@ -109,8 +110,9 @@ class Dashboard:
             ).grid(row=row, column=6)
 
             row += 1
+        # ----------------------- Medicines Dashboard -----------------------#
 
-        # Med Help Dashboard
+        # ----------------------- Med Help Dashboard -----------------------#
         self.mhelp_frame = ctk.CTkFrame(self.root)
 
         wellness_description = """
@@ -146,12 +148,14 @@ all the necessary services and information about the wellness centre.
             text="WhatsApp- +91 8860309257",
             font=self.small_text_font,
         ).pack(anchor=ctk.W, padx=20, pady=10)
+        # ----------------------- Med Help Dashboard -----------------------#
 
-        # Medical Records Dashboard
+        # -------------------- Medical Records Dashboard --------------------#
         self.mrec_frame = ctk.CTkFrame(self.root)
         ctk.CTkLabel(self.mrec_frame, text="Medical Records", font=self.op_font).pack(
             padx=20, pady=20
         )
+        # -------------------- Medical Records Dashboard --------------------#
 
     def center_window(self) -> None:
         """Center the window."""
@@ -206,6 +210,7 @@ all the necessary services and information about the wellness centre.
         )
 
         navigation_frame.pack(fill="y", side="left", padx=20, pady=(0, 20))
+
         self.dashboard_button.pack(fill="x", padx=10, pady=20)
         self.meds_button.pack(fill="x", padx=10, pady=20)
         self.mrecord_button.pack(fill="x", padx=10, pady=20)
