@@ -14,7 +14,13 @@ class Database:
             print("check if the database exists in the data folder")
 
     def add_medicine(
-        self, Mid: int, name: str, description: str, dosage: int, availability: str
+        self,
+        Mid: int,
+        name: str,
+        description: str,
+        dosage: int,
+        price: int,
+        availability: str,
     ) -> None:
         """Add a medicine to the database.
 
@@ -23,6 +29,7 @@ class Database:
             name (str): Name of the medicine
             description (str): Short description of the medicine
             dosage (int): recommended dosage of the medicine
+            price (int): Price of the medicine
             availability (bool): Is the medicine available?
 
         Returns:
@@ -35,14 +42,14 @@ class Database:
         )
         self.connection.commit()
 
-    def get_medicine(self, Mid: int) -> tuple:
+    def get_medicines(self) -> list:
         """Get a medicine from the database.
 
         Args:
             Mid (int): Medicine ID
 
         Returns:
-            tuple: Medicine details
+            list: Medicine details
         """
-        self.cursor.execute("SELECT * FROM medicines WHERE Mid = ?", (Mid,))
-        return self.cursor.fetchone()
+        self.cursor.execute("SELECT * FROM medicines")
+        return self.cursor.fetchall()
