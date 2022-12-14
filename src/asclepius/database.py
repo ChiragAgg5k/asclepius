@@ -53,3 +53,15 @@ class Database:
         """
         self.cursor.execute("SELECT * FROM medicines")
         return self.cursor.fetchall()
+
+    def get_col_headings(self, table_name: str) -> list:
+        """Get the column headings of the medicines table.
+
+        Args:
+            None
+
+        Returns:
+            list: Column headings
+        """
+        self.cursor.execute(f"SELECT * FROM {table_name}")
+        return [description[0] for description in self.cursor.description]

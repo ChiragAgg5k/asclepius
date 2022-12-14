@@ -1,11 +1,16 @@
-import sqlite3
-
 import customtkinter as ctk
+from PIL import Image
 
 
 class Dashboard:
     def __init__(
-        self, width: int, height: int, appearance: str, theme_color: str, data: list
+        self,
+        width: int,
+        height: int,
+        appearance: str,
+        theme_color: str,
+        dataset: list,
+        col_headers: list,
     ) -> None:
         """Constructor for Dashboard class for Asclepius.
 
@@ -35,6 +40,7 @@ class Dashboard:
 
         # User Dashboard
         self.dashboard_frame = ctk.CTkFrame(self.root)
+
         ctk.CTkLabel(
             self.dashboard_frame, text="Welcome to Asclepius", font=self.op_font
         ).pack(padx=20, pady=20)
@@ -66,8 +72,24 @@ class Dashboard:
         ctk.CTkLabel(self.meds_frame, text="Meds List", font=self.op_font).grid(
             row=0, column=0, columnspan=7, padx=20, pady=20
         )
-        row = 1
-        for i in data:
+
+        for i in range(len(col_headers)):
+            col = ctk.CTkEntry(
+                self.meds_frame, width=140, height=50, font=self.text_font
+            )
+            col.insert(ctk.END, col_headers[i])
+            col.configure(state=ctk.DISABLED)
+
+            col.grid(row=1, column=(i + 1), pady=(10, 20), ipady=1)
+
+        order_entry = ctk.CTkEntry(
+            self.meds_frame, height=50, font=self.text_font, width=130
+        )
+        order_entry.insert(ctk.END, "Order")
+        order_entry.grid(row=1, column=6, pady=(10, 20), ipady=1)
+
+        row = 2
+        for i in dataset:
             for j in range(len(i)):
                 e = ctk.CTkEntry(
                     self.meds_frame,
@@ -76,6 +98,8 @@ class Dashboard:
                 )
                 e.grid(row=row, column=(j + 1))
                 e.insert(ctk.END, i[j])
+                e.configure(state=ctk.DISABLED)
+
             ctk.CTkButton(
                 self.meds_frame,
                 text="Order",
@@ -83,6 +107,7 @@ class Dashboard:
                 width=130,
                 border_width=1,
             ).grid(row=row, column=6)
+
             row += 1
 
         # Med Help Dashboard
@@ -187,6 +212,7 @@ all the necessary services and information about the wellness centre.
         self.mhelp_button.pack(fill="x", padx=10, pady=20)
 
     def reset_frame(self, frame_name) -> None:
+
         self.dashboard_frame.pack_forget()
         self.meds_frame.pack_forget()
         self.mhelp_frame.pack_forget()
@@ -196,6 +222,7 @@ all the necessary services and information about the wellness centre.
             self.dashboard_frame.pack(
                 fill="both", expand=True, padx=(0, 20), pady=(0, 20)
             )
+
         elif frame_name == "meds":
             self.meds_frame.pack(fill="both", expand=True, padx=(0, 20), pady=(0, 20))
 

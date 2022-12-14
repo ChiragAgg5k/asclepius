@@ -6,7 +6,7 @@ class Login:
     # constructor
     def __init__(
         self,
-        appearance_mode: str = "light",
+        appearance_mode: str = "dark",
         color_theme: str = "green",
         width: int = 450,
         height: int = 350,
@@ -21,7 +21,7 @@ class Login:
         self.width = width
         self.height = height
 
-        self.username = ctk.StringVar()
+        self.enrollment_id = ctk.StringVar()
         self.password = ctk.StringVar()
 
     def center_window(self) -> None:
@@ -45,14 +45,20 @@ class Login:
         self.bgCTkLabel = ctk.CTkLabel(self.root, image=self.bgimage, text="")
 
         self.title = ctk.CTkLabel(
-            self.root, text="Login Here!", font=("Arial", 20, "bold"), corner_radius=10
+            self.root,
+            text="Login Here!",
+            font=("Arial", 20, "bold"),
+            corner_radius=10,
         )
 
-        self.username_CTkLabel = ctk.CTkLabel(
-            self.root, text="Name:", font=("Arial", 15, "bold"), corner_radius=10
+        self.enrollmentid = ctk.CTkLabel(
+            self.root,
+            text="Enrollment ID:",
+            font=("Arial", 15, "bold"),
+            corner_radius=10,
         )
-        self.username_entry = ctk.CTkEntry(
-            self.root, textvariable=self.username, width=200
+        self.enrollmentid_entry = ctk.CTkEntry(
+            self.root, textvariable=self.enrollment_id, width=200
         )
 
         self.pswrd_CTkLabel = ctk.CTkLabel(
@@ -78,8 +84,8 @@ class Login:
         self.bgCTkLabel.place(relx=0.5, rely=0.5, anchor=ctk.CENTER)
         self.title.place(relx=0.5, rely=0.2, anchor=ctk.CENTER)
 
-        self.username_entry.place(relx=0.6, rely=0.4, anchor=ctk.CENTER)
-        self.username_CTkLabel.place(relx=0.2, rely=0.4, anchor=ctk.CENTER)
+        self.enrollmentid_entry.place(relx=0.6, rely=0.4, anchor=ctk.CENTER)
+        self.enrollmentid.place(relx=0.2, rely=0.4, anchor=ctk.CENTER)
 
         self.pswrd_entry.place(relx=0.6, rely=0.55, anchor=ctk.CENTER)
         self.pswrd_CTkLabel.place(relx=0.2, rely=0.55, anchor=ctk.CENTER)
@@ -88,14 +94,14 @@ class Login:
 
         self.root.mainloop()
 
-    def submit(self) -> list:
+    def submit(self) -> bool:
         """Submit the login details.
 
         Returns:
-            list[str,str]: A list containing the username and password.
+            True if the details are entered, else False.
         """
 
-        if self.username.get() == "" or self.password.get() == "":
+        if self.enrollment_id.get() == "" or self.password.get() == "":
             ctk.CTkLabel(
                 self.root,
                 text="Please enter all the details!",
