@@ -1,3 +1,5 @@
+import re
+
 import customtkinter as ctk
 from PIL import Image
 
@@ -25,7 +27,7 @@ class Login:
         self.password = ctk.StringVar()
 
     def center_window(self) -> None:
-        """Center the window."""
+        """Centers the window."""
 
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
@@ -58,7 +60,7 @@ class Login:
             corner_radius=10,
         )
         self.enrollmentid_entry = ctk.CTkEntry(
-            self.root, textvariable=self.enrollment_id, width=200
+            self.root, textvariable=self.enrollment_id, width=220
         )
 
         self.pswrd_CTkLabel = ctk.CTkLabel(
@@ -68,7 +70,7 @@ class Login:
             corner_radius=10,
         )
         self.pswrd_entry = ctk.CTkEntry(
-            self.root, textvariable=self.password, width=200, show="*"
+            self.root, textvariable=self.password, width=220, show="*"
         )
 
         self.submit_button = ctk.CTkButton(
@@ -80,6 +82,9 @@ class Login:
             corner_radius=10,
             command=self.submit,
         )
+
+        self.enrollmentid_entry.bind("<Return>", lambda event: self.submit())
+        self.pswrd_entry.bind("<Return>", lambda event: self.submit())
 
         self.bgCTkLabel.place(relx=0.5, rely=0.5, anchor=ctk.CENTER)
         self.title.place(relx=0.5, rely=0.2, anchor=ctk.CENTER)
@@ -107,7 +112,15 @@ class Login:
                 text="Please enter all the details!",
                 corner_radius=10,
                 font=("Arial", 15, "bold"),
-            ).place(relx=0.5, rely=0.9, anchor=ctk.CENTER)
+            ).place(relx=0.51, rely=0.9, anchor=ctk.CENTER)
+
+        elif not re.match(r"^e[1-2][0-9][a-z]{4}[0-9]{4}", self.enrollment_id.get()):
+            ctk.CTkLabel(
+                self.root,
+                text="Please enter a valid enrollment ID!",
+                corner_radius=10,
+                font=("Arial", 15, "bold"),
+            ).place(relx=0.51, rely=0.9, anchor=ctk.CENTER)
 
         else:
             self.root.destroy()
