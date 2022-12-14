@@ -1,11 +1,16 @@
-import sqlite3
-
 import customtkinter as ctk
+from PIL import Image
 
 
 class Dashboard:
     def __init__(
-        self, width: int, height: int, appearance: str, theme_color: str
+        self,
+        width: int,
+        height: int,
+        appearance: str,
+        theme_color: str,
+        dataset: list,
+        col_headers: list,
     ) -> None:
         """Constructor for Dashboard class for Asclepius.
 
@@ -14,7 +19,6 @@ class Dashboard:
             height (int): height of the window
             appearance (str): ['light', 'Dark','System']
             theme_color (str): ['blue','green','dark-blue']
-
         """
 
         self.root = ctk.CTk()
@@ -32,50 +36,127 @@ class Dashboard:
         self.title_font = ctk.CTkFont(family="Rockwell", size=60, weight="bold")
         self.button_font = ctk.CTkFont(family="Rockwell", size=20, weight="bold")
         self.text_font = ctk.CTkFont(family="Rockwell", size=20, weight="normal")
-        self.small_text_font = ctk.CTkFont(family="Arial", size=15, weight="normal")
-                
-        # User Dashboard
+        self.small_text_font = ctk.CTkFont(family="Arial", size=17, weight="normal")
+
+        # ------------------------ User Dashboard ------------------------#
         self.dashboard_frame = ctk.CTkFrame(self.root)
-        ctk.CTkLabel(self.dashboard_frame, text="Welcome to Asclepius", font=self.op_font).pack(
-            padx=20, pady=20
-        )
+
         ctk.CTkLabel(
-            self.dashboard_frame, text="Hi there! Hope you are fine", font=self.text_font
+            self.dashboard_frame, text="Welcome to Asclepius", font=self.op_font
+        ).pack(padx=20, pady=20)
+        ctk.CTkLabel(
+            self.dashboard_frame,
+            text="Hello, User Name. Welcome to Asclepius, Your Wellness Partner.",
+            font=self.text_font,
+            anchor=ctk.W,
         ).pack(anchor=ctk.W, padx=20, pady=20)
         ctk.CTkLabel(
-            self.dashboard_frame, text="User Name", font=self.small_text_font
+            self.dashboard_frame, text="User Name - Username", font=self.small_text_font
         ).pack(anchor=ctk.W, padx=20, pady=20)
         ctk.CTkLabel(
-            self.dashboard_frame, text="Enroll ID", font=self.small_text_font
+            self.dashboard_frame,
+            text="Enroll ID - EnrollmentID",
+            font=self.small_text_font,
         ).pack(anchor=ctk.W, padx=20, pady=20)
         ctk.CTkLabel(
-            self.dashboard_frame, text="User Phone No.", font=self.small_text_font
+            self.dashboard_frame,
+            text="User Phone No. - +91 XXXXX XXXXX",
+            font=self.small_text_font,
         ).pack(anchor=ctk.W, padx=20, pady=20)
-         
-        #Medicines Dashboard
+        ctk.CTkLabel(
+            self.dashboard_frame, text="Registered Since - ", font=self.small_text_font
+        ).pack(anchor=ctk.W, padx=20, pady=20)
+        # ------------------------ User Dashboard ------------------------#
+
+        # ----------------------- Medicines Dashboard -----------------------#
         self.meds_frame = ctk.CTkFrame(self.root)
-        ctk.CTkLabel(self.meds_frame, text="Meds List", font=self.op_font).pack(
-            padx=20, pady=20
+        ctk.CTkLabel(self.meds_frame, text="Meds List", font=self.op_font).grid(
+            row=0, column=0, columnspan=7, padx=20, pady=20
         )
-        
-        # Med Help Dashboard 
+
+        for i in range(len(col_headers)):
+            col = ctk.CTkEntry(
+                self.meds_frame, width=140, height=50, font=self.text_font
+            )
+            col.insert(ctk.END, col_headers[i])
+            col.configure(state=ctk.DISABLED)
+
+            col.grid(row=1, column=(i + 1), pady=(10, 20), ipady=1)
+
+        order_entry = ctk.CTkEntry(
+            self.meds_frame, height=50, font=self.text_font, width=130
+        )
+        order_entry.insert(ctk.END, "Order")
+        order_entry.grid(row=1, column=6, pady=(10, 20), ipady=1)
+
+        row = 2
+        for i in dataset:
+            for j in range(len(i)):
+                e = ctk.CTkEntry(
+                    self.meds_frame,
+                    width=140,
+                    font=self.small_text_font,
+                )
+                e.grid(row=row, column=(j + 1))
+                e.insert(ctk.END, i[j])
+                e.configure(state=ctk.DISABLED)
+
+            ctk.CTkButton(
+                self.meds_frame,
+                text="Order",
+                font=self.button_font,
+                width=130,
+                border_width=1,
+            ).grid(row=row, column=6)
+
+            row += 1
+        # ----------------------- Medicines Dashboard -----------------------#
+
+        # ----------------------- Med Help Dashboard -----------------------#
         self.mhelp_frame = ctk.CTkFrame(self.root)
-        ctk.CTkLabel(self.mhelp_frame, text="Other Medical Queries", font=self.op_font).pack(
-            padx=20, pady=20
+
+        wellness_description = """
+To ensure students’s well-being, Bennett provides a well-equipped wellness centre with four beds and 
+round-the-clock, with a small nursing staff on standby. A well-qualified general physician is available 
+on campus 24*7.For prolonged medical illness, or for case of infection, recovery rooms are available. 
+The centre organises health check-up camps, blood donation drives, and physiotherapy sessions 
+for students and staff.
+
+Asclepius is a platform for students to access the wellness centre from anywhere. It provides
+all the necessary services and information about the wellness centre.
+"""
+
+        ctk.CTkLabel(
+            self.mhelp_frame,
+            text="About Asclepius",
+            font=self.op_font,
+            anchor=ctk.CENTER,
+        ).pack(padx=20, pady=20)
+        ctk.CTkLabel(
+            self.mhelp_frame, text=wellness_description, font=self.small_text_font
+        ).pack(anchor=ctk.W, padx=20)
+        ctk.CTkLabel(self.mhelp_frame, text="Contact Us", font=self.op_font).pack(
+            anchor=ctk.W, padx=20, pady=20
         )
         ctk.CTkLabel(
-            self.mhelp_frame, text="Contact Us", font=self.text_font
-        ).pack(anchor=ctk.W, padx=20, pady=20)
+            self.mhelp_frame,
+            text="For general queries- 0120-7199300",
+            font=self.small_text_font,
+        ).pack(anchor=ctk.W, padx=20, pady=10)
         ctk.CTkLabel(
-            self.mhelp_frame, text="For Emergency- +91 XXXXX-XXXXX / +91 XXXXX-XXXXX", font=self.small_text_font
-        ).pack(anchor=ctk.W, padx=20, pady=20)
-        ctk.CTkLabel(
-            self.mhelp_frame, text="For Other Small medical releated quries- asclepius@bennett.edu.in ", font=self.small_text_font
-        ).pack(anchor=ctk.W, padx=20, pady=20)
-        
-        
-        
-        
+            self.mhelp_frame,
+            text="WhatsApp- +91 8860309257",
+            font=self.small_text_font,
+        ).pack(anchor=ctk.W, padx=20, pady=10)
+        # ----------------------- Med Help Dashboard -----------------------#
+
+        # -------------------- Medical Records Dashboard --------------------#
+        self.mrec_frame = ctk.CTkFrame(self.root)
+        ctk.CTkLabel(self.mrec_frame, text="Medical Records", font=self.op_font).pack(
+            padx=20, pady=20
+        )
+        # -------------------- Medical Records Dashboard --------------------#
+
     def center_window(self) -> None:
         """Center the window."""
 
@@ -109,36 +190,53 @@ class Dashboard:
             corner_radius=10,
             height=40,
         )
-        
+
         self.mhelp_button = ctk.CTkButton(
             navigation_frame,
-            text=" Med Help ",
+            text=" About ",
             font=self.button_font,
             command=lambda: self.reset_frame("mhelp"),
             corner_radius=10,
             height=40,
         )
 
+        self.mrecord_button = ctk.CTkButton(
+            navigation_frame,
+            text=" Med Records ",
+            font=self.button_font,
+            command=lambda: self.reset_frame("mrecord"),
+            corner_radius=10,
+            height=40,
+        )
+
         navigation_frame.pack(fill="y", side="left", padx=20, pady=(0, 20))
+
         self.dashboard_button.pack(fill="x", padx=10, pady=20)
         self.meds_button.pack(fill="x", padx=10, pady=20)
+        self.mrecord_button.pack(fill="x", padx=10, pady=20)
         self.mhelp_button.pack(fill="x", padx=10, pady=20)
 
     def reset_frame(self, frame_name) -> None:
+
         self.dashboard_frame.pack_forget()
         self.meds_frame.pack_forget()
         self.mhelp_frame.pack_forget()
+        self.mrec_frame.pack_forget()
 
         if frame_name == "home":
             self.dashboard_frame.pack(
                 fill="both", expand=True, padx=(0, 20), pady=(0, 20)
             )
+
         elif frame_name == "meds":
             self.meds_frame.pack(fill="both", expand=True, padx=(0, 20), pady=(0, 20))
-        
+
         elif frame_name == "mhelp":
             self.mhelp_frame.pack(fill="both", expand=True, padx=(0, 20), pady=(0, 20))
-            
+
+        elif frame_name == "mrecord":
+            self.mrec_frame.pack(fill="both", expand=True, padx=(0, 20), pady=(0, 20))
+
     def options_frame(self) -> None:
         """Create the options frame."""
 
@@ -157,7 +255,7 @@ class Dashboard:
             values=["System", "Dark", "Light"],
             command=self.change_appearance_mode_event,
             font=self.button_font,
-            height=30,
+            height=50,
         )
 
         quit_button = ctk.CTkButton(
@@ -166,10 +264,20 @@ class Dashboard:
             font=self.button_font,
             command=self.root.destroy,
             corner_radius=10,
-            height=30,
+            height=50,
+        )
+
+        change_user_button = ctk.CTkButton(
+            options_frame,
+            text="Change User",
+            font=self.button_font,
+            command=self.change_user,
+            corner_radius=10,
+            height=50,
         )
 
         options_title.pack(side="top", fill="x", padx=10, pady=20)
+        change_user_button.pack(side="top", fill="x", padx=10, pady=20)
         quit_button.pack(side="bottom", fill="x", padx=10, pady=(0, 20))
         appearance_mode_optionemenu.pack(side="bottom", fill="x", padx=10, pady=20)
 
@@ -192,6 +300,9 @@ class Dashboard:
 
         ctk.set_appearance_mode(new_appearance_mode)
 
+    def change_user(self):
+        pass
+
     def show_dashboard(self) -> None:
         """Show the dashboard."""
 
@@ -199,6 +310,8 @@ class Dashboard:
         self.options_frame()
         self.title_frame("Asclepius")
         self.navigation_frame()
+
+        self.dashboard_frame.pack(fill="both", expand=True, padx=(0, 20), pady=(0, 20))
 
         self.center_window()
         self.root.mainloop()
