@@ -14,17 +14,10 @@ class Login:
         height: int = 350,
     ) -> None:
 
-        ctk.set_appearance_mode(appearance_mode)
-        ctk.set_default_color_theme(color_theme)
-
-        self.root = ctk.CTk()
-        self.root.resizable(False, False)
-
         self.width = width
         self.height = height
-
-        self.enrollment_id = ctk.StringVar()
-        self.password = ctk.StringVar()
+        self.appearance_mode = appearance_mode
+        self.color_theme = color_theme
 
     def center_window(self) -> None:
         """Centers the window."""
@@ -37,6 +30,15 @@ class Login:
 
     def display(self):
         """Display the login screen."""
+
+        ctk.set_appearance_mode(self.appearance_mode)
+        ctk.set_default_color_theme(self.color_theme)
+
+        self.root = ctk.CTk()
+        self.root.resizable(False, False)
+
+        self.enrollment_id = ctk.StringVar()
+        self.password = ctk.StringVar()
 
         self.root.title("Ascelpius - Login")
         self.center_window()
