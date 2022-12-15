@@ -124,6 +124,27 @@ class Login:
                 font=("Arial", 15, "bold"),
             ).place(relx=0.51, rely=0.9, anchor=ctk.CENTER)
 
+        # !change this to check password from database
+        elif len(self.password.get()) < 8:
+            ctk.CTkLabel(
+                self.root,
+                text="Invalid password!",
+                corner_radius=10,
+                font=("Arial", 15, "bold"),
+            ).place(relx=0.51, rely=0.9, anchor=ctk.CENTER)
+
         else:
-            self.root.destroy()
+            self.root.after(1000, self.root.destroy)
+
+            for widget in self.root.winfo_children():
+                widget.destroy()
+
+            ctk.set_appearance_mode("dark")
+
+            ctk.CTkLabel(
+                self.root,
+                text="Logging in...",
+                font=("Arial", 20, "bold"),
+            ).place(relx=0.5, rely=0.5, anchor=ctk.CENTER)
+
             return True
