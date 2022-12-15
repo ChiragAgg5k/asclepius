@@ -45,11 +45,8 @@ class Database:
     def get_medicines(self) -> list:
         """Get a medicine from the database.
 
-        Args:
-            Mid (int): Medicine ID
-
         Returns:
-            list: Medicine details
+            list: All Medicine details
         """
         self.cursor.execute("SELECT * FROM medicines")
         return self.cursor.fetchall()
@@ -58,10 +55,11 @@ class Database:
         """Get the column headings of the medicines table.
 
         Args:
-            None
+            table_name: Name of the table
 
         Returns:
             list: Column headings
         """
+
         self.cursor.execute(f"SELECT * FROM {table_name}")
         return [description[0] for description in self.cursor.description]

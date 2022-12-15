@@ -43,15 +43,25 @@ class Dashboard:
         y_coord = (screen_height / 2) - (self.height / 2)
         self.root.geometry(f"{self.width}x{self.height}+{int(x_coord)}+{int(y_coord)}")
 
-    def title_frame(self, title):
-        """Create the title frame."""
+    def title_frame(self, title: str) -> None:
+        """Create the title frame.
+
+        Args:
+            title (str): title of the frame
+        """
 
         title_frame = ctk.CTkFrame(
             self.root, width=self.width - 200, height=50, corner_radius=10
         )
         title_frame.pack(side="top", fill="x", padx=20, pady=20, anchor=ctk.NE)
+
         title_label = ctk.CTkLabel(title_frame, text=title, font=self.title_font)
         title_label.grid(row=0, column=0, padx=20, pady=20)
+
+        tagline_label = ctk.CTkLabel(
+            title_frame, text="- Your Wellness Partner", font=self.tagline_font
+        )
+        tagline_label.grid(row=0, column=1, pady=20)
 
     def navigation_frame(self) -> None:
         """Create the navigation frame."""
@@ -176,7 +186,8 @@ class Dashboard:
         self.title_font = ctk.CTkFont(family="Rockwell", size=60, weight="bold")
         self.button_font = ctk.CTkFont(family="Rockwell", size=20, weight="bold")
         self.text_font = ctk.CTkFont(family="Rockwell", size=20, weight="normal")
-        self.small_text_font = ctk.CTkFont(family="Arial", size=17, weight="normal")
+        self.small_text_font = ctk.CTkFont(family="Arial", size=18, weight="normal")
+        self.tagline_font = ctk.CTkFont(family="Rockwell", size=30, weight="normal")
         # ------------------------ Fonts ------------------------#
 
         # ------------------------ User Dashboard ------------------------#
@@ -187,7 +198,8 @@ class Dashboard:
         ).pack(padx=20, pady=20)
         ctk.CTkLabel(
             self.dashboard_frame,
-            text="Hello, User Name. Welcome to Asclepius, Your Wellness Partner.",
+            text="""Hello, User Name. Welcome to Asclepius, Your Wellness Partner. The following are the your 
+            details saved in our database.""",
             font=self.text_font,
             anchor=ctk.W,
         ).pack(anchor=ctk.W, padx=20, pady=20)
@@ -211,15 +223,22 @@ class Dashboard:
 
         # ----------------------- Medicines Dashboard -----------------------#
         self.meds_frame = ctk.CTkFrame(self.root)
+        meds_scroll_bar = ctk.CTkScrollbar(self.meds_frame, orientation="vertical")
+        meds_scroll_bar.place(relx=0.98, rely=0.05, relheight=0.9, anchor="ne")
         ctk.CTkLabel(self.meds_frame, text="Meds List", font=self.op_font).grid(
             row=0, column=0, columnspan=7, padx=20, pady=20
         )
 
-        for i in range(len(self.col_headers)):
+        col1 = ctk.CTkEntry(self.meds_frame, width=160, height=50, font=self.text_font)
+        col1.insert(ctk.END, self.col_headers[0].capitalize())
+        col1.configure(state=ctk.DISABLED)
+        col1.grid(row=1, column=1, padx=(20, 0), pady=(10, 20), ipady=1)
+
+        for i in range(1, len(self.col_headers)):
             col = ctk.CTkEntry(
-                self.meds_frame, width=140, height=50, font=self.text_font
+                self.meds_frame, width=160, height=50, font=self.text_font
             )
-            col.insert(ctk.END, self.col_headers[i])
+            col.insert(ctk.END, self.col_headers[i].capitalize())
             col.configure(state=ctk.DISABLED)
 
             col.grid(row=1, column=(i + 1), pady=(10, 20), ipady=1)
@@ -257,13 +276,13 @@ class Dashboard:
         self.mhelp_frame = ctk.CTkFrame(self.root)
 
         wellness_description = """
-To ensure students’s well-being, Bennett provides a well-equipped wellness centre with four beds and round-the-clock, with a 
-small nursing staff on standby. A well-qualified general physician is available on campus 24*7.For prolonged medical illness, or
-for case of infection, recovery rooms are available. The centre organises health check-up camps, blood donation drives, and 
-physiotherapy sessions for students and staff.
+To ensure students’s well-being, Bennett provides a well-equipped wellness centre with four beds and round-the-clock,
+with a small nursing staff on standby. A well-qualified general physician is available on campus 24*7.For prolonged 
+medical illness, orfor case of infection, recovery rooms are available. The centre organises health check-up camps, 
+blood donation drives, and physiotherapy sessions for students and staff.
 
-Asclepius is a platform for students to access the wellness centre from anywhere. It provides all the necessary services and 
-information about the wellness centre.
+Asclepius is a platform for students to access the wellness centre from anywhere. It provides all the necessary 
+services and information about the wellness centre.
 """
 
         ctk.CTkLabel(
