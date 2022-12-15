@@ -169,6 +169,47 @@ class Dashboard:
 
         ctk.set_appearance_mode(new_appearance_mode)
 
+    def display_table(self) -> None:
+        """Display the table of medicines."""
+
+        # Column headers
+        for i in range(0, len(self.col_headers)):
+            col = ctk.CTkEntry(
+                self.meds_frame, width=160, height=50, font=self.text_font
+            )
+            col.insert(ctk.END, self.col_headers[i].capitalize())
+            col.configure(state=ctk.DISABLED)
+
+            col.grid(row=1, column=(i + 1), pady=(10, 20), ipady=1, padx=5)
+
+        order_entry = ctk.CTkEntry(
+            self.meds_frame, height=50, font=self.text_font, width=100
+        )
+        order_entry.insert(ctk.END, "Order")
+        order_entry.grid(row=1, column=6, pady=(10, 20), ipady=1, padx=5)
+
+        row = 2
+        for i in self.dataset:
+            for j in range(len(i)):
+                e = ctk.CTkEntry(
+                    self.meds_frame,
+                    width=160,
+                    font=self.small_text_font,
+                )
+                e.grid(row=row, column=(j + 1), padx=5)
+                e.insert(ctk.END, i[j])
+                e.configure(state=ctk.DISABLED)
+
+            ctk.CTkButton(
+                self.meds_frame,
+                text="Order",
+                font=self.button_font,
+                width=100,
+                border_width=1,
+            ).grid(row=row, column=6, padx=5)
+
+            row += 1
+
     def show_dashboard(self) -> None:
         """Show the dashboard."""
 
@@ -229,47 +270,8 @@ class Dashboard:
             row=0, column=0, columnspan=7, padx=20, pady=20
         )
 
-        col1 = ctk.CTkEntry(self.meds_frame, width=160, height=50, font=self.text_font)
-        col1.insert(ctk.END, self.col_headers[0].capitalize())
-        col1.configure(state=ctk.DISABLED)
-        col1.grid(row=1, column=1, padx=(20, 0), pady=(10, 20), ipady=1)
+        self.display_table()
 
-        for i in range(1, len(self.col_headers)):
-            col = ctk.CTkEntry(
-                self.meds_frame, width=160, height=50, font=self.text_font
-            )
-            col.insert(ctk.END, self.col_headers[i].capitalize())
-            col.configure(state=ctk.DISABLED)
-
-            col.grid(row=1, column=(i + 1), pady=(10, 20), ipady=1)
-
-        order_entry = ctk.CTkEntry(
-            self.meds_frame, height=50, font=self.text_font, width=130
-        )
-        order_entry.insert(ctk.END, "Order")
-        order_entry.grid(row=1, column=6, pady=(10, 20), ipady=1)
-
-        row = 2
-        for i in self.dataset:
-            for j in range(len(i)):
-                e = ctk.CTkEntry(
-                    self.meds_frame,
-                    width=140,
-                    font=self.small_text_font,
-                )
-                e.grid(row=row, column=(j + 1))
-                e.insert(ctk.END, i[j])
-                e.configure(state=ctk.DISABLED)
-
-            ctk.CTkButton(
-                self.meds_frame,
-                text="Order",
-                font=self.button_font,
-                width=130,
-                border_width=1,
-            ).grid(row=row, column=6)
-
-            row += 1
         # ----------------------- Medicines Dashboard -----------------------#
 
         # ----------------------- Med Help Dashboard -----------------------#
