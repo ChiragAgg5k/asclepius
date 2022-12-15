@@ -37,6 +37,8 @@ class Login:
         self.root = ctk.CTk()
         self.root.resizable(False, False)
 
+        self.root.protocol("WM_DELETE_WINDOW", exit)
+
         self.enrollment_id = ctk.StringVar()
         self.password = ctk.StringVar()
 
