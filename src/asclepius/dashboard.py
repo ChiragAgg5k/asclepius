@@ -22,7 +22,7 @@ class Dashboard:
         Args:
             width (int): witdh of the window
             height (int): height of the window
-            appearance (str): ['light', 'Dark','System']
+            appearance (str): ['light', 'Dark']
             theme_color (str): ['blue','green','dark-blue']
             dataset (list): list of lists containing the data
             col_headers (list): list of strings containing the column headers
@@ -112,7 +112,7 @@ class Dashboard:
 
         appearance_mode_optionemenu = ctk.CTkOptionMenu(
             navigation_frame,
-            values=["System", "Dark", "Light"],
+            values=["Dark", "Light"],
             command=self.change_appearance_mode_event,
             font=self.button_font,
             height=50,
@@ -145,6 +145,8 @@ class Dashboard:
         self.meds_frame.pack_forget()
         self.mhelp_frame.pack_forget()
         self.mrec_frame.pack_forget()
+        self.meds_canvas.pack_forget()
+        self.scrollbar.pack_forget()
 
         if frame_name == "home":
             self.dashboard_frame.pack(
@@ -153,6 +155,8 @@ class Dashboard:
 
         elif frame_name == "meds":
             self.meds_frame.pack(fill="both", expand=True, padx=(20, 20), pady=(0, 20))
+            self.meds_canvas.grid(row=0, column=0, sticky="nsew")
+            self.scrollbar.grid(row=0, column=1, sticky="ns")
 
         elif frame_name == "mhelp":
             self.mhelp_frame.pack(fill="both", expand=True, padx=(20, 20), pady=(0, 20))
@@ -169,6 +173,79 @@ class Dashboard:
 
         ctk.set_appearance_mode(new_appearance_mode)
 
+    def display_table(self) -> None:
+        """Display the table of medicines."""
+
+        # Column headers
+
+        mid_head = ctk.CTkEntry(
+            self.scrollbar_frame, width=100, height=50, font=self.text_font
+        )
+        mid_head.insert(ctk.END, self.col_headers[0].capitalize())
+        mid_head.configure(state=ctk.DISABLED)
+        mid_head.grid(row=1, column=1, pady=(10, 20), ipady=1, padx=5)
+
+        name_head = ctk.CTkEntry(
+            self.scrollbar_frame, width=200, height=50, font=self.text_font
+        )
+        name_head.insert(ctk.END, self.col_headers[1].capitalize())
+        name_head.configure(state=ctk.DISABLED)
+        name_head.grid(row=1, column=2, pady=(10, 20), ipady=1, padx=5)
+
+        for i in range(2, len(self.col_headers)):
+            col = ctk.CTkEntry(
+                self.scrollbar_frame, width=160, height=50, font=self.text_font
+            )
+            col.insert(ctk.END, self.col_headers[i].capitalize())
+            col.configure(state=ctk.DISABLED)
+
+            col.grid(row=1, column=(i + 1), pady=(10, 20), ipady=1, padx=5)
+
+        order_entry = ctk.CTkEntry(
+            self.scrollbar_frame, height=50, font=self.text_font, width=100
+        )
+        order_entry.insert(ctk.END, "Order")
+        order_entry.grid(row=1, column=6, pady=(10, 20), ipady=1, padx=5)
+
+        row = 2
+        for i in self.dataset:
+
+            # Medicine ID
+            mid = ctk.CTkEntry(
+                self.scrollbar_frame, width=100, font=self.small_text_font
+            )
+            mid.insert(ctk.END, i[0])
+            mid.configure(state=ctk.DISABLED)
+            mid.grid(row=row, column=1, padx=5)
+
+            # Name
+            name = ctk.CTkEntry(
+                self.scrollbar_frame, width=200, font=self.small_text_font
+            )
+            name.insert(ctk.END, i[1])
+            name.configure(state=ctk.DISABLED)
+            name.grid(row=row, column=2, padx=5)
+
+            for j in range(2, len(i)):
+                e = ctk.CTkEntry(
+                    self.scrollbar_frame,
+                    width=160,
+                    font=self.small_text_font,
+                )
+                e.grid(row=row, column=(j + 1), padx=5)
+                e.insert(ctk.END, i[j])
+                e.configure(state=ctk.DISABLED)
+
+            ctk.CTkButton(
+                self.scrollbar_frame,
+                text="Order",
+                font=self.button_font,
+                width=100,
+                border_width=1,
+            ).grid(row=row, column=6, padx=5)
+
+            row += 1
+
     def show_dashboard(self) -> None:
         """Show the dashboard."""
 
@@ -177,7 +254,6 @@ class Dashboard:
 
         self.root = ctk.CTk()
         self.root.title("Asclepius")
-        self.root.resizable(False, False)
 
         # ------------------------ Fonts ------------------------#
         self.op_font = ctk.CTkFont(
@@ -223,53 +299,29 @@ class Dashboard:
 
         # ----------------------- Medicines Dashboard -----------------------#
         self.meds_frame = ctk.CTkFrame(self.root)
-        meds_scroll_bar = ctk.CTkScrollbar(self.meds_frame, orientation="vertical")
-        meds_scroll_bar.place(relx=0.98, rely=0.05, relheight=0.9, anchor="ne")
-        ctk.CTkLabel(self.meds_frame, text="Meds List", font=self.op_font).grid(
-            row=0, column=0, columnspan=7, padx=20, pady=20
+
+        self.meds_canvas = ctk.CTkCanvas(
+            self.meds_frame, width=1000, height=(self.root.winfo_screenheight())
+        )
+        self.scrollbar = ctk.CTkScrollbar(
+            self.meds_frame, orientation=ctk.VERTICAL, command=self.meds_canvas.yview
+        )
+        self.scrollbar_frame = ctk.CTkFrame(self.meds_canvas)
+
+        self.scrollbar_frame.bind(
+            "<Configure>",
+            lambda e: self.meds_canvas.configure(
+                scrollregion=self.meds_canvas.bbox("all")
+            ),
         )
 
-        col1 = ctk.CTkEntry(self.meds_frame, width=160, height=50, font=self.text_font)
-        col1.insert(ctk.END, self.col_headers[0].capitalize())
-        col1.configure(state=ctk.DISABLED)
-        col1.grid(row=1, column=1, padx=(20, 0), pady=(10, 20), ipady=1)
-
-        for i in range(1, len(self.col_headers)):
-            col = ctk.CTkEntry(
-                self.meds_frame, width=160, height=50, font=self.text_font
-            )
-            col.insert(ctk.END, self.col_headers[i].capitalize())
-            col.configure(state=ctk.DISABLED)
-
-            col.grid(row=1, column=(i + 1), pady=(10, 20), ipady=1)
-
-        order_entry = ctk.CTkEntry(
-            self.meds_frame, height=50, font=self.text_font, width=130
+        self.meds_canvas.create_window(
+            (0, 0), window=self.scrollbar_frame, anchor=ctk.NW
         )
-        order_entry.insert(ctk.END, "Order")
-        order_entry.grid(row=1, column=6, pady=(10, 20), ipady=1)
+        self.meds_canvas.configure(yscrollcommand=self.scrollbar.set)
 
-        row = 2
-        for i in self.dataset:
-            for j in range(len(i)):
-                e = ctk.CTkEntry(
-                    self.meds_frame,
-                    width=140,
-                    font=self.small_text_font,
-                )
-                e.grid(row=row, column=(j + 1))
-                e.insert(ctk.END, i[j])
-                e.configure(state=ctk.DISABLED)
+        self.display_table()
 
-            ctk.CTkButton(
-                self.meds_frame,
-                text="Order",
-                font=self.button_font,
-                width=130,
-                border_width=1,
-            ).grid(row=row, column=6)
-
-            row += 1
         # ----------------------- Medicines Dashboard -----------------------#
 
         # ----------------------- Med Help Dashboard -----------------------#
