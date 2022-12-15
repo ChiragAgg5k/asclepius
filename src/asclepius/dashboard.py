@@ -53,7 +53,7 @@ class Dashboard:
         title_frame = ctk.CTkFrame(
             self.root, width=self.width - 200, height=50, corner_radius=10
         )
-        title_frame.pack(side="top", fill="x", padx=20, pady=20, anchor=ctk.NE)
+        title_frame.grid(row=0, column=1, padx=20, pady=20, sticky=ctk.EW)
 
         title_label = ctk.CTkLabel(title_frame, text=title, font=self.title_font)
         title_label.grid(row=0, column=0, padx=20, pady=20)
@@ -127,42 +127,45 @@ class Dashboard:
             height=40,
         )
 
-        navigation_frame.pack(fill="y", side="left", padx=(20, 0), pady=(20, 20))
+        navigation_frame.grid(
+            row=0, column=0, padx=20, pady=20, sticky=ctk.NSEW, rowspan=2
+        )
 
-        navigation_title.pack(fill="x", padx=10, pady=20)
+        navigation_title.grid(row=0, column=0, padx=10, pady=15)
 
-        self.dashboard_button.pack(fill="x", padx=10, pady=15)
-        self.meds_button.pack(fill="x", padx=10, pady=15)
-        self.mrecord_button.pack(fill="x", padx=10, pady=15)
-        self.mhelp_button.pack(fill="x", padx=10, pady=15)
+        self.dashboard_button.grid(row=1, column=0, padx=10, pady=15)
+        self.meds_button.grid(row=2, column=0, padx=10, pady=15)
+        self.mrecord_button.grid(row=3, column=0, padx=10, pady=15)
+        self.mhelp_button.grid(row=4, column=0, padx=10, pady=15)
 
-        quit_button.pack(fill="x", padx=10, pady=20, side="bottom")
-        appearance_mode_optionemenu.pack(fill="x", padx=10, pady=20, side="bottom")
+        quit_button.grid(row=5, column=0, padx=10, pady=15)
+        appearance_mode_optionemenu.grid(row=6, column=0, padx=10, pady=15)
 
     def reset_frame(self, frame_name) -> None:
 
-        self.dashboard_frame.pack_forget()
-        self.meds_frame.pack_forget()
-        self.mhelp_frame.pack_forget()
-        self.mrec_frame.pack_forget()
-        self.meds_canvas.pack_forget()
-        self.scrollbar.pack_forget()
-
         if frame_name == "home":
-            self.dashboard_frame.pack(
-                fill="both", expand=True, padx=(20, 20), pady=(0, 20)
+            self.dashboard_frame.grid(
+                row=1, column=1, sticky=ctk.NSEW, padx=20, pady=20
             )
+        else:
+            self.dashboard_frame.grid_forget()
 
-        elif frame_name == "meds":
-            self.meds_frame.pack(fill="both", expand=True, padx=(20, 20), pady=(0, 20))
-            self.meds_canvas.grid(row=0, column=0, sticky="nsew")
-            self.scrollbar.grid(row=0, column=1, sticky="ns")
+        if frame_name == "meds":
+            self.meds_frame.grid(row=1, column=1, sticky=ctk.NSEW, padx=20, pady=20)
+            self.meds_canvas.grid(row=0, column=0, sticky=ctk.NSEW)
+            self.scrollbar.grid(row=0, column=1, sticky=ctk.NS)
+        else:
+            self.meds_frame.grid_forget()
 
-        elif frame_name == "mhelp":
-            self.mhelp_frame.pack(fill="both", expand=True, padx=(20, 20), pady=(0, 20))
+        if frame_name == "mhelp":
+            self.mhelp_frame.grid(row=1, column=1, sticky=ctk.NSEW, padx=20, pady=20)
+        else:
+            self.mhelp_frame.grid_forget()
 
-        elif frame_name == "mrecord":
-            self.mrec_frame.pack(fill="both", expand=True, padx=(20, 20), pady=(0, 20))
+        if frame_name == "mrecord":
+            self.mrec_frame.grid(row=1, column=1, sticky=ctk.NSEW, padx=20, pady=20)
+        else:
+            self.mrec_frame.grid_forget()
 
     def change_appearance_mode_event(self, new_appearance_mode: str):
         """Change the appearance mode.
@@ -254,6 +257,7 @@ class Dashboard:
 
         self.root = ctk.CTk()
         self.root.title("Asclepius")
+        self.root.resizable(False, False)
 
         # ------------------------ Fonts ------------------------#
         self.op_font = ctk.CTkFont(
@@ -368,10 +372,9 @@ services and information about the wellness centre.
         )
         # -------------------- Medical Records Dashboard --------------------#
 
-        self.navigation_frame()
         self.title_frame("Asclepius")
-
-        self.dashboard_frame.pack(fill="both", expand=True, padx=(20, 20), pady=(0, 20))
+        self.navigation_frame()
+        self.dashboard_frame.grid(row=1, column=1, sticky=ctk.NSEW, padx=20, pady=20)
 
         self.center_window()
         self.root.mainloop()
