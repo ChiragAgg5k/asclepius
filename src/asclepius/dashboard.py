@@ -39,6 +39,8 @@ class Dashboard:
         self.root.title("Asclepius")
         self.root.resizable(False, False)
 
+        self.order_list = []
+
         # ------------------------ Fonts ------------------------#
         self.op_font = ctk.CTkFont(
             family="Franklin Gothic", size=30, weight="bold", underline=True
@@ -192,10 +194,28 @@ class Dashboard:
 
         ctk.set_appearance_mode(new_appearance_mode)
 
+    def order_check_button(self, mid: str):
+        if mid == "0":
+            try:
+                self.order_list.pop()
+            except IndexError:
+                print("No order removed, list is empty.")
+        else:
+            self.order_list.append(mid)
+
+    def place_order(self):
+        if len(self.order_list) == 0:
+            print("No order placed, list is empty.")
+        else:
+            print("Order placed.")
+            self.order_list = []
+            self.reset_frame("meds")
+
     def display_table(self) -> None:
         """Display the table of medicines."""
 
-        column_widths = [80, 150, 400, 100, 100]
+        column_widths = [80, 150, 450, 80, 100]
+        check_box_var = ctk.StringVar()
 
         for i in range(0, len(self.col_headers)):
 
@@ -221,7 +241,7 @@ class Dashboard:
             col.grid(row=1, column=(i + 1), pady=(10, 20), ipady=1, padx=5)
 
         order_entry = ctk.CTkEntry(
-            self.scrollbar_frame, height=50, font=self.text_font, width=100
+            self.scrollbar_frame, height=50, font=self.text_font, width=80
         )
         order_entry.insert(ctk.END, "Order")
         order_entry.grid(row=1, column=6, pady=(10, 20), ipady=1, padx=5)
@@ -244,13 +264,16 @@ class Dashboard:
 
                 e.configure(state=ctk.DISABLED)
 
-            ctk.CTkButton(
+            order_checkbox = ctk.CTkCheckBox(
                 self.scrollbar_frame,
-                text="Order",
-                font=self.button_font,
-                width=100,
-                border_width=1,
-            ).grid(row=row, column=6, padx=5)
+                text="",
+                variable=check_box_var,
+                onvalue=i[0],
+                command=lambda: self.order_check_button(check_box_var.get()),
+                width=70,
+            )
+
+            order_checkbox.grid(row=row, column=6, padx=5)
 
             row += 1
 
@@ -291,10 +314,13 @@ class Dashboard:
         self.meds_canvas = ctk.CTkCanvas(
             self.meds_frame,
             width=1000,
-            height=550,
+            height=500,
         )
         self.scrollbar = ctk.CTkScrollbar(
-            self.meds_frame, orientation=ctk.VERTICAL, command=self.meds_canvas.yview
+            self.meds_frame,
+            orientation=ctk.VERTICAL,
+            command=self.meds_canvas.yview,
+            width=30,
         )
         self.scrollbar_frame = ctk.CTkFrame(self.meds_canvas)
 
@@ -314,6 +340,11 @@ class Dashboard:
         self.scrollbar.grid(row=0, column=1, sticky=ctk.NS)
 
         self.display_table()
+
+        place_order_button = ctk.CTkButton(
+            self.meds_frame, text="Place Order", command=self.place_order
+        )
+        place_order_button.grid(row=1, column=0, sticky=ctk.E, pady=5)
 
         # ----------------------- Medicines Dashboard -----------------------#
 
