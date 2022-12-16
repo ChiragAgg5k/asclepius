@@ -16,14 +16,17 @@ dash_board = dashboard.Dashboard(
     col_headers=database.get_col_headings("medicines"),
 )
 
-# while True:
-#     login.display()
-#     if login.submit:
-#         password = login.password.get()
-#         enrollmentid = login.enrollment_id.get()
-#         break
+while True:
+    login.display()
+    if login.submit:
+        password = login.password.get()
+        enrollmentid = login.enrollment_id.get()
+        break
 
-dash_board.show_dashboard()
+while True:
+    dash_board.display()
+    if dash_board.submit:
+        break
 
 print("Program exited successfully.")
 print(dash_board.order_list)
