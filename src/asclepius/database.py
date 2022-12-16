@@ -63,7 +63,37 @@ class Database:
 
         self.cursor.execute(f"SELECT * FROM {table_name}")
         return [description[0] for description in self.cursor.description]
-
     
+    def signup(
+        self,
+        Enrollid: str,
+        username: str,
+        Hosteller: int,
+        roomno: str,
+        contact: int,
+    ) -> None:
 
-    
+        self.cursor.execute(
+                "INSERT INTO credentials VALUES (?, ?, ?, ?, ?)",
+                (Enrollid, username, Hosteller, roomno, contact),
+            )
+        self.connection.commit()
+
+        def get_signupdetails(self) -> list:
+            self.cursor.execute("SELECT * FROM signup")
+            return self.cursor.fetchall()
+    def login(self):
+        statement = "SELECT username, password FROM credentials"
+        self.cursor.execute(statement)
+        username=""
+        password=""
+        statement1 = f"SELECT username from credentials WHERE username='{username}' AND Password = '{password}';"
+        self.cursor.execute(statement1)
+        if not self.cursor.fetchone():      
+            print("Login failed")
+        else:               
+            print("Welcome")
+
+
+
+        
