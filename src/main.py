@@ -27,3 +27,4 @@ dash_board = dashboard.Dashboard(
 dash_board.show_dashboard()
 
 print("Program exited successfully.")
+print(dash_board.order_list)
