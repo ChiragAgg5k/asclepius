@@ -52,14 +52,15 @@ class Dashboard:
         self.tagline_font = ctk.CTkFont(family="Rockwell", size=30, weight="normal")
         # ------------------------ Fonts ------------------------#
 
-    def center_window(self) -> None:
+    def center_window(self, root: ctk.CTk, width: int, height: int) -> None:
         """Center the window."""
 
-        screen_width = self.root.winfo_screenwidth()
-        screen_height = self.root.winfo_screenheight()
-        x_coord = (screen_width / 2) - (self.width / 2)
-        y_coord = (screen_height / 2) - (self.height / 2)
-        self.root.geometry(f"{self.width}x{self.height}+{int(x_coord)}+{int(y_coord)}")
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+
+        x_coord = (screen_width / 2) - (width / 2)
+        y_coord = (screen_height / 2) - (height / 2)
+        root.geometry(f"{self.width}x{self.height}+{int(x_coord)}+{int(y_coord)}")
 
     def title_frame(self, title: str) -> None:
         """Create the title frame.
@@ -160,6 +161,11 @@ class Dashboard:
         appearance_mode_optionemenu.pack(pady=15, side=ctk.BOTTOM)
 
     def reset_frame(self, frame_name) -> None:
+        """Changes the frame to the given frame. Forgets the other frames.
+
+        Args:
+            frame_name (str): name of the frame to be displayed
+        """
 
         if frame_name == "home":
             self.dashboard_frame.pack(
@@ -204,12 +210,67 @@ class Dashboard:
             self.order_list.append(mid)
 
     def place_order(self):
+        """Pop up a window to confirm the order. Displays the order list."""
+
+        order_confirmation = ctk.CTkToplevel(self.root)
+        order_confirmation.title("Order Confirmation")
+        order_confirmation.geometry("700x400+450+300")
+        order_confirmation.resizable(False, False)
+
         if len(self.order_list) == 0:
-            print("No order placed, list is empty.")
+            order_confirmation_label = ctk.CTkLabel(
+                order_confirmation, text="No medicines selected.", font=self.text_font
+            )
+            order_confirmation_label.pack(padx=20, pady=20, anchor=ctk.CENTER)
+
+            close_button = ctk.CTkButton(
+                order_confirmation,
+                text="Close Window",
+                command=order_confirmation.destroy,
+            )
+            close_button.pack(pady=20)
+
         else:
-            print("Order placed.")
-            self.order_list = []
-            self.reset_frame("meds")
+            order_confirmation_label = ctk.CTkLabel(
+                order_confirmation,
+                text="The following medicines have been selected:",
+                font=self.text_font,
+            )
+            order_confirmation_label.pack(padx=20, pady=20, anchor=ctk.CENTER)
+
+            order_list_frame = ctk.CTkFrame(order_confirmation)
+
+            row = 0
+            for i in self.dataset:
+                if i[0] in self.order_list:
+
+                    for j in range(0, len(i) - 1):
+                        order_cell = ctk.CTkEntry(
+                            order_list_frame,
+                        )
+                        order_cell.insert(0, i[j])
+                        order_cell.grid(
+                            row=row,
+                            column=(j + 1),
+                            pady=(10, 20),
+                            ipady=1,
+                            padx=5,
+                        )
+                    row += 1
+
+            order_list_frame.pack(padx=20, pady=20, anchor=ctk.CENTER)
+
+            final_confirmation_button = ctk.CTkButton(
+                order_confirmation,
+                text="Confirm Order",
+                font=self.text_font,
+                command=order_confirmation.destroy,
+                corner_radius=10,
+                height=40,
+            )
+            final_confirmation_button.pack(padx=20, pady=20, anchor=ctk.CENTER)
+
+        order_confirmation.mainloop()
 
     def display_table(self) -> None:
         """Display the table of medicines."""
@@ -408,5 +469,5 @@ services and information about the wellness centre.
         self.title_frame("Asclepius")
         self.dashboard_frame()
 
-        self.center_window()
+        self.center_window(self.root, self.width, self.height)
         self.root.mainloop()
