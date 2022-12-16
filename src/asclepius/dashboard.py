@@ -43,6 +43,7 @@ class Dashboard:
         self.root.iconbitmap("assets/images/logo-no-background.ico")
 
         self.order_list = []
+        self.column_widths = [80, 150, 450, 80, 100]
 
         # ------------------------ Fonts ------------------------#
         self.op_font = ctk.CTkFont(
@@ -217,7 +218,7 @@ class Dashboard:
 
         order_confirmation = ctk.CTkToplevel(self.root)
         order_confirmation.title("Order Confirmation")
-        order_confirmation.geometry("700x400+450+300")
+        order_confirmation.geometry(f"{self.meds_frame.winfo_width()}x{400}+300+300")
         order_confirmation.resizable(False, False)
 
         if len(self.order_list) == 0:
@@ -244,22 +245,28 @@ class Dashboard:
             order_list_frame = ctk.CTkFrame(order_confirmation)
 
             row = 0
+            total_amount = 0
             for i in self.dataset:
                 if i[0] in self.order_list:
 
                     for j in range(0, len(i) - 1):
                         order_cell = ctk.CTkEntry(
                             order_list_frame,
+                            width=self.column_widths[j],
                         )
-                        order_cell.insert(0, i[j])
+                        try:
+                            order_cell.insert(0, i[j].capitalize())
+                        except AttributeError:
+                            order_cell.insert(0, i[j])
                         order_cell.grid(
                             row=row,
                             column=(j + 1),
-                            pady=(10, 20),
+                            pady=5,
                             ipady=1,
                             padx=5,
                         )
                     row += 1
+                    total_amount += i[-2]
 
             order_list_frame.pack(padx=20, pady=20, anchor=ctk.CENTER)
 
@@ -271,6 +278,14 @@ class Dashboard:
                 corner_radius=10,
                 height=40,
             )
+
+            total_amount_label = ctk.CTkLabel(
+                order_confirmation,
+                text=f"Number of medicines ordered: {row}                      Total Amount: {total_amount}",
+                font=self.text_font,
+            )
+
+            total_amount_label.pack(padx=20, pady=20, anchor=ctk.CENTER)
             final_confirmation_button.pack(padx=20, pady=20, anchor=ctk.CENTER)
 
         order_confirmation.mainloop()
@@ -278,7 +293,6 @@ class Dashboard:
     def display_table(self) -> None:
         """Display the table of medicines."""
 
-        column_widths = [80, 150, 450, 80, 100]
         check_box_var = ctk.StringVar()
 
         for i in range(0, len(self.col_headers)):
@@ -287,14 +301,14 @@ class Dashboard:
                 self.scrollbar_frame,
                 text=self.col_headers[i].capitalize(),
                 font=self.text_font,
-                width=column_widths[i],
+                width=self.column_widths[i],
                 height=50,
             )
             col_cell.grid(row=1, column=(i + 1), pady=(10, 20), ipady=1, padx=5)
 
             col = ctk.CTkEntry(
                 self.scrollbar_frame,
-                width=column_widths[i],
+                width=self.column_widths[i],
                 height=50,
                 font=self.text_font,
             )
@@ -316,7 +330,7 @@ class Dashboard:
             for j in range(0, len(i)):
                 e = ctk.CTkEntry(
                     self.scrollbar_frame,
-                    width=column_widths[j],
+                    width=self.column_widths[j],
                     font=self.small_text_font,
                 )
                 e.grid(row=row, column=(j + 1), padx=5)
@@ -386,7 +400,7 @@ class Dashboard:
 
         self.meds_canvas = ctk.CTkCanvas(
             self.meds_frame,
-            width=self.root.winfo_screenwidth() - 460,
+            width=1000,
             height=500,
         )
         self.scrollbar = ctk.CTkScrollbar(
