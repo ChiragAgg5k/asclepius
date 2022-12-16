@@ -1,3 +1,6 @@
+# Code Working
+
+The code is divided into different modules inside the package named _asclepius_, which are then combined to form the final code. The modules are:
 ## Dashboard
 
 The custom Tkinter dashboard is a tool that provides a visual interface for analyzing and interpreting data in a project. It has a main class named Dashboard, which has an `__init__` function for defining the height, width, appearance, dataset, and header variables. These variables are used across other methods in the dashboard. The dashboard has different methods, such as `navigation`, `title`, `display`, and `change_appearance`.
