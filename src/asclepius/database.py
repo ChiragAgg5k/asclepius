@@ -63,3 +63,7 @@ class Database:
 
         self.cursor.execute(f"SELECT * FROM {table_name}")
         return [description[0] for description in self.cursor.description]
+
+    
+
+    
