@@ -27,6 +27,7 @@ class Dashboard:
             dataset (list): list of lists containing the data
             col_headers (list): list of strings containing the column headers
         """
+
         self.width = width
         self.height = height
         self.dataset = dataset
@@ -38,6 +39,8 @@ class Dashboard:
         self.root = ctk.CTk()
         self.root.title("Asclepius")
         self.root.resizable(False, False)
+
+        self.root.iconbitmap("assets/images/logo-no-background.ico")
 
         self.order_list = []
 
@@ -374,7 +377,7 @@ class Dashboard:
 
         self.meds_canvas = ctk.CTkCanvas(
             self.meds_frame,
-            width=1000,
+            width=self.root.winfo_screenwidth() - 460,
             height=500,
         )
         self.scrollbar = ctk.CTkScrollbar(
