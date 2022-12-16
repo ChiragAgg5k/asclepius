@@ -400,8 +400,8 @@ class Dashboard:
 
         self.meds_canvas = ctk.CTkCanvas(
             self.meds_frame,
-            width=1000,
-            height=500,
+            width=self.root.winfo_screenwidth()+550,
+            height=self.root.winfo_screenheight()+100,
         )
         self.scrollbar = ctk.CTkScrollbar(
             self.meds_frame,
