@@ -337,7 +337,16 @@ class Dashboard:
                 width=70,
             )
 
-            order_checkbox.grid(row=row, column=6, padx=5)
+            if i[-1].lower() == "no":
+                ctk.CTkLabel(
+                    self.scrollbar_frame,
+                    text="  -",
+                    font=self.small_text_font,
+                    anchor=ctk.W,
+                    width=70,
+                ).grid(row=row, column=6, padx=5)
+            else:
+                order_checkbox.grid(row=row, column=6, padx=5)
 
             row += 1
 
