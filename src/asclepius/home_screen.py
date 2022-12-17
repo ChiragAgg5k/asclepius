@@ -74,7 +74,7 @@ class HomeScreen:
     def signup(self):
         self.root.destroy()
         signup_screen = Signup()
-        signup_screen.widgets()
+        signup_screen.show_signup()
 
     def show_homescreen(self) -> None:
         """Show the homescreenwindow"""
