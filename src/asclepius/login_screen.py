@@ -1,3 +1,4 @@
+
 import customtkinter as ctk
 from PIL import Image
 
@@ -34,8 +35,7 @@ class Login:
         self.center_window()
 
         # background image
-        self.bgimage = ctk.CTkImage(
-            Image.open("assets/images/login_bg.png"), size=(450, 350)
+        self.bgimage = ctk.CTkImage( Image.open("assets\images\login_bg.png"), size=(450, 350)
         )
         self.bgCTkLabel = ctk.CTkLabel(self.root, image=self.bgimage, text="")
 
@@ -49,7 +49,9 @@ class Login:
             self.root, text="Name:", font=("Arial", 15, "bold"), corner_radius=10
         )
         self.username_entry = ctk.CTkEntry(
-            self.root, textvariable=self.username, width=200
+            self.root, 
+            textvariable=self.username, 
+            width=200
         )
 
         # creating password CTkLabel and entry
@@ -63,6 +65,7 @@ class Login:
             self.root, textvariable=self.password, width=200, show="*"
         )
 
+      
         self.submit_button = ctk.CTkButton(
             self.root,
             text="Submit",
@@ -82,10 +85,16 @@ class Login:
         self.pswrd_entry.place(relx=0.6, rely=0.55, anchor=ctk.CENTER)
         self.pswrd_CTkLabel.place(relx=0.2, rely=0.55, anchor=ctk.CENTER)
 
+        #self.signup_label.place(relx=0.2, rely=0.65, anchor=ctk.CENTER)
+        #self.signup_button_label.place(relx=0.5, rely=0.65, anchor=ctk.CENTER)
+
         self.submit_button.place(relx=0.5, rely=0.8, anchor=ctk.CENTER)
 
         self.root.mainloop()
+       
 
     def submit(self) -> list:
         self.root.destroy()
         return 1
+obj = Login()
+obj.display()
