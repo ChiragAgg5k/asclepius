@@ -1,17 +1,14 @@
-import sqlite3
+from asclepius import dashboard, login_screen
 
-from asclepius import dashboard, database, login_screen
-
-login = login_screen.Login(
-    appearance_mode="light", color_theme="green", width=450, height=350
+login_window = login_screen.Login(
+    width=450, height=350, appearance_mode="light", color_theme="green"
 )
 
-# while True:
-#     login.display()
-#     if login.submit:
-#         password = login.password.get()
-#         enrollmentid = login.enrollment_id.get()
-#         break
+while True:
+    login_window.display()
+    if login_window.submit:
+        password, enrollment_id = login_window.get_credentials()
+        break
 
 dash_board = dashboard.Dashboard(
     width=1280,

@@ -234,12 +234,14 @@ class Dashboard:
 
         self.order_confirmation = ctk.CTkToplevel(self.root)
         self.order_confirmation.title("Order Confirmation")
-        self.order_confirmation.geometry(
-            f"{self.meds_frame.winfo_width()}x{400}+300+300"
-        )
         self.order_confirmation.resizable(False, False)
 
+        self.order_confirmation.geometry(
+            f"{self.meds_frame.winfo_width() - 40}x{self.meds_frame.winfo_height() - 100}+300+300"
+        )
+
         if len(self.order_list) == 0:
+
             order_confirmation_label = ctk.CTkLabel(
                 self.order_confirmation,
                 text="No medicines selected.",
@@ -255,6 +257,7 @@ class Dashboard:
             close_button.pack(pady=20)
 
         else:
+
             order_confirmation_label = ctk.CTkLabel(
                 self.order_confirmation,
                 text="The following medicines have been selected:",
@@ -440,9 +443,6 @@ class Dashboard:
 
         # ----------------------- Medicines Dashboard -----------------------#
         self.meds_frame = ctk.CTkFrame(self.root)
-
-        print(self.meds_frame.winfo_width())
-        print(self.meds_frame.winfo_height())
 
         self.meds_canvas = ctk.CTkCanvas(
             self.meds_frame,

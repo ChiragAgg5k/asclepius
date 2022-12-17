@@ -5,7 +5,8 @@ from PIL import Image
 
 
 class Login:
-    # constructor
+    """Class to handle the login screen."""
+
     def __init__(
         self,
         appearance_mode: str = "dark",
@@ -16,8 +17,21 @@ class Login:
 
         self.width = width
         self.height = height
-        self.appearance_mode = appearance_mode
-        self.color_theme = color_theme
+
+        ctk.set_appearance_mode(appearance_mode)
+        ctk.set_default_color_theme(color_theme)
+
+        self.root = ctk.CTk()
+        self.root.resizable(False, False)
+
+        # exits the program when the window is closed
+        self.root.protocol("WM_DELETE_WINDOW", exit)
+
+        # Encaplusalted credentials
+        self.__enrollment_id = ctk.StringVar()
+        self.__password = ctk.StringVar()
+
+        self.root.title("Ascelpius - Login")
 
     def center_window(self) -> None:
         """Centers the window."""
@@ -31,19 +45,6 @@ class Login:
     def display(self):
         """Display the login screen."""
 
-        ctk.set_appearance_mode(self.appearance_mode)
-        ctk.set_default_color_theme(self.color_theme)
-
-        self.root = ctk.CTk()
-        self.root.resizable(False, False)
-
-        # exits the program when the window is closed
-        self.root.protocol("WM_DELETE_WINDOW", exit)
-
-        self.enrollment_id = ctk.StringVar()
-        self.password = ctk.StringVar()
-
-        self.root.title("Ascelpius - Login")
         self.center_window()
 
         self.bgimage = ctk.CTkImage(
@@ -65,7 +66,7 @@ class Login:
             corner_radius=10,
         )
         self.enrollmentid_entry = ctk.CTkEntry(
-            self.root, textvariable=self.enrollment_id, width=220
+            self.root, textvariable=self.__enrollment_id, width=220
         )
 
         self.pswrd_CTkLabel = ctk.CTkLabel(
@@ -75,7 +76,7 @@ class Login:
             corner_radius=10,
         )
         self.pswrd_entry = ctk.CTkEntry(
-            self.root, textvariable=self.password, width=220, show="*"
+            self.root, textvariable=self.__password, width=220, show="*"
         )
 
         self.submit_button = ctk.CTkButton(
@@ -111,7 +112,7 @@ class Login:
             True if the details are entered, else False.
         """
 
-        if self.enrollment_id.get() == "" or self.password.get() == "":
+        if self.__enrollment_id.get() == "" or self.__password.get() == "":
             ctk.CTkLabel(
                 self.root,
                 text="Please enter all the details!",
@@ -119,7 +120,9 @@ class Login:
                 font=("Arial", 15, "bold"),
             ).place(relx=0.51, rely=0.9, anchor=ctk.CENTER)
 
-        elif not re.match(r"^e[1-2][0-9][a-z]{4}[0-9]{4}", self.enrollment_id.get()):
+        elif not re.match(
+            r"^e[1-2][0-9][a-z]{4}[0-9]{4}", self.__enrollment_id.get().lower()
+        ):
             ctk.CTkLabel(
                 self.root,
                 text="Please enter a valid enrollment ID!",
@@ -128,7 +131,7 @@ class Login:
             ).place(relx=0.51, rely=0.9, anchor=ctk.CENTER)
 
         # !change this to check password from database
-        elif len(self.password.get()) < 8:
+        elif len(self.__password.get()) < 8:
             ctk.CTkLabel(
                 self.root,
                 text="Invalid password!",
@@ -151,3 +154,6 @@ class Login:
             ).place(relx=0.5, rely=0.5, anchor=ctk.CENTER)
 
             return True
+
+    def get_credentials(self) -> tuple:
+        return (self.__enrollment_id.get(), self.__password.get())
