@@ -3,6 +3,8 @@ import re
 import customtkinter as ctk
 from PIL import Image
 
+from asclepius.database import Database
+
 
 class Login:
     """Class to handle the login screen."""
@@ -28,6 +30,8 @@ class Login:
         self.__password = ctk.StringVar()
 
         self.login_completed = False
+
+        self.db = Database()
 
     def display(self):
         """Display the login screen."""
@@ -114,10 +118,10 @@ class Login:
             ).place(relx=0.51, rely=0.9, anchor=ctk.CENTER)
 
         # !change this to check password from database
-        elif len(self.__password.get()) < 8:
+        elif not (self.db.login(self.get_credentials())):
             ctk.CTkLabel(
                 self.login_frame,
-                text="Invalid password!",
+                text="Invalid credentials!",
                 corner_radius=10,
                 font=("Arial", 15, "bold"),
             ).place(relx=0.51, rely=0.9, anchor=ctk.CENTER)

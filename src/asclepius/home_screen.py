@@ -29,6 +29,8 @@ class HomeScreen:
         self.root.title("Ascelpius - Home")
         self.selected_tab = ""
 
+        self.db = Database()
+
     def homescreen(self):
         """Display the homescreen."""
 
@@ -54,17 +56,13 @@ class HomeScreen:
 
         login_object.display()
 
-        while (not login_object.login_completed) and (
-            not signup_object.signup_completed
-        ):
+        while True:
+
             self.root.update()
 
-        if login_object.get_credentials():
-            print(login_object.get_credentials())
-        else:
-            print(signup_object.get_credentials())
-
-        self.root.destroy()
+            if login_object.login_completed or signup_object.signup_completed:
+                self.root.destroy()
+                break
 
     def show_homescreen(self) -> None:
         """Show the homescreenwindow"""

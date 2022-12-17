@@ -2,6 +2,7 @@ import customtkinter as ctk
 from PIL import Image
 
 from asclepius.centerwin import CenterWindow
+from asclepius.database import Database
 
 
 class Signup:
@@ -23,6 +24,8 @@ class Signup:
 
         self.text_font = ctk.CTkFont(family="Arial", size=20, weight="bold")
         self.small_text_font = ctk.CTkFont(family="Arial", size=13, weight="bold")
+
+        self.db = Database()
 
     def widgets(self, app):
         """Function to create widgets for the login screen.
@@ -115,7 +118,6 @@ class Signup:
             self.app, show="*", font=self.small_text_font, textvariable=self.__password
         ).place(relx=0.1, rely=0.74, width=300, height=30, anchor=ctk.NW)
 
-        # creating 'Register' button
         self.register = ctk.CTkButton(
             self.app,
             text="Register",
@@ -137,16 +139,23 @@ class Signup:
     def submit(self):
 
         if (
-            self.__name.get() == ""
-            or self.__enrollid.get() == ""
-            or self.__phoneno.get() == ""
-            or self.__password.get() == ""
+            (self.__name.get() == "")
+            or (self.__enrollid.get() == "")
+            or (self.__phoneno.get() == "")
+            or (self.__password.get() == "")
+            or (self.__is_hosteller.get() == "")
         ):
-            ctk.CTkLabel(self.app, text="Please fill all the fields").place(
-                relx=0.5, rely=0.95, anchor=ctk.CENTER
-            )
+            ctk.CTkLabel(
+                self.app, text="Please fill all the fields", font=self.small_text_font
+            ).place(relx=0.5, rely=0.95, anchor=ctk.CENTER)
+
+        elif not (self.db.signup(self.get_credentials())):
+            ctk.CTkLabel(
+                self.app, text="User already exists", font=self.small_text_font
+            ).place(relx=0.5, rely=0.95, anchor=ctk.CENTER)
+
         else:
-            self.signup_frame.after(1000, self.time_delay)
+            self.signup_frame.after(1000, self.signup_frame.destroy)
 
             ctk.set_appearance_mode("dark")
 
@@ -157,12 +166,11 @@ class Signup:
                 self.signup_frame, text="Signing In", font=self.text_font
             ).pack(pady=40, padx=50, fill=ctk.BOTH, expand=True)
 
-    def time_delay(self):
+            self.signup_completed = True
 
-        self.signup_completed = True
-
-    def get_credentials(self) -> dict:
+    def get_credentials(self) -> tuple:
         """Returns the signup information"""
+
         return (
             self.__name.get(),
             self.__enrollid.get(),
