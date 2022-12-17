@@ -10,6 +10,7 @@ dash_board = dashboard.Dashboard(
     height=720,
     appearance="dark",
     theme_color="green",
+    enrollment_id=home_window.get_user_enrollment_id(),
 )
 
 dash_board.show_dashboard()

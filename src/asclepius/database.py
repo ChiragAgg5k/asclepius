@@ -58,23 +58,19 @@ class Database:
             print("User already exists")
             return False
 
-    def get_signupdetails(self) -> list:
-        self.cursor.execute("SELECT * FROM signup")
-        return self.cursor.fetchall()
+    def get_signupdetails(self, enrollment_id) -> list:
+        self.cursor.execute(
+            "SELECT * FROM credentials WHERE ENROLLID = (?)", (enrollment_id,)
+        )
+        return self.cursor.fetchone()
 
     def login(self, credentials: tuple) -> bool:
-        statement = "SELECT username, password FROM credentials"
-        self.cursor.execute(statement)
-        username = credentials[0]
-        password = credentials[1]
-        statement1 = f"SELECT username from credentials WHERE username='{username}' AND Password = '{password}';"
-        self.cursor.execute(statement1)
-        if not self.cursor.fetchone():
-            print("Login failed , please try again")
-            return False
-        else:
-            print("Login successful, Welcome to Asclepius")
+        self.cursor.execute(
+            "SELECT * FROM credentials WHERE ENROLLID = (?)", (credentials[0],)
+        )
+        if self.cursor.fetchone():
             return True
+        return False
 
     def get_medicine_record(self) -> list:
         """Get the medicine record from the database.
