@@ -63,7 +63,7 @@ class Database:
 
         self.cursor.execute(f"SELECT * FROM {table_name}")
         return [description[0] for description in self.cursor.description]
-    
+
     def signup(
         self,
         Enrollid: str,
@@ -74,26 +74,45 @@ class Database:
     ) -> None:
 
         self.cursor.execute(
-                "INSERT INTO credentials VALUES (?, ?, ?, ?, ?)",
-                (Enrollid, username, Hosteller, roomno, contact),
-            )
+            "INSERT INTO credentials VALUES (?, ?, ?, ?, ?)",
+            (Enrollid, username, Hosteller, roomno, contact),
+        )
         self.connection.commit()
 
         def get_signupdetails(self) -> list:
             self.cursor.execute("SELECT * FROM signup")
             return self.cursor.fetchall()
+
     def login(self):
         statement = "SELECT username, password FROM credentials"
         self.cursor.execute(statement)
-        username=""
-        password=""
+        username = ""
+        password = ""
         statement1 = f"SELECT username from credentials WHERE username='{username}' AND Password = '{password}';"
         self.cursor.execute(statement1)
-        if not self.cursor.fetchone():      
+        if not self.cursor.fetchone():
             print("Login failed")
-        else:               
+        else:
             print("Welcome")
 
+    def get_medicine_record(self) -> list:
+        """Get the medicine record from the database.
 
+        Returns:
+            list: Medicine record
+        """
+        self.cursor.execute("SELECT * FROM MRECORD")
+        return self.cursor.fetchall()
 
-        
+    def add_orders(self, mid_list: list) -> None:
+
+        all_medicines = self.get_medicines()
+        for i in mid_list:
+            for j in all_medicines:
+                if i == j[0]:
+                    self.cursor.execute(
+                        "INSERT INTO MRECORD(ENROLLID,MID,NAME,PRICE) VALUES (' ',?, ?, ?)",
+                        (j[0], j[1], j[4]),
+                    )
+                    self.connection.commit()
+        self.connection.commit()

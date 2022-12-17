@@ -47,7 +47,7 @@ class Login:
         self.center_window()
 
         self.bgimage = ctk.CTkImage(
-            Image.open("assets/images/login_bg.png"), size=(450, 350)
+            Image.open("assets/images/login_bg.png"), size=(self.width, self.height)
         )
         self.bgCTkLabel = ctk.CTkLabel(self.root, image=self.bgimage, text="")
 

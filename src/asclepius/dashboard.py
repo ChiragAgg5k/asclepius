@@ -1,6 +1,8 @@
 import customtkinter as ctk
 from PIL import Image
 
+from asclepius import database
+
 
 class Dashboard:
     """
@@ -14,8 +16,6 @@ class Dashboard:
         height: int,
         appearance: str,
         theme_color: str,
-        dataset: list,
-        col_headers: list,
     ) -> None:
         """Constructor for Dashboard class for Asclepius.
 
@@ -28,10 +28,13 @@ class Dashboard:
             col_headers (list): list of strings containing the column headers
         """
 
+        self.db = database.Database()
+
         self.width = width
         self.height = height
-        self.dataset = dataset
-        self.col_headers = col_headers
+
+        self.dataset = self.db.get_medicines()
+        self.col_headers = self.db.get_col_headings("medicines")
 
         ctk.set_appearance_mode(appearance)
         ctk.set_default_color_theme(theme_color)
@@ -82,9 +85,14 @@ class Dashboard:
         tagline_label = ctk.CTkLabel(
             title_frame, text="- Your Wellness Partner", font=self.tagline_font
         )
+        title_logo = ctk.CTkImage(
+            Image.open("assets/images/logo-no-background.png"), size=(125, 100)
+        )
+        title_logo_label = ctk.CTkLabel(title_frame, image=title_logo, text="")
 
-        title_label.grid(row=0, column=0, padx=20, pady=20)
-        tagline_label.grid(row=0, column=1, pady=20)
+        title_label.pack(side=ctk.LEFT, padx=(20, 0))
+        tagline_label.pack(side=ctk.LEFT, padx=(0, 20))
+        title_logo_label.pack(side=ctk.RIGHT, padx=(0, 20), pady=5)
 
         title_frame.pack(side=ctk.TOP, fill=ctk.X, padx=(0, 20), pady=20)
 
@@ -191,7 +199,7 @@ class Dashboard:
             self.mhelp_frame.pack_forget()
 
         if frame_name == "mrecord":
-            self.mrec_frame.pack(fill=ctk.BOTH, expand=True, padx=(0, 20), pady=(0, 20))
+            self.display_mrec()
         else:
             self.mrec_frame.pack_forget()
 
@@ -213,36 +221,48 @@ class Dashboard:
         else:
             self.order_list.append(mid)
 
+    def final_confirm_button_pressed(self):
+        """Final confirm button pressed. Place the order."""
+
+        self.db.add_orders(self.order_list)
+
+        self.order_list.clear()
+        self.order_confirmation.destroy()
+
     def place_order(self):
         """Pop up a window to confirm the order. Displays the order list."""
 
-        order_confirmation = ctk.CTkToplevel(self.root)
-        order_confirmation.title("Order Confirmation")
-        order_confirmation.geometry(f"{self.meds_frame.winfo_width()}x{400}+300+300")
-        order_confirmation.resizable(False, False)
+        self.order_confirmation = ctk.CTkToplevel(self.root)
+        self.order_confirmation.title("Order Confirmation")
+        self.order_confirmation.geometry(
+            f"{self.meds_frame.winfo_width()}x{400}+300+300"
+        )
+        self.order_confirmation.resizable(False, False)
 
         if len(self.order_list) == 0:
             order_confirmation_label = ctk.CTkLabel(
-                order_confirmation, text="No medicines selected.", font=self.text_font
+                self.order_confirmation,
+                text="No medicines selected.",
+                font=self.text_font,
             )
             order_confirmation_label.pack(padx=20, pady=20, anchor=ctk.CENTER)
 
             close_button = ctk.CTkButton(
-                order_confirmation,
+                self.order_confirmation,
                 text="Close Window",
-                command=order_confirmation.destroy,
+                command=self.order_confirmation.destroy,
             )
             close_button.pack(pady=20)
 
         else:
             order_confirmation_label = ctk.CTkLabel(
-                order_confirmation,
+                self.order_confirmation,
                 text="The following medicines have been selected:",
                 font=self.text_font,
             )
             order_confirmation_label.pack(padx=20, pady=20, anchor=ctk.CENTER)
 
-            order_list_frame = ctk.CTkFrame(order_confirmation)
+            order_list_frame = ctk.CTkFrame(self.order_confirmation)
 
             row = 0
             total_amount = 0
@@ -270,25 +290,25 @@ class Dashboard:
 
             order_list_frame.pack(padx=20, pady=20, anchor=ctk.CENTER)
 
-            final_confirmation_button = ctk.CTkButton(
-                order_confirmation,
+            self.final_confirmation_button = ctk.CTkButton(
+                self.order_confirmation,
                 text="Confirm Order",
                 font=self.text_font,
-                command=order_confirmation.destroy,
+                command=self.final_confirm_button_pressed,
                 corner_radius=10,
                 height=40,
             )
 
             total_amount_label = ctk.CTkLabel(
-                order_confirmation,
-                text=f"Number of medicines ordered: {row}                      Total Amount: {total_amount}",
+                self.order_confirmation,
+                text=f"Number of medicines ordered: {row}\nTotal Amount: {total_amount}",
                 font=self.text_font,
             )
 
             total_amount_label.pack(padx=20, pady=20, anchor=ctk.CENTER)
-            final_confirmation_button.pack(padx=20, pady=20, anchor=ctk.CENTER)
+            self.final_confirmation_button.pack(padx=20, pady=20, anchor=ctk.CENTER)
 
-        order_confirmation.mainloop()
+        self.order_confirmation.mainloop()
 
     def display_table(self) -> None:
         """Display the table of medicines."""
@@ -364,7 +384,30 @@ class Dashboard:
 
             row += 1
 
-    def dashboard_frame(self):
+    def display_mrec(self):
+
+        no_rec = ctk.CTkLabel(
+            self.mrec_frame,
+            text="No records found",
+            font=self.text_font,
+        )
+
+        mrec = self.db.get_medicine_record()
+
+        if mrec == []:
+            no_rec.grid(row=1, column=0, padx=20, pady=20)
+        else:
+            no_rec.grid_forget()
+            for i in range(0, len(self.record_set)):
+                ctk.CTkLabel(
+                    self.mrec_frame,
+                    text=self.record_set[i],
+                    font=self.text_font,
+                ).grid(row=(i + 1), column=0, padx=20, pady=20)
+
+        self.mrec_frame.pack(fill=ctk.BOTH, expand=True, padx=(0, 20), pady=(0, 20))
+
+    def dashboard_frame(self, canvas_offset_width=560, canvas_offset_height=100):
 
         # ------------------------ User Dashboard ------------------------#
         self.dashboard_frame = ctk.CTkFrame(self.root)
@@ -400,8 +443,8 @@ class Dashboard:
 
         self.meds_canvas = ctk.CTkCanvas(
             self.meds_frame,
-            width=self.root.winfo_screenwidth() + 550,
-            height=self.root.winfo_screenheight() + 100,
+            width=self.root.winfo_screenwidth() + canvas_offset_width,
+            height=self.root.winfo_screenheight() + canvas_offset_height,
         )
         self.scrollbar = ctk.CTkScrollbar(
             self.meds_frame,
@@ -477,23 +520,18 @@ services and information about the wellness centre.
         ctk.CTkLabel(self.mrec_frame, text="Medical Records", font=self.op_font).grid(
             row=0, column=0, padx=20, pady=20
         )
-
-        #! placeholder
-        ctk.CTkLabel(
-            self.mrec_frame, text="You have no records for now...", font=self.text_font
-        ).grid(row=1, column=0, padx=20, pady=20)
         # -------------------- Medical Records Dashboard --------------------#
 
         self.dashboard_frame.pack(
             fill=ctk.BOTH, expand=True, padx=(0, 20), pady=(0, 20)
         )
 
-    def show_dashboard(self) -> None:
+    def show_dashboard(self, canvas_offset_width, canvas_offset_height) -> None:
         """Show the dashboard."""
 
         self.navigation_frame()
         self.title_frame("Asclepius")
-        self.dashboard_frame()
+        self.dashboard_frame(canvas_offset_width, canvas_offset_height)
 
         self.center_window(self.root, self.width, self.height)
         self.root.mainloop()
