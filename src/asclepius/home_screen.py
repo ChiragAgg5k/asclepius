@@ -2,6 +2,7 @@ import customtkinter as ctk
 from PIL import Image
 
 from asclepius.centerwin import CenterWindow
+from asclepius.database import Database
 from asclepius.login_screen import Login
 from asclepius.signup import Signup
 
@@ -9,76 +10,61 @@ from asclepius.signup import Signup
 class HomeScreen:
     def __init__(
         self,
-        appearance_mode: str = "dark",
-        color_theme: str = "green",
-        width: int = 450,
-        height: int = 350,
+        width: int = 500,
+        height: int = 500,
     ) -> None:
 
         self.width = width
         self.height = height
 
-        ctk.set_appearance_mode(appearance_mode)
-        ctk.set_default_color_theme(color_theme)
-
         self.root = ctk.CTk()
         self.root.resizable(False, False)
 
+        ctk.set_appearance_mode("light")
+        ctk.set_default_color_theme("green")
+
         # exits the program when the window is closed
-        self.root.protocol("WM_DELETE_WINDOW", exit)
+        self.root.protocol("WM_DELETE_WINDOW", self.root.destroy)
 
         self.root.title("Ascelpius - Home")
+        self.selected_tab = ""
+
+        self.db = Database()
 
     def homescreen(self):
         """Display the homescreen."""
 
         CenterWindow.center_window(self.root, self.width, self.height)
 
-        self.bgimage = ctk.CTkImage(
-            Image.open("assets/images/login_bg.png"), size=(self.width, self.height)
+        self.tabview = ctk.CTkTabview(self.root, width=200, corner_radius=10)
+        self.tabview.add("Login")
+        self.tabview.add("Signup")
+        self.tabview.pack(fill="both", expand=True, anchor=ctk.CENTER)
+
+        login_object = Login(
+            color_theme="green",
+            root=self.tabview.tab("Login"),
+            width=self.width,
+            height=self.height,
         )
-        self.bgCTkLabel = ctk.CTkLabel(self.root, image=self.bgimage, text="")
+        login_tab_frame = login_object.return_login_frame()
+        login_tab_frame.pack(fill="both", expand=True, anchor=ctk.CENTER)
 
-        self.title = ctk.CTkLabel(
-            self.root,
-            text="Welcome!!!",
-            font=("Arial", 20, "bold"),
-            corner_radius=10,
-        )
+        signup_object = Signup(root=self.tabview.tab("Signup"))
+        signup_tab_frame = signup_object.return_signup_frame()
+        signup_tab_frame.pack(fill="both", expand=True, anchor=ctk.CENTER)
 
-        self.login_button = ctk.CTkButton(
-            self.root,
-            text="Login",
-            font=("Arial", 20, "bold"),
-            width=150,
-            height=40,
-            corner_radius=10,
-            command=self.login,
-        ).pack(padx=50, pady=30)
+        login_object.display()
 
-        self.signup_button = ctk.CTkButton(
-            self.root,
-            text="Signup",
-            font=("Arial", 20, "bold"),
-            width=150,
-            height=40,
-            corner_radius=10,
-            command=self.signup,
-        ).pack(padx=50, pady=60)
+        while True:
 
-    def login(self):
-        self.root.destroy()
-        displayLogin = Login()
-        displayLogin.display()
+            self.root.update()
 
-    def signup(self):
-        self.root.destroy()
-        signup_screen = Signup()
-        signup_screen.show_signup()
+            if login_object.login_completed or signup_object.signup_completed:
+                self.root.destroy()
+                break
 
     def show_homescreen(self) -> None:
         """Show the homescreenwindow"""
-        self.homescreen()
-
         CenterWindow.center_window(self.root, self.width, self.height)
-        self.root.mainloop()
+        self.homescreen()

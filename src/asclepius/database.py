@@ -37,36 +37,44 @@ class Database:
         self.cursor.execute(f"SELECT * FROM {table_name}")
         return [description[0] for description in self.cursor.description]
 
-    def signup(
-        self,
-        Enrollid: str,
-        username: str,
-        Hosteller: int,
-        roomno: str,
-        contact: int,
-    ) -> None:
+    def signup(self, credentials: tuple) -> None:
 
-        self.cursor.execute(
-            "INSERT INTO credentials VALUES (?, ?, ?, ?, ?)",
-            (Enrollid, username, Hosteller, roomno, contact),
-        )
-        self.connection.commit()
+        Enrollid = credentials[0]
+        username = credentials[1]
+        contact = credentials[2]
+        roomno = credentials[3]
+        Hosteller = credentials[4]
+        password = credentials[5]
 
-        def get_signupdetails(self) -> list:
-            self.cursor.execute("SELECT * FROM signup")
-            return self.cursor.fetchall()
+        try:
+            self.cursor.execute(
+                "INSERT INTO credentials VALUES (?, ?, ?, ?, ?,?)",
+                (Enrollid, username, Hosteller, roomno, contact, password),
+            )
+            self.connection.commit()
+            return True
 
-    def login(self):
+        except sqlite3.IntegrityError:
+            print("User already exists")
+            return False
+
+    def get_signupdetails(self) -> list:
+        self.cursor.execute("SELECT * FROM signup")
+        return self.cursor.fetchall()
+
+    def login(self, credentials: tuple) -> bool:
         statement = "SELECT username, password FROM credentials"
         self.cursor.execute(statement)
-        username = ""
-        password = ""
+        username = credentials[0]
+        password = credentials[1]
         statement1 = f"SELECT username from credentials WHERE username='{username}' AND Password = '{password}';"
         self.cursor.execute(statement1)
         if not self.cursor.fetchone():
-            print("Login failed")
+            print("Login failed , please try again")
+            return False
         else:
-            print("Welcome")
+            print("Login successful, Welcome to Asclepius")
+            return True
 
     def get_medicine_record(self) -> list:
         """Get the medicine record from the database.

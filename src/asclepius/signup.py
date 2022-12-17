@@ -2,109 +2,130 @@ import customtkinter as ctk
 from PIL import Image
 
 from asclepius.centerwin import CenterWindow
+from asclepius.database import Database
 
 
 class Signup:
-    # constructor
-    def __init__(self):
-        self.root = ctk.CTk()
+    """Class to create the signup screen."""
 
-    # function for labels and entries
+    def __init__(self, root, width=500, height=500) -> None:
+        self.signup_frame = ctk.CTkFrame(root)
+        self.signup_completed = False
+
+        self.width = width
+        self.height = height
+
+        self.__name = ctk.StringVar()
+        self.__enrollid = ctk.StringVar()
+        self.__phoneno = ctk.StringVar()
+        self.__room_no = ctk.StringVar()
+        self.__is_hosteller = ctk.StringVar()
+        self.__password = ctk.StringVar()
+
+        self.text_font = ctk.CTkFont(family="Arial", size=20, weight="bold")
+        self.small_text_font = ctk.CTkFont(family="Arial", size=13, weight="bold")
+
+        self.db = Database()
+
     def widgets(self, app):
-        # declaring textvariables to store the input from user
-        self.name = ctk.StringVar()
-        self.username = ctk.StringVar()
-        self.phone = ctk.StringVar()
-        self.room_no = ctk.StringVar()
-        # self.room_no.set(None)
-        self.var = ctk.StringVar()
-        self.var.set(None)
+        """Function to create widgets for the login screen.
 
-        # app title and geometry
-        app.title("Signup Here!")
-        app.geometry("500x500")
+        Args:
+            app (ctk.Ctk()): The root window.
+        """
 
-        # background image
+        self.app = app
+
         self.bgimage = ctk.CTkImage(
-            Image.open("assets/images/login_bg.png"), size=(500, 500)
+            Image.open("assets/images/login_bg.png"),
+            size=(self.width, self.height + 100),
         )
-        self.bgLabel = ctk.CTkLabel(app, image=self.bgimage, text="")
-        self.bgLabel.place(x=0, y=0)
+        self.bgLabel = ctk.CTkLabel(self.app, image=self.bgimage, text="")
+        self.bgLabel.place(relx=0.5, rely=0.5, anchor=ctk.CENTER)
 
-        # window title
         self.title = ctk.CTkLabel(
-            app, text="SignUp to Asclepius!", font=("Arial", 14, "bold")
-        ).pack(pady=40, padx=50)
+            self.app, text="SignUp to Asclepius!", font=self.text_font
+        ).place(relx=0.5, rely=0.05, anchor=ctk.CENTER)
 
-        # creating name label and entry
-        self.name_label = ctk.CTkLabel(
-            app, text="Name", font=("Times New Roman", 14, "bold")
-        ).place(relx=0.1, rely=0.15, anchor=ctk.NW)
-        self.name_entry = ctk.CTkEntry(
-            app, textvariable=self.name, font=("Times New Roman", 12, "normal")
-        ).place(relx=0.1, rely=0.22, width=300, height=30, anchor=ctk.NW)
+        self.__name_label = ctk.CTkLabel(
+            self.app, text="Full Name*", font=self.small_text_font
+        ).place(relx=0.1, rely=0.1, anchor=ctk.NW)
 
-        # creating username/enrollment label and entry
-        self.username_label = ctk.CTkLabel(
-            app, text="UserName/Enrollment No.", font=("Times New Roman", 14, "bold")
-        ).place(relx=0.1, rely=0.30, anchor=ctk.NW)
-        self.username_entry = ctk.CTkEntry(
-            app, textvariable=self.username, font=("Times New Roman", 12, "normal")
-        ).place(relx=0.1, rely=0.37, width=300, height=30, anchor=ctk.NW)
+        self.__name_entry = ctk.CTkEntry(
+            self.app, textvariable=self.__name, font=self.small_text_font
+        ).place(relx=0.1, rely=0.15, width=300, height=30, anchor=ctk.NW)
 
-        # creating room no. label and entry
-        # creating radio button enaled function
+        self.__enrollid_label = ctk.CTkLabel(
+            self.app,
+            text="Bennett Enrollment No.*",
+            font=self.small_text_font,
+        ).place(relx=0.1, rely=0.25, anchor=ctk.NW)
 
-        self.room_no_label = ctk.CTkLabel(
-            app, text="Hostel Room No", font=("Times New Roman", 14, "bold")
-        ).place(relx=0.55, rely=0.45)
+        self.__enrollid_entry = ctk.CTkEntry(
+            self.app, textvariable=self.__enrollid, font=self.small_text_font
+        ).place(relx=0.1, rely=0.3, width=300, height=30, anchor=ctk.NW)
+
+        self.__room_no_label = ctk.CTkLabel(
+            self.app, text="Hostel Room No", font=self.small_text_font
+        ).place(relx=0.55, rely=0.4)
         self.room_entry = ctk.CTkEntry(
-            app,
-            textvariable=self.room_no,
-            font=("Times New Roman", 12, "normal"),
+            self.app,
+            textvariable=self.__room_no,
+            font=self.small_text_font,
             width=30,
         )
-        self.room_entry.place(relx=0.55, rely=0.50, width=200, height=30)
+        self.room_entry.place(relx=0.55, rely=0.45, width=200, height=30)
         self.room_entry.configure(state=ctk.DISABLED)
-        # radio buttons
+
         self.hostel_label = ctk.CTkLabel(
-            app, text="Dayscholar/Hosteler*", font=("Times New Roman", 14, "bold")
-        ).place(relx=0.1, rely=0.45)
+            self.app, text="Dayscholar/Hosteler*", font=self.small_text_font
+        ).place(relx=0.1, rely=0.4)
+
         self.disableEntryRadioButton = ctk.CTkRadioButton(
-            app,
+            self.app,
             text="Dayscholar",
-            font=("Times New Roman", 12, "normal"),
-            variable=(self.var),
+            font=self.small_text_font,
+            variable=(self.__is_hosteller),
             value="0",
             command=self.disableEntry,
         )
-        self.disableEntryRadioButton.place(relx=0.1, rely=0.50, anchor=ctk.NW)
+
+        self.disableEntryRadioButton.place(relx=0.1, rely=0.45, anchor=ctk.NW)
         self.enableEntryRadioButton = ctk.CTkRadioButton(
-            app,
+            self.app,
             text="Hosteler",
-            font=("Times New Roman", 12, "normal"),
-            variable=(self.var),
+            font=self.small_text_font,
+            variable=(self.__is_hosteller),
             value="1",
             command=self.enableEntry,
         )
-        self.enableEntryRadioButton.place(relx=0.1, rely=0.55, anchor=ctk.NW)
+        self.enableEntryRadioButton.place(relx=0.1, rely=0.5, anchor=ctk.NW)
 
-        # creating contact no. label and entry
-        self.phone_label = ctk.CTkLabel(
-            app, text="Contact No.", font=("Times New Roman", 14, "bold")
-        ).place(relx=0.1, rely=0.63, anchor=ctk.NW)
-        self.phone_entry = ctk.CTkEntry(
-            app, textvariable=self.phone, font=("Times New Roman", 12, "normal")
-        ).place(relx=0.1, rely=0.70, width=300, height=30, anchor=ctk.NW)
+        self.__phoneno_label = ctk.CTkLabel(
+            self.app,
+            text="Contact No.*",
+            font=self.small_text_font,
+        ).place(relx=0.1, rely=0.57, anchor=ctk.NW)
 
-        # creating 'Register' button
+        self.__phoneno_entry = ctk.CTkEntry(
+            self.app, textvariable=self.__phoneno, font=self.small_text_font
+        ).place(relx=0.1, rely=0.62, width=300, height=30, anchor=ctk.NW)
+
+        self.__password_label = ctk.CTkLabel(
+            self.app, text="Password*", font=self.small_text_font
+        ).place(relx=0.1, rely=0.69, anchor=ctk.NW)
+        self.__password_entry = ctk.CTkEntry(
+            self.app, show="*", font=self.small_text_font, textvariable=self.__password
+        ).place(relx=0.1, rely=0.74, width=300, height=30, anchor=ctk.NW)
+
         self.register = ctk.CTkButton(
-            app,
+            self.app,
             text="Register",
-            font=("Times New Roman", 14, "bold"),
+            font=self.text_font,
             bg_color="sky blue",
             command=self.submit,
-        ).place(relx=0.5, rely=0.85, width=150, height=30, anchor=ctk.CENTER)
+            corner_radius=10,
+        ).place(relx=0.5, rely=0.87, width=150, height=40, anchor=ctk.CENTER)
 
     # callbacks
     def enableEntry(self):
@@ -115,24 +136,52 @@ class Signup:
         self.room_entry.configure(state="disabled")
         self.room_entry.update()
 
-    # function to get signup credentials
-    # from textvariables declared earlier
     def submit(self):
-        name = self.name.get()
-        username = self.username.get()
-        phone = self.phone.get()
-        room_no = self.room.get()
-        name.set("")
-        username.set("")
-        room_no.set("")
-        phone.set("")
 
-    def show_signup(self) -> None:
+        if (
+            (self.__name.get() == "")
+            or (self.__enrollid.get() == "")
+            or (self.__phoneno.get() == "")
+            or (self.__password.get() == "")
+            or (self.__is_hosteller.get() == "")
+        ):
+            ctk.CTkLabel(
+                self.app, text="Please fill all the fields", font=self.small_text_font
+            ).place(relx=0.5, rely=0.95, anchor=ctk.CENTER)
+
+        elif not (self.db.signup(self.get_credentials())):
+            ctk.CTkLabel(
+                self.app, text="User already exists", font=self.small_text_font
+            ).place(relx=0.5, rely=0.95, anchor=ctk.CENTER)
+
+        else:
+            self.signup_frame.after(1000, self.signup_frame.destroy)
+
+            ctk.set_appearance_mode("dark")
+
+            for widget in self.signup_frame.winfo_children():
+                widget.destroy()
+
+            ctk.CTkLabel(
+                self.signup_frame, text="Signing In", font=self.text_font
+            ).pack(pady=40, padx=50, fill=ctk.BOTH, expand=True)
+
+            self.signup_completed = True
+
+    def get_credentials(self) -> tuple:
+        """Returns the signup information"""
+
+        return (
+            self.__name.get(),
+            self.__enrollid.get(),
+            self.__phoneno.get(),
+            self.__room_no.get(),
+            self.__is_hosteller.get(),
+            self.__password.get(),
+        )
+
+    def return_signup_frame(self) -> ctk.CTkFrame:
         """Show the signupwindow"""
-        self.widgets(self.root)
+        self.widgets(self.signup_frame)
 
-        ctk.set_appearance_mode("light")
-        ctk.set_default_color_theme("dark-blue")
-
-        CenterWindow.center_window(self.root, 500, 500)
-        self.root.mainloop()
+        return self.signup_frame
