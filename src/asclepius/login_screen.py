@@ -117,7 +117,6 @@ class Login:
                 font=("Arial", 15, "bold"),
             ).place(relx=0.51, rely=0.9, anchor=ctk.CENTER)
 
-        # !change this to check password from database
         elif not (self.db.login(self.get_credentials())):
             ctk.CTkLabel(
                 self.login_frame,

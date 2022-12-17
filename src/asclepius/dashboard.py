@@ -1,8 +1,8 @@
 import customtkinter as ctk
 from PIL import Image
 
-from asclepius import database
 from asclepius.centerwin import CenterWindow
+from asclepius.database import Database
 
 
 class Dashboard:
@@ -17,6 +17,7 @@ class Dashboard:
         height: int,
         appearance: str,
         theme_color: str,
+        enrollment_id: str,
     ) -> None:
         """Constructor for Dashboard class for Asclepius.
 
@@ -29,10 +30,11 @@ class Dashboard:
             col_headers (list): list of strings containing the column headers
         """
 
-        self.db = database.Database()
-
         self.width = width
         self.height = height
+        self.user_id = enrollment_id
+
+        self.db = Database()
 
         self.dataset = self.db.get_medicines()
         self.col_headers = self.db.get_col_headings("medicines")
@@ -417,19 +419,32 @@ class Dashboard:
             details saved in our database.""",
             font=self.text_font,
             anchor=ctk.W,
-        ).pack(anchor=ctk.W, padx=20, pady=20)
+        ).pack(anchor=ctk.W, padx=20, pady=(20, 40))
 
-        user_details = [
-            "Name",
+        user_detail_labels = [
             "Enrollment Number",
-            "Email",
+            "Full Name",
+            "Hosteller?",
+            "Hostel Room No.",
             "Phone Number",
-            "Hostel Room Number",
         ]
+        user_details = self.db.get_signupdetails(self.user_id)
+        print(user_details)
 
-        for i in user_details:
+        for i in range(len(user_details) - 1):
+
+            if user_details[i] == "":
+                text_label = "Not Provided"
+            elif user_details[i] == 0:
+                text_label = "No"
+            else:
+                text_label = user_details[i]
+
             ctk.CTkLabel(
-                self.dashboard_frame, text=i, font=self.text_font, anchor=ctk.W
+                self.dashboard_frame,
+                text=f"{user_detail_labels[i]} : {text_label}",
+                font=self.text_font,
+                anchor=ctk.W,
             ).pack(anchor=ctk.W, padx=20, pady=20)
 
         # ------------------------ User Dashboard ------------------------#

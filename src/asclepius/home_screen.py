@@ -29,7 +29,7 @@ class HomeScreen:
         self.root.title("Ascelpius - Home")
         self.selected_tab = ""
 
-        self.db = Database()
+        self.__user_enrollment_id = ""
 
     def homescreen(self):
         """Display the homescreen."""
@@ -60,9 +60,18 @@ class HomeScreen:
 
             self.root.update()
 
-            if login_object.login_completed or signup_object.signup_completed:
-                self.root.destroy()
+            if login_object.login_completed:
+                self.__user_enrollment_id = login_object.get_credentials()[0]
                 break
+            elif signup_object.signup_completed:
+                self.__user_enrollment_id = signup_object.get_credentials()[0]
+                break
+
+        self.root.destroy()
+
+    def get_user_enrollment_id(self) -> str:
+        """Return the enrollment id of the user."""
+        return self.__user_enrollment_id
 
     def show_homescreen(self) -> None:
         """Show the homescreenwindow"""
