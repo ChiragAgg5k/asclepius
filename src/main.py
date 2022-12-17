@@ -20,7 +20,7 @@ dash_board = dashboard.Dashboard(
     theme_color="green",
 )
 
-dash_board.show_dashboard(canvas_offset_width=(-460), canvas_offset_height=(-460))
+dash_board.show_dashboard()
 
 
 print("Program exited successfully.")

@@ -407,7 +407,7 @@ class Dashboard:
 
         self.mrec_frame.pack(fill=ctk.BOTH, expand=True, padx=(0, 20), pady=(0, 20))
 
-    def dashboard_frame(self, canvas_offset_width=560, canvas_offset_height=100):
+    def dashboard_frame(self):
 
         # ------------------------ User Dashboard ------------------------#
         self.dashboard_frame = ctk.CTkFrame(self.root)
@@ -441,10 +441,11 @@ class Dashboard:
         # ----------------------- Medicines Dashboard -----------------------#
         self.meds_frame = ctk.CTkFrame(self.root)
 
+        print(self.meds_frame.winfo_width())
+        print(self.meds_frame.winfo_height())
+
         self.meds_canvas = ctk.CTkCanvas(
             self.meds_frame,
-            width=self.root.winfo_screenwidth() + canvas_offset_width,
-            height=self.root.winfo_screenheight() + canvas_offset_height,
         )
         self.scrollbar = ctk.CTkScrollbar(
             self.meds_frame,
@@ -461,20 +462,20 @@ class Dashboard:
             ),
         )
 
+        place_order_button = ctk.CTkButton(
+            self.meds_frame, text="Place Order", command=self.place_order
+        )
+        place_order_button.pack(padx=(0, 25), side="bottom", anchor=ctk.E)
+
         self.meds_canvas.create_window(
             (0, 0), window=self.scrollbar_frame, anchor=ctk.N
         )
         self.meds_canvas.configure(yscrollcommand=self.scrollbar.set)
 
-        self.meds_canvas.grid(row=0, column=0, sticky=ctk.NSEW)
-        self.scrollbar.grid(row=0, column=1, sticky=ctk.NS)
+        self.scrollbar.pack(side="right", fill="y")
+        self.meds_canvas.pack(side="left", fill="both", expand=True)
 
         self.display_table()
-
-        place_order_button = ctk.CTkButton(
-            self.meds_frame, text="Place Order", command=self.place_order
-        )
-        place_order_button.grid(row=1, column=0, sticky=ctk.E, pady=5)
 
         # ----------------------- Medicines Dashboard -----------------------#
 
@@ -526,12 +527,12 @@ services and information about the wellness centre.
             fill=ctk.BOTH, expand=True, padx=(0, 20), pady=(0, 20)
         )
 
-    def show_dashboard(self, canvas_offset_width, canvas_offset_height) -> None:
+    def show_dashboard(self) -> None:
         """Show the dashboard."""
 
         self.navigation_frame()
         self.title_frame("Asclepius")
-        self.dashboard_frame(canvas_offset_width, canvas_offset_height)
+        self.dashboard_frame()
 
         self.center_window(self.root, self.width, self.height)
         self.root.mainloop()
