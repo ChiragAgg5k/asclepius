@@ -3,6 +3,8 @@ import re
 import customtkinter as ctk
 from PIL import Image
 
+from asclepius.centerwin import CenterWindow
+
 
 class Login:
     """Class to handle the login screen."""
@@ -27,25 +29,16 @@ class Login:
         # exits the program when the window is closed
         self.root.protocol("WM_DELETE_WINDOW", exit)
 
-        # Encaplusalted credentials
+        # Encapsulated credentials
         self.__enrollment_id = ctk.StringVar()
         self.__password = ctk.StringVar()
 
         self.root.title("Ascelpius - Login")
 
-    def center_window(self) -> None:
-        """Centers the window."""
-
-        screen_width = self.root.winfo_screenwidth()
-        screen_height = self.root.winfo_screenheight()
-        x_coord = (screen_width / 2) - (self.width / 2)
-        y_coord = (screen_height / 2) - (self.height / 2)
-        self.root.geometry(f"{self.width}x{self.height}+{int(x_coord)}+{int(y_coord)}")
-
     def display(self):
         """Display the login screen."""
 
-        self.center_window()
+        CenterWindow.center_window(self.root, self.width, self.height)
 
         self.bgimage = ctk.CTkImage(
             Image.open("assets/images/login_bg.png"), size=(self.width, self.height)

@@ -2,6 +2,7 @@ import customtkinter as ctk
 from PIL import Image
 
 from asclepius import database
+from asclepius.centerwin import CenterWindow
 
 
 class Dashboard:
@@ -20,7 +21,7 @@ class Dashboard:
         """Constructor for Dashboard class for Asclepius.
 
         Args:
-            width (int): witdh of the window
+            width (int): width of the window
             height (int): height of the window
             appearance (str): ['light', 'Dark']
             theme_color (str): ['blue','green','dark-blue']
@@ -58,16 +59,6 @@ class Dashboard:
         self.small_text_font = ctk.CTkFont(family="Arial", size=18, weight="normal")
         self.tagline_font = ctk.CTkFont(family="Rockwell", size=30, weight="normal")
         # ------------------------ Fonts ------------------------#
-
-    def center_window(self, root: ctk.CTk, width: int, height: int) -> None:
-        """Center the window."""
-
-        screen_width = root.winfo_screenwidth()
-        screen_height = root.winfo_screenheight()
-
-        x_coord = (screen_width / 2) - (width / 2)
-        y_coord = (screen_height / 2) - (height / 2)
-        root.geometry(f"{self.width}x{self.height}+{int(x_coord)}+{int(y_coord)}")
 
     def title_frame(self, title: str) -> None:
         """Create the title frame.
@@ -236,8 +227,10 @@ class Dashboard:
         self.order_confirmation.title("Order Confirmation")
         self.order_confirmation.resizable(False, False)
 
-        self.order_confirmation.geometry(
-            f"{self.meds_frame.winfo_width() - 40}x{self.meds_frame.winfo_height() - 100}+300+300"
+        CenterWindow.center_window(
+            self.order_confirmation,
+            self.meds_frame.winfo_width(),
+            self.meds_frame.winfo_height() - 100,
         )
 
         if len(self.order_list) == 0:
@@ -485,7 +478,7 @@ class Dashboard:
         wellness_description = """
 To ensure students’s well-being, Bennett provides a well-equipped wellness centre with four beds and round-the-clock,
 with a small nursing staff on standby. A well-qualified general physician is available on campus 24*7.For prolonged 
-medical illness, orfor case of infection, recovery rooms are available. The centre organises health check-up camps, 
+medical illness, or for case of infection, recovery rooms are available. The centre organizes health check-up camps, 
 blood donation drives, and physiotherapy sessions for students and staff.
 
 Asclepius is a platform for students to access the wellness centre from anywhere. It provides all the necessary 
@@ -534,5 +527,5 @@ services and information about the wellness centre.
         self.title_frame("Asclepius")
         self.dashboard_frame()
 
-        self.center_window(self.root, self.width, self.height)
+        CenterWindow.center_window(self.root, self.width, self.height)
         self.root.mainloop()
