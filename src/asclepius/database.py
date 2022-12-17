@@ -52,9 +52,9 @@ class Database:
         )
         self.connection.commit()
 
-        def get_signupdetails(self) -> list:
-            self.cursor.execute("SELECT * FROM signup")
-            return self.cursor.fetchall()
+    def get_signupdetails(self) -> list:
+        self.cursor.execute("SELECT * FROM signup")
+        return self.cursor.fetchall()
 
     def login(self):
         statement = "SELECT username, password FROM credentials"

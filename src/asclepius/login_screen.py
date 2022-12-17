@@ -3,8 +3,6 @@ import re
 import customtkinter as ctk
 from PIL import Image
 
-from asclepius.centerwin import CenterWindow
-
 
 class Login:
     """Class to handle the login screen."""
@@ -13,8 +11,9 @@ class Login:
         self,
         appearance_mode: str = "light",
         color_theme: str = "green",
-        width: int = 450,
-        height: int = 350,
+        width: int = 500,
+        height: int = 500,
+        root=None,
     ) -> None:
 
         self.width = width
@@ -22,58 +21,51 @@ class Login:
 
         ctk.set_appearance_mode(appearance_mode)
         ctk.set_default_color_theme(color_theme)
-
-        self.root = ctk.CTk()
-        self.root.resizable(False, False)
-
-        # exits the program when the window is closed
-        self.root.protocol("WM_DELETE_WINDOW", exit)
+        self.login_frame = ctk.CTkFrame(root, width=self.width, height=self.height)
 
         # Encapsulated credentials
         self.__enrollment_id = ctk.StringVar()
         self.__password = ctk.StringVar()
 
-        self.root.title("Ascelpius - Login")
+        self.login_completed = False
 
     def display(self):
         """Display the login screen."""
 
-        CenterWindow.center_window(self.root, self.width, self.height)
-
         self.bgimage = ctk.CTkImage(
             Image.open("assets/images/login_bg.png"), size=(self.width, self.height)
         )
-        self.bgCTkLabel = ctk.CTkLabel(self.root, image=self.bgimage, text="")
+        self.bgCTkLabel = ctk.CTkLabel(self.login_frame, image=self.bgimage, text="")
 
         self.title = ctk.CTkLabel(
-            self.root,
+            self.login_frame,
             text="Login Here!",
             font=("Arial", 20, "bold"),
             corner_radius=10,
         )
 
         self.enrollmentid = ctk.CTkLabel(
-            self.root,
+            self.login_frame,
             text="Enrollment ID:",
             font=("Arial", 15, "bold"),
             corner_radius=10,
         )
         self.enrollmentid_entry = ctk.CTkEntry(
-            self.root, textvariable=self.__enrollment_id, width=220
+            self.login_frame, textvariable=self.__enrollment_id, width=220
         )
 
         self.pswrd_CTkLabel = ctk.CTkLabel(
-            self.root,
+            self.login_frame,
             text="Password:",
             font=("Arial", 15, "bold"),
             corner_radius=10,
         )
         self.pswrd_entry = ctk.CTkEntry(
-            self.root, textvariable=self.__password, width=220, show="*"
+            self.login_frame, textvariable=self.__password, width=220, show="*"
         )
 
         self.submit_button = ctk.CTkButton(
-            self.root,
+            self.login_frame,
             text="Submit",
             font=("Arial", 20, "bold"),
             width=150,
@@ -105,7 +97,7 @@ class Login:
 
         if self.__enrollment_id.get() == "" or self.__password.get() == "":
             ctk.CTkLabel(
-                self.root,
+                self.login_frame,
                 text="Please enter all the details!",
                 corner_radius=10,
                 font=("Arial", 15, "bold"),
@@ -115,7 +107,7 @@ class Login:
             r"^e[1-2][0-9][a-z]{4}[0-9]{4}", self.__enrollment_id.get().lower()
         ):
             ctk.CTkLabel(
-                self.root,
+                self.login_frame,
                 text="Please enter a valid enrollment ID!",
                 corner_radius=10,
                 font=("Arial", 15, "bold"),
@@ -124,34 +116,31 @@ class Login:
         # !change this to check password from database
         elif len(self.__password.get()) < 8:
             ctk.CTkLabel(
-                self.root,
+                self.login_frame,
                 text="Invalid password!",
                 corner_radius=10,
                 font=("Arial", 15, "bold"),
             ).place(relx=0.51, rely=0.9, anchor=ctk.CENTER)
 
         else:
-            self.root.after(1000, self.root.destroy)
+            self.login_frame.after(1000, self.login_frame.destroy)
 
-            for widget in self.root.winfo_children():
+            for widget in self.login_frame.winfo_children():
                 widget.destroy()
 
             ctk.set_appearance_mode("dark")
 
             ctk.CTkLabel(
-                self.root,
+                self.login_frame,
                 text="Logging in...",
                 font=("Arial", 20, "bold"),
             ).place(relx=0.5, rely=0.5, anchor=ctk.CENTER)
 
-            return True
+            self.login_completed = True
 
     def get_credentials(self) -> tuple:
         return (self.__enrollment_id.get(), self.__password.get())
 
-    def show_login(self) -> None:
-        """Show the loginwindow"""
-        self.display()
-
-        CenterWindow.center_window(self.root, self.width, self.height)
-        self.root.mainloop()
+    def return_login_frame(self) -> ctk.CTkFrame:
+        """Return the login frame."""
+        return self.login_frame
