@@ -1,5 +1,5 @@
 from tkinter import *
-
+from centerwin import CenterWindow
 import customtkinter as ctk
 
 ctk.set_appearance_mode("light")
@@ -28,7 +28,7 @@ class Signup:
 
         # background image
         self.bgimage = PhotoImage(file="assets/images/login_bg.png")
-        self.bgLabel = Label(root, image=self.bgimage)
+        self.bgLabel = Label(app, image=self.bgimage)
         self.bgLabel.place(x=0, y=0)
 
         # window title
@@ -71,7 +71,7 @@ class Signup:
             app, text="Dayscholar/Hosteler*", font=("Times New Roman", 14, "bold")
         ).place(relx=0.1, rely=0.45)
         self.disableEntryRadioButton = Radiobutton(
-            root,
+            app,
             text="Dayscholar",
             font=("Times New Roman", 12, "normal"),
             variable=(self.var),
@@ -80,7 +80,7 @@ class Signup:
         )
         self.disableEntryRadioButton.place(relx=0.1, rely=0.50, anchor=NW)
         self.enableEntryRadioButton = Radiobutton(
-            root,
+            app,
             text="Hosteler",
             font=("Times New Roman", 12, "normal"),
             variable=(self.var),
@@ -127,11 +127,10 @@ class Signup:
         room_no.set("")
         phone.set("")
 
+    def show_signup(self) -> None:
+        """Show the signupwindow"""
+        root= ctk.CTk()
+        self.widgets(root)
 
-# creating tkinter object to pass into class object
-root = ctk.CTk()
-
-# class object
-obj = Signup(root)
-
-root.mainloop()
+        CenterWindow.center_window(self.root, self.width, self.height)
+        self.root.mainloop()
