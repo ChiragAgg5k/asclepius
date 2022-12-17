@@ -1,6 +1,8 @@
 from tkinter import *
-from centerwin import CenterWindow
+
 import customtkinter as ctk
+
+from asclepius.centerwin import CenterWindow
 
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("dark-blue")
@@ -8,7 +10,8 @@ ctk.set_default_color_theme("dark-blue")
 
 class Signup:
     # constructor
-    def __init__(self, parent):
+    def __init__(self):
+        parent = ctk.CTk()
         self.widgets(parent)  # passing parent in order to bind the elements
 
     # function for labels and entries
@@ -129,7 +132,7 @@ class Signup:
 
     def show_signup(self) -> None:
         """Show the signupwindow"""
-        root= ctk.CTk()
+        root = ctk.CTk()
         self.widgets(root)
 
         CenterWindow.center_window(self.root, self.width, self.height)

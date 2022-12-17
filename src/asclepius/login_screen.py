@@ -3,14 +3,15 @@ import re
 import customtkinter as ctk
 from PIL import Image
 
-from centerwin import CenterWindow
+from asclepius.centerwin import CenterWindow
+
 
 class Login:
     """Class to handle the login screen."""
 
     def __init__(
         self,
-        appearance_mode: str = "dark",
+        appearance_mode: str = "light",
         color_theme: str = "green",
         width: int = 450,
         height: int = 350,
@@ -95,7 +96,6 @@ class Login:
 
         self.submit_button.place(relx=0.5, rely=0.75, anchor=ctk.CENTER)
 
-       
     def submit(self) -> bool:
         """Submit the login details.
 
@@ -148,8 +148,7 @@ class Login:
 
     def get_credentials(self) -> tuple:
         return (self.__enrollment_id.get(), self.__password.get())
-    
-    
+
     def show_login(self) -> None:
         """Show the loginwindow"""
         self.display()

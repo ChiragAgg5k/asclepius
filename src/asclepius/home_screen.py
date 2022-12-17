@@ -1,10 +1,12 @@
-import login_screen, signup
 import customtkinter as ctk
 from PIL import Image
-from centerwin import CenterWindow
+
+from asclepius.centerwin import CenterWindow
+from asclepius.login_screen import Login
+from asclepius.signup import Signup
+
 
 class HomeScreen:
-
     def __init__(
         self,
         appearance_mode: str = "dark",
@@ -45,31 +47,33 @@ class HomeScreen:
         )
 
         self.login_button = ctk.CTkButton(
-                self.root,
-                text="Login",
-                font=("Arial", 20, "bold"),
-                width=150,
-                height=40,
-                corner_radius=10,
-                command= self.login
-            ).pack(padx= 50, pady= 30)
+            self.root,
+            text="Login",
+            font=("Arial", 20, "bold"),
+            width=150,
+            height=40,
+            corner_radius=10,
+            command=self.login,
+        ).pack(padx=50, pady=30)
 
         self.signup_button = ctk.CTkButton(
-                self.root,
-                text="Signup",
-                font=("Arial", 20, "bold"),
-                width=150,
-                height=40,
-                corner_radius=10,
-                command=self.signup,
-            ).pack(padx= 50, pady= 60)
+            self.root,
+            text="Signup",
+            font=("Arial", 20, "bold"),
+            width=150,
+            height=40,
+            corner_radius=10,
+            command=self.signup,
+        ).pack(padx=50, pady=60)
 
     def login(self):
-        displayLogin= login_screen.Login()
+        self.root.destroy()
+        displayLogin = Login()
         displayLogin.display()
 
     def signup(self):
-        signup_screen= signup.Signup()
+        self.root.destroy()
+        signup_screen = Signup()
         signup_screen.widgets()
 
     def show_homescreen(self) -> None:
