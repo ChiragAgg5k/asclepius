@@ -445,7 +445,7 @@ class Dashboard:
                 text=f"{user_detail_labels[i]} : {text_label}",
                 font=self.text_font,
                 anchor=ctk.W,
-            ).pack(anchor=ctk.W, padx=20, pady=20)
+            ).pack(anchor=ctk.W, padx=40, pady=20)
 
         # ------------------------ User Dashboard ------------------------#
 
