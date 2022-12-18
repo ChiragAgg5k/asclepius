@@ -136,12 +136,20 @@ class Dashboard:
             height=40,
         )
 
-        appearance_mode_optionemenu = ctk.CTkOptionMenu(
+        light_mode = ctk.CTkButton(
             navigation_frame,
-            values=["Dark", "Light"],
-            command=self.change_appearance_mode_event,
+            text=" Light Mode ",
             font=self.button_font,
-            height=50,
+            height=30,
+            command=lambda: self.change_appearance_mode_event("Light"),
+        )
+
+        dark_mode = ctk.CTkButton(
+            navigation_frame,
+            text=" Dark Mode ",
+            font=self.button_font,
+            height=30,
+            command=lambda: self.change_appearance_mode_event("Dark"),
         )
 
         quit_button = ctk.CTkButton(
@@ -163,7 +171,8 @@ class Dashboard:
         mhelp_button.pack(pady=15)
 
         quit_button.pack(pady=15, side=ctk.BOTTOM)
-        appearance_mode_optionemenu.pack(pady=15, side=ctk.BOTTOM)
+        light_mode.pack(pady=15, side=ctk.BOTTOM)
+        dark_mode.pack(pady=15, side=ctk.BOTTOM)
 
     def reset_frame(self, frame_name) -> None:
         """Changes the frame to the given frame. Forgets the other frames.
@@ -210,16 +219,16 @@ class Dashboard:
             try:
                 self.order_list.pop()
             except IndexError:
-                print("No order removed, list is empty.")
+                pass
         else:
             self.order_list.append(mid)
 
     def final_confirm_button_pressed(self):
         """Final confirm button pressed. Place the order."""
 
-        self.db.add_orders(self.order_list)
+        self.db.add_orders(self.order_list, self.user_id)
 
-        self.order_list.clear()
+        self.order_list = []
         self.order_confirmation.destroy()
 
     def place_order(self):
@@ -228,12 +237,6 @@ class Dashboard:
         self.order_confirmation = ctk.CTkToplevel(self.root)
         self.order_confirmation.title("Order Confirmation")
         self.order_confirmation.resizable(False, False)
-
-        CenterWindow.center_window(
-            self.order_confirmation,
-            self.meds_frame.winfo_width(),
-            self.meds_frame.winfo_height() - 100,
-        )
 
         if len(self.order_list) == 0:
 
@@ -390,16 +393,16 @@ class Dashboard:
             font=self.text_font,
         )
 
-        mrec = self.db.get_medicine_record()
+        mrec = self.db.get_medicine_record(self.user_id)
 
         if mrec == []:
             no_rec.grid(row=1, column=0, padx=20, pady=20)
         else:
             no_rec.grid_forget()
-            for i in range(0, len(self.record_set)):
+            for i in range(0, len(mrec)):
                 ctk.CTkLabel(
                     self.mrec_frame,
-                    text=self.record_set[i],
+                    text=mrec[i],
                     font=self.text_font,
                 ).grid(row=(i + 1), column=0, padx=20, pady=20)
 
@@ -429,7 +432,6 @@ class Dashboard:
             "Phone Number",
         ]
         user_details = self.db.get_signupdetails(self.user_id)
-        print(user_details)
 
         for i in range(len(user_details) - 1):
 

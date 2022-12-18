@@ -19,6 +19,7 @@ class HomeScreen:
 
         self.root = ctk.CTk()
         self.root.resizable(False, False)
+        CenterWindow.center_window(self.root, self.width, self.height)
 
         ctk.set_appearance_mode("light")
         ctk.set_default_color_theme("green")
@@ -62,12 +63,15 @@ class HomeScreen:
 
             if login_object.login_completed:
                 self.__user_enrollment_id = login_object.get_credentials()[0]
-                break
-            elif signup_object.signup_completed:
-                self.__user_enrollment_id = signup_object.get_credentials()[0]
+                self.root.destroy()
                 break
 
-        self.root.destroy()
+            elif signup_object.signup_completed:
+                self.__user_enrollment_id = signup_object.get_credentials()[0]
+                self.root.destroy()
+                break
+
+        self.root.mainloop()
 
     def get_user_enrollment_id(self) -> str:
         """Return the enrollment id of the user."""
@@ -75,5 +79,4 @@ class HomeScreen:
 
     def show_homescreen(self) -> None:
         """Show the homescreenwindow"""
-        CenterWindow.center_window(self.root, self.width, self.height)
         self.homescreen()

@@ -78,6 +78,10 @@ class Login:
             command=self.submit,
         )
 
+        #! remove this later
+        self.pswrd_entry.insert(0, "bennett123")
+        self.enrollmentid_entry.insert(0, "E22CSEU0325")
+
         self.enrollmentid_entry.bind("<Return>", lambda event: self.submit())
         self.pswrd_entry.bind("<Return>", lambda event: self.submit())
 
@@ -126,19 +130,7 @@ class Login:
             ).place(relx=0.51, rely=0.9, anchor=ctk.CENTER)
 
         else:
-            self.login_frame.after(1000, self.login_frame.destroy)
-
-            for widget in self.login_frame.winfo_children():
-                widget.destroy()
-
-            ctk.set_appearance_mode("dark")
-
-            ctk.CTkLabel(
-                self.login_frame,
-                text="Logging in...",
-                font=("Arial", 20, "bold"),
-            ).place(relx=0.5, rely=0.5, anchor=ctk.CENTER)
-
+            self.login_frame.destroy()
             self.login_completed = True
 
     def get_credentials(self) -> tuple:

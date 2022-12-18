@@ -9,11 +9,8 @@ class Database:
             self.connection = sqlite3.connect("src/data/asclepius.db")
             self.cursor = self.connection.cursor()
 
-            print("Database connected successfully")
         except sqlite3.OperationalError as e:
-
-            print("Database not found, Error: ", e)
-            print("check if the database exists in the data folder")
+            pass
 
     def get_medicines(self) -> list:
         """Get a medicine from the database.
@@ -55,7 +52,6 @@ class Database:
             return True
 
         except sqlite3.IntegrityError:
-            print("User already exists")
             return False
 
     def get_signupdetails(self, enrollment_id) -> list:
@@ -72,24 +68,32 @@ class Database:
             return True
         return False
 
-    def get_medicine_record(self) -> list:
+    def get_medicine_record(self, enrollment_id) -> list:
         """Get the medicine record from the database.
 
         Returns:
             list: Medicine record
         """
-        self.cursor.execute("SELECT * FROM MRECORD")
+        self.cursor.execute(
+            "SELECT * FROM MRECORD WHERE ENROLLID = (?)", (enrollment_id,)
+        )
         return self.cursor.fetchall()
 
-    def add_orders(self, mid_list: list) -> None:
+    def add_orders(self, mid_list: list, enrollment_id: str) -> None:
 
         all_medicines = self.get_medicines()
         for i in mid_list:
             for j in all_medicines:
                 if i == j[0]:
                     self.cursor.execute(
-                        "INSERT INTO MRECORD(ENROLLID,MID,NAME,PRICE) VALUES (' ',?, ?, ?)",
-                        (j[0], j[1], j[4]),
+                        "INSERT INTO MRECORD(ENROLLID,MID,NAME,PRICE) VALUES (? , ?, ?, ?)",
+                        (
+                            enrollment_id,
+                            j[0],
+                            j[1],
+                            j[4],
+                        ),
                     )
                     self.connection.commit()
+
         self.connection.commit()
