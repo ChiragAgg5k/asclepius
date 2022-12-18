@@ -46,7 +46,9 @@ class Dashboard:
         self.root.title("Asclepius")
         self.root.resizable(False, False)
 
-        self.root.iconbitmap("assets/images/logo-no-background.ico")
+        self.title_logo = ctk.CTkImage(
+            Image.open("assets/images/logo-no-background.png"), size=(125, 100)
+        )
 
         self.order_list = []
         self.column_widths = [80, 150, 450, 80, 100]
@@ -78,10 +80,8 @@ class Dashboard:
         tagline_label = ctk.CTkLabel(
             title_frame, text="- Your Wellness Partner", font=self.tagline_font
         )
-        title_logo = ctk.CTkImage(
-            Image.open("assets/images/logo-no-background.png"), size=(125, 100)
-        )
-        title_logo_label = ctk.CTkLabel(title_frame, image=title_logo, text="")
+
+        title_logo_label = ctk.CTkLabel(title_frame, image=self.title_logo, text="")
 
         title_label.pack(side=ctk.LEFT, padx=(20, 0))
         tagline_label.pack(side=ctk.LEFT, padx=(0, 20))
@@ -237,6 +237,8 @@ class Dashboard:
         self.order_confirmation = ctk.CTkToplevel(self.root)
         self.order_confirmation.title("Order Confirmation")
         self.order_confirmation.resizable(False, False)
+
+        CenterWindow.center_window(self.order_confirmation, 1000, 400)
 
         if not self.order_list:
 

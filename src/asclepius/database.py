@@ -70,11 +70,19 @@ class Database:
         self.cursor.execute(
             "SELECT * FROM credentials WHERE ENROLLID = (?)", (credentials[0],)
         )
-        if self.cursor.fetchone():
-            print("Login successful")
-            return True
 
-        print("Login failed")
+        fetched = self.cursor.fetchone()
+
+        if fetched:
+
+            if fetched[5] == credentials[1]:
+                print("Credentials verified")
+                return True
+
+            else:
+                print("Wrong password entered")
+
+        print("Wrong enrollment ID entered")
         return False
 
     def get_medicine_record(self, enrollment_id) -> list:
