@@ -238,7 +238,7 @@ class Dashboard:
         self.order_confirmation.title("Order Confirmation")
         self.order_confirmation.resizable(False, False)
 
-        if len(self.order_list) == 0:
+        if not self.order_list:
 
             order_confirmation_label = ctk.CTkLabel(
                 self.order_confirmation,
