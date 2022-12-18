@@ -5,12 +5,14 @@ class Database:
     """Database class for Asclepius."""
 
     def __init__(self) -> None:
+        """Initialize the database connection and cursor."""
         try:
             self.connection = sqlite3.connect("src/data/asclepius.db")
             self.cursor = self.connection.cursor()
+            print("Database connection successful")
 
         except sqlite3.OperationalError as e:
-            pass
+            print("Error: ", e)
 
     def get_medicines(self) -> list:
         """Get a medicine from the database.
@@ -49,9 +51,13 @@ class Database:
                 (Enrollid, username, Hosteller, roomno, contact, password),
             )
             self.connection.commit()
+
+            print("Signup successful")
             return True
 
         except sqlite3.IntegrityError:
+
+            print("Error: Enrollment ID already exists")
             return False
 
     def get_signupdetails(self, enrollment_id) -> list:
@@ -65,7 +71,10 @@ class Database:
             "SELECT * FROM credentials WHERE ENROLLID = (?)", (credentials[0],)
         )
         if self.cursor.fetchone():
+            print("Login successful")
             return True
+
+        print("Login failed")
         return False
 
     def get_medicine_record(self, enrollment_id) -> list:
@@ -99,4 +108,5 @@ class Database:
                 ),
             )
 
+        print(f"{len(mid_list)} orders added to the database)")
         self.connection.commit()

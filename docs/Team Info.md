@@ -2,6 +2,7 @@
 
 #### -> Chirag Aggarwal
 ###### E22CSEU0325
+- Team Leader
 - Dashboard Logic
 - Database Backend
 - Project Structure and flow

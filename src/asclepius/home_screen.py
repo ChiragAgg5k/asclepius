@@ -12,6 +12,8 @@ class HomeScreen:
         self,
         width: int = 500,
         height: int = 500,
+        appearance_mode: str = "light",
+        color_theme: str = "green",
     ) -> None:
 
         self.width = width
@@ -21,15 +23,15 @@ class HomeScreen:
         self.root.resizable(False, False)
         CenterWindow.center_window(self.root, self.width, self.height)
 
-        ctk.set_appearance_mode("light")
-        ctk.set_default_color_theme("green")
+        ctk.set_appearance_mode(appearance_mode)
+        ctk.set_default_color_theme(color_theme)
 
-        # exits the program when the window is closed
+        # exits the program when the window is closed by the user
         self.root.protocol("WM_DELETE_WINDOW", self.root.destroy)
 
         self.root.title("Ascelpius - Home")
-        self.selected_tab = ""
 
+        self.selected_tab = ""
         self.__user_enrollment_id = ""
 
     def homescreen(self):

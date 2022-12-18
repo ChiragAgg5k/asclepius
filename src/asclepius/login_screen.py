@@ -17,6 +17,15 @@ class Login:
         height: int = 500,
         root=None,
     ) -> None:
+        """Initialize the login screen.
+
+        Args:
+            appearance_mode (str, optional): Determines appearance. Defaults to "light".
+            color_theme (str, optional): Determines accent color. Defaults to "green".
+            width (int, optional): Sets width of the window. Defaults to 500.
+            height (int, optional): Sets height of the window. Defaults to 500.
+            root (_type_, optional): Tkinter window where the widgets need to be placed. Defaults to None.
+        """
 
         self.width = width
         self.height = height
@@ -25,7 +34,6 @@ class Login:
         ctk.set_default_color_theme(color_theme)
         self.login_frame = ctk.CTkFrame(root, width=self.width, height=self.height)
 
-        # Encapsulated credentials
         self.__enrollment_id = ctk.StringVar()
         self.__password = ctk.StringVar()
 
@@ -77,11 +85,6 @@ class Login:
             corner_radius=10,
             command=self.submit,
         )
-
-        #! remove this later
-        self.pswrd_entry.insert(0, "bennett123")
-        self.enrollmentid_entry.insert(0, "E22CSEU0325")
-        #! remove this later
 
         self.enrollmentid_entry.bind("<Return>", lambda event: self.submit())
         self.pswrd_entry.bind("<Return>", lambda event: self.submit())
@@ -135,6 +138,11 @@ class Login:
             self.login_completed = True
 
     def get_credentials(self) -> tuple:
+        """Get the credentials entered by the user.
+
+        Returns:
+            tuple: The enrollment ID and password entered by the user.
+        """
         return (self.__enrollment_id.get(), self.__password.get())
 
     def return_login_frame(self) -> ctk.CTkFrame:
