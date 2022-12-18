@@ -116,5 +116,5 @@ class Database:
                 ),
             )
 
-        print(f"{len(mid_list)} orders added to the database)")
+        print(f"{len(mid_list)} orders added to the database")
         self.connection.commit()
