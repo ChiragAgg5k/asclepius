@@ -254,6 +254,8 @@ class Dashboard:
             )
             close_button.pack(pady=20)
 
+            self.order_confirmation.mainloop()
+
         else:
 
             order_confirmation_label = ctk.CTkLabel(
@@ -309,7 +311,7 @@ class Dashboard:
             total_amount_label.pack(padx=20, pady=20, anchor=ctk.CENTER)
             self.final_confirmation_button.pack(padx=20, pady=20, anchor=ctk.CENTER)
 
-        self.order_confirmation.mainloop()
+            self.order_confirmation.mainloop()
 
     def display_table(self) -> None:
         """Display the table of medicines."""
