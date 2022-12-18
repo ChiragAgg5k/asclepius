@@ -48,7 +48,7 @@ class Signup:
         ).place(relx=0.5, rely=0.05, anchor=ctk.CENTER)
 
         self.__name_label = ctk.CTkLabel(
-            self.app, text="Full Name*", font=self.small_text_font
+            self.app, text="FULL NAME*", font=self.small_text_font
         ).place(relx=0.1, rely=0.1, anchor=ctk.NW)
 
         self.__name_entry = ctk.CTkEntry(
@@ -57,7 +57,7 @@ class Signup:
 
         self.__enrollid_label = ctk.CTkLabel(
             self.app,
-            text="Bennett Enrollment No.*",
+            text="BENNETT ENROLLMENT NUMBER.*",
             font=self.small_text_font,
         ).place(relx=0.1, rely=0.25, anchor=ctk.NW)
 
@@ -66,7 +66,7 @@ class Signup:
         ).place(relx=0.1, rely=0.3, width=300, height=30, anchor=ctk.NW)
 
         self.__room_no_label = ctk.CTkLabel(
-            self.app, text="Hostel Room No", font=self.small_text_font
+            self.app, text="ROOM NUMBER:", font=self.small_text_font
         ).place(relx=0.55, rely=0.4)
         self.room_entry = ctk.CTkEntry(
             self.app,
@@ -78,12 +78,12 @@ class Signup:
         self.room_entry.configure(state=ctk.DISABLED)
 
         self.hostel_label = ctk.CTkLabel(
-            self.app, text="Dayscholar/Hosteler*", font=self.small_text_font
+            self.app, text="CHOOSE AN OPTION:*\n", font=self.small_text_font
         ).place(relx=0.1, rely=0.4)
 
         self.disableEntryRadioButton = ctk.CTkRadioButton(
             self.app,
-            text="Dayscholar",
+            text="DAY SCHOLAR",
             font=self.small_text_font,
             variable=(self.__is_hosteller),
             value="0",
@@ -93,7 +93,7 @@ class Signup:
         self.disableEntryRadioButton.place(relx=0.1, rely=0.45, anchor=ctk.NW)
         self.enableEntryRadioButton = ctk.CTkRadioButton(
             self.app,
-            text="Hosteler",
+            text="HOSTELLER",
             font=self.small_text_font,
             variable=(self.__is_hosteller),
             value="1",
@@ -103,7 +103,7 @@ class Signup:
 
         self.__phoneno_label = ctk.CTkLabel(
             self.app,
-            text="Contact No.*",
+            text="CONTACT NUMBER*",
             font=self.small_text_font,
         ).place(relx=0.1, rely=0.57, anchor=ctk.NW)
 
@@ -112,7 +112,7 @@ class Signup:
         ).place(relx=0.1, rely=0.62, width=300, height=30, anchor=ctk.NW)
 
         self.__password_label = ctk.CTkLabel(
-            self.app, text="Password*", font=self.small_text_font
+            self.app, text="PASSWORD*", font=self.small_text_font
         ).place(relx=0.1, rely=0.69, anchor=ctk.NW)
         self.__password_entry = ctk.CTkEntry(
             self.app, show="*", font=self.small_text_font, textvariable=self.__password
@@ -120,7 +120,7 @@ class Signup:
 
         self.register = ctk.CTkButton(
             self.app,
-            text="Register",
+            text="REGISTER",
             font=self.text_font,
             bg_color="sky blue",
             command=self.submit,
@@ -163,7 +163,7 @@ class Signup:
                 widget.destroy()
 
             ctk.CTkLabel(
-                self.signup_frame, text="Signing In", font=self.text_font
+                self.signup_frame, text="SIGNING IN", font=self.text_font
             ).pack(pady=40, padx=50, fill=ctk.BOTH, expand=True)
 
             self.signup_completed = True
