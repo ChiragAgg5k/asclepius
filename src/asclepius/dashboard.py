@@ -398,7 +398,6 @@ class Dashboard:
         if mrec == []:
             no_rec.grid(row=1, column=0, padx=20, pady=20)
         else:
-            no_rec.grid_forget()
             for i in range(0, len(mrec)):
                 m_row = self.db.get_medicine_details(mrec[i][1])
                 for j in range(0, len(m_row) - 1):
