@@ -421,33 +421,35 @@ class Dashboard:
         self.dashboard_frame = ctk.CTkFrame(self.root)
 
         ctk.CTkLabel(
-            self.dashboard_frame, text="Welcome to Asclepius", font=self.op_font
+            self.dashboard_frame, text="ASCLEPIUS: Your Wellness Partner", font=self.op_font
         ).pack(padx=20, pady=20)
         ctk.CTkLabel(
             self.dashboard_frame,
-            text="""Hello, User Name. Welcome to Asclepius, Your Wellness Partner. The following are the your 
-            details saved in our database.""",
+            text="""Hello. Welcome to Asclepius: Your Wellness Partner. The following are your details saved in our database.""",
             font=self.text_font,
             anchor=ctk.W,
         ).pack(anchor=ctk.W, padx=20, pady=(20, 40))
 
         user_detail_labels = [
-            "Enrollment Number",
-            "Full Name",
-            "Hosteller?",
-            "Hostel Room No.",
-            "Phone Number",
+            "ENROLLMENT NUMBER: ",
+            "FULL NAME: ",
+            "HOSTELLER/DAY SCHOLAR: ",
+            "ROOM No.: ",
+            "PHONE NUMBER: ",
         ]
         user_details = self.db.get_signupdetails(self.user_id)
 
         for i in range(len(user_details) - 1):
 
             if user_details[i] == "":
-                text_label = "Not Provided"
-            elif user_details[i] == 0:
-                text_label = "No"
+                text_label = "NOT PROVIDED"
+            elif user_details[i] == '0':
+                text_label = "DAY SCHOLAR"
+            elif user_details[i] == '1':
+                text_label = "HOSTELLER"
             else:
-                text_label = user_details[i]
+                user_details=[str(x) for x in user_details]
+                text_label = user_details[i].upper()
 
             ctk.CTkLabel(
                 self.dashboard_frame,
