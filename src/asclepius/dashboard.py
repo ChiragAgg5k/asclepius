@@ -58,7 +58,7 @@ class Dashboard:
             family="Franklin Gothic", size=30, weight="bold", underline=True
         )
         self.title_font = ctk.CTkFont(family="Rockwell", size=60, weight="bold")
-        self.button_font = ctk.CTkFont(family="Rockwell", size=20, weight="bold")
+        self.text_font_bold = ctk.CTkFont(family="Rockwell", size=20, weight="bold")
         self.text_font = ctk.CTkFont(family="Rockwell", size=20, weight="normal")
         self.small_text_font = ctk.CTkFont(family="Arial", size=18, weight="normal")
         self.tagline_font = ctk.CTkFont(family="Rockwell", size=30, weight="normal")
@@ -103,7 +103,7 @@ class Dashboard:
         dashboard_button = ctk.CTkButton(
             navigation_frame,
             text=" DashBoard ",
-            font=self.button_font,
+            font=self.text_font_bold,
             command=lambda: self.reset_frame("home"),
             corner_radius=10,
             height=40,
@@ -112,7 +112,7 @@ class Dashboard:
         meds_button = ctk.CTkButton(
             navigation_frame,
             text=" Medicines ",
-            font=self.button_font,
+            font=self.text_font_bold,
             command=lambda: self.reset_frame("meds"),
             corner_radius=10,
             height=40,
@@ -121,7 +121,7 @@ class Dashboard:
         mhelp_button = ctk.CTkButton(
             navigation_frame,
             text=" About ",
-            font=self.button_font,
+            font=self.text_font_bold,
             command=lambda: self.reset_frame("mhelp"),
             corner_radius=10,
             height=40,
@@ -130,7 +130,7 @@ class Dashboard:
         mrecord_button = ctk.CTkButton(
             navigation_frame,
             text=" Med Records ",
-            font=self.button_font,
+            font=self.text_font_bold,
             command=lambda: self.reset_frame("mrecord"),
             corner_radius=10,
             height=40,
@@ -139,7 +139,7 @@ class Dashboard:
         light_mode = ctk.CTkButton(
             navigation_frame,
             text=" Light Mode ",
-            font=self.button_font,
+            font=self.text_font_bold,
             height=30,
             command=lambda: self.change_appearance_mode_event("Light"),
         )
@@ -147,7 +147,7 @@ class Dashboard:
         dark_mode = ctk.CTkButton(
             navigation_frame,
             text=" Dark Mode ",
-            font=self.button_font,
+            font=self.text_font_bold,
             height=30,
             command=lambda: self.change_appearance_mode_event("Dark"),
         )
@@ -155,7 +155,7 @@ class Dashboard:
         quit_button = ctk.CTkButton(
             navigation_frame,
             text=" Quit ",
-            font=self.button_font,
+            font=self.text_font_bold,
             command=self.root.destroy,
             corner_radius=10,
             height=40,
@@ -423,14 +423,17 @@ class Dashboard:
         self.dashboard_frame = ctk.CTkFrame(self.root)
 
         ctk.CTkLabel(
-            self.dashboard_frame, text="ASCLEPIUS: Your Wellness Partner", font=self.op_font
+            self.dashboard_frame,
+            text="ASCLEPIUS: Your Wellness Partner",
+            font=self.op_font,
         ).pack(padx=20, pady=20)
         ctk.CTkLabel(
             self.dashboard_frame,
-            text="""Hello. Welcome to Asclepius: Your Wellness Partner. The following are your details saved in our database.""",
+            text="""Hello. Welcome to Asclepius: Your Wellness Partner. The following are your details 
+saved in our database.""",
             font=self.text_font,
-            anchor=ctk.W,
-        ).pack(anchor=ctk.W, padx=20, pady=(20, 40))
+            anchor=ctk.CENTER,
+        ).pack(anchor=ctk.CENTER, padx=20, pady=(20, 40))
 
         user_detail_labels = [
             "ENROLLMENT NUMBER: ",
@@ -444,14 +447,16 @@ class Dashboard:
         for i in range(len(user_details) - 1):
 
             if user_details[i] == "":
-                text_label = "NOT PROVIDED"
-            elif user_details[i] == '0':
-                text_label = "DAY SCHOLAR"
-            elif user_details[i] == '1':
-                text_label = "HOSTELLER"
+                text_label = "Not Provided"
+            elif user_details[i] == 0:
+                text_label = "Day Scholar"
+            elif user_details[i] == 1:
+                text_label = "Hosteller"
             else:
-                user_details=[str(x) for x in user_details]
-                text_label = user_details[i].upper()
+                try:
+                    text_label = user_details[i].capitalize()
+                except AttributeError:
+                    text_label = user_details[i]
 
             ctk.CTkLabel(
                 self.dashboard_frame,
