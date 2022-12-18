@@ -79,21 +79,24 @@ class Database:
         )
         return self.cursor.fetchall()
 
+    def get_medicine_details(self, mid: str) -> list:
+        """Get the medicine details from the database.
+
+        Returns:
+            list: Medicine details
+        """
+        self.cursor.execute("SELECT * FROM medicines WHERE MID = (?)", (mid,))
+        return self.cursor.fetchone()
+
     def add_orders(self, mid_list: list, enrollment_id: str) -> None:
 
-        all_medicines = self.get_medicines()
-        for i in mid_list:
-            for j in all_medicines:
-                if i == j[0]:
-                    self.cursor.execute(
-                        "INSERT INTO MRECORD(ENROLLID,MID,NAME,PRICE) VALUES (? , ?, ?, ?)",
-                        (
-                            enrollment_id,
-                            j[0],
-                            j[1],
-                            j[4],
-                        ),
-                    )
-                    self.connection.commit()
+        for mid in mid_list:
+            self.cursor.execute(
+                "INSERT INTO MRECORD (ENROLLID ,MID) VALUES (?, ?)",
+                (
+                    enrollment_id,
+                    mid,
+                ),
+            )
 
         self.connection.commit()
