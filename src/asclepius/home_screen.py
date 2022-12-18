@@ -67,7 +67,7 @@ class HomeScreen:
                 break
 
             elif signup_object.signup_completed:
-                self.__user_enrollment_id = signup_object.get_credentials()[0]
+                self.__user_enrollment_id = signup_object.get_credentials()[1]
                 self.root.destroy()
                 break
 

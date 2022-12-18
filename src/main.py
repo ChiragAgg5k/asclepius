@@ -1,5 +1,3 @@
-import customtkinter as ctk
-
 from asclepius import dashboard, home_screen
 
 home_window = home_screen.HomeScreen(width=500, height=500)

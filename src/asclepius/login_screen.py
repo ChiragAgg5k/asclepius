@@ -81,6 +81,7 @@ class Login:
         #! remove this later
         self.pswrd_entry.insert(0, "bennett123")
         self.enrollmentid_entry.insert(0, "E22CSEU0325")
+        #! remove this later
 
         self.enrollmentid_entry.bind("<Return>", lambda event: self.submit())
         self.pswrd_entry.bind("<Return>", lambda event: self.submit())

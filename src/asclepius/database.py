@@ -36,8 +36,8 @@ class Database:
 
     def signup(self, credentials: tuple) -> None:
 
-        Enrollid = credentials[0]
-        username = credentials[1]
+        username = credentials[0]
+        Enrollid = credentials[1]
         contact = credentials[2]
         roomno = credentials[3]
         Hosteller = credentials[4]
