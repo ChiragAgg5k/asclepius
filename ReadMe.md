@@ -28,10 +28,6 @@ python3 -m pip install -r requirements.txt
 python -u src/main.py
 ```
 
-## Usage
-
-work in progress.
-
 ## Tools Used
 
 1) Text Editor: [Visual Studio Code](https://code.visualstudio.com/)

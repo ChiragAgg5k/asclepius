@@ -1,8 +1,4 @@
-import faulthandler
-
 from asclepius import dashboard, home_screen
-
-faulthandler.enable()
 
 home_window = home_screen.HomeScreen(width=500, height=500)
 home_window.show_homescreen()
