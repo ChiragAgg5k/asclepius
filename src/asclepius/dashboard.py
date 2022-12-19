@@ -403,22 +403,46 @@ class Dashboard:
             no_rec.grid(row=1, column=0, padx=20, pady=20, sticky=ctk.NSEW)
         else:
 
+            mrec_col_headers = [
+                "Mid",
+                "Name",
+                "Treatment",
+                "Price",
+                "Time of Purchase",
+            ]
+
+            mrec_col_widths = [80, 150, 450, 80, 220]
+
+            for i in range(0, len(mrec_col_headers)):
+                col_cell = ctk.CTkEntry(
+                    self.mrec_frame,
+                    width=mrec_col_widths[i],
+                    font=self.text_font,
+                )
+                col_cell.insert(ctk.END, mrec_col_headers[i].capitalize())
+                col_cell.configure(state=ctk.DISABLED)
+                col_cell.grid(row=1, column=i, pady=(10, 20), ipady=1, padx=5)
+
             for i in range(0, len(mrec)):
                 m_row = self.db.get_medicine_details(mrec[i][1])
                 for j in range(0, len(m_row) - 1):
                     e = ctk.CTkEntry(
                         self.mrec_frame,
                         width=self.column_widths[j],
+                        font=self.small_text_font,
                     )
-                    e.insert(ctk.END, m_row[j])
+                    try:
+                        e.insert(ctk.END, m_row[j].capitalize())
+                    except AttributeError:
+                        e.insert(ctk.END, m_row[j])
                     e.configure(state=ctk.DISABLED)
-                    e.grid(row=(i + 1), column=j, padx=5)
+                    e.grid(row=(i + 2), column=j, padx=5)
 
             for i in range(len(mrec)):
-                e = ctk.CTkEntry(self.mrec_frame, width=200)
+                e = ctk.CTkEntry(self.mrec_frame, width=mrec_col_widths[4])
                 e.insert(ctk.END, mrec[i][2])
                 e.configure(state=ctk.DISABLED)
-                e.grid(row=(i + 1), column=6, padx=5)
+                e.grid(row=(i + 2), column=4, padx=5)
 
         self.mrec_frame.pack(fill=ctk.BOTH, expand=True, padx=(0, 20), pady=(0, 20))
 
