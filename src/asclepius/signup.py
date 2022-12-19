@@ -9,6 +9,13 @@ class Signup:
     """Class to create the signup screen."""
 
     def __init__(self, root, width=500, height=500) -> None:
+        """Constructor for the Signup class.
+
+        Args:
+            root (ctk window/frame): where the widgets will be placed.
+            width (int, optional): width of the window. Defaults to 500.
+            height (int, optional): height of the window. Defaults to 500.
+        """
         self.signup_frame = ctk.CTkFrame(root)
         self.signup_completed = False
 

@@ -1,8 +1,6 @@
 import customtkinter as ctk
-from PIL import Image
 
 from asclepius.centerwin import CenterWindow
-from asclepius.database import Database
 from asclepius.login_screen import Login
 from asclepius.signup import Signup
 

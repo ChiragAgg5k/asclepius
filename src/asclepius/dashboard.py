@@ -34,10 +34,10 @@ class Dashboard:
         self.height = height
         self.user_id = enrollment_id
 
-        self.db = Database("Dashboard")
+        self.db_object = Database("Dashboard")
 
-        self.dataset = self.db.get_medicines()
-        self.col_headers = self.db.get_col_headings("medicines")
+        self.dataset = self.db_object.get_medicines()
+        self.col_headers = self.db_object.get_col_headings("medicines")
 
         ctk.set_appearance_mode(appearance)
         ctk.set_default_color_theme(theme_color)
@@ -205,6 +205,8 @@ class Dashboard:
         else:
             self.mrec_frame.pack_forget()
 
+        print("Frame reset to", frame_name)
+
     def change_appearance_mode_event(self, new_appearance_mode: str):
         """Change the appearance mode.
 
@@ -213,6 +215,7 @@ class Dashboard:
         """
 
         ctk.set_appearance_mode(new_appearance_mode)
+        print("Appearance mode changed to", new_appearance_mode)
 
     def order_check_button(self, mid: str):
         """Check button pressed. Add or remove the medicine from the order list.
@@ -222,16 +225,19 @@ class Dashboard:
         """
         try:
             self.order_list.remove(mid)
+            print("Removed", mid)
         except ValueError:
             self.order_list.append(mid)
+            print("Added", mid)
 
     def final_confirm_button_pressed(self):
         """Final confirm button pressed. Place the order."""
 
-        self.db.add_orders(self.order_list, self.user_id)
+        self.db_object.add_orders(self.order_list, self.user_id)
 
         self.order_list = []
         self.order_confirmation.destroy()
+        print("Order placed.")
 
     def place_order(self):
         """Pop up a window to confirm the order. Displays the order list."""
@@ -318,28 +324,28 @@ class Dashboard:
 
         check_box_var = ctk.StringVar()
 
-        for i in range(0, len(self.col_headers)):
+        for pos, text in enumerate(self.col_headers):
 
             col_cell = ctk.CTkLabel(
                 self.scrollbar_frame,
-                text=self.col_headers[i].capitalize(),
+                text=text.capitalize(),
                 font=self.text_font,
-                width=self.column_widths[i],
+                width=self.column_widths[pos],
                 height=50,
             )
-            col_cell.grid(row=1, column=(i + 1), pady=(10, 20), ipady=1, padx=5)
+            col_cell.grid(row=1, column=(pos + 1), pady=(10, 20), ipady=1, padx=5)
 
             col = ctk.CTkEntry(
                 self.scrollbar_frame,
-                width=self.column_widths[i],
+                width=self.column_widths[pos],
                 height=50,
                 font=self.text_font,
             )
 
-            col.insert(ctk.END, self.col_headers[i].capitalize())
+            col.insert(ctk.END, text.capitalize())
             col.configure(state=ctk.DISABLED)
 
-            col.grid(row=1, column=(i + 1), pady=(10, 20), ipady=1, padx=5)
+            col.grid(row=1, column=(pos + 1), pady=(10, 20), ipady=1, padx=5)
 
         order_entry = ctk.CTkEntry(
             self.scrollbar_frame, height=50, font=self.text_font, width=80
@@ -351,19 +357,19 @@ class Dashboard:
         for i in self.dataset:
 
             for j in range(0, len(i)):
-                e = ctk.CTkEntry(
+                entry = ctk.CTkEntry(
                     self.scrollbar_frame,
                     width=self.column_widths[j],
                     font=self.small_text_font,
                 )
-                e.grid(row=row, column=(j + 1), padx=5)
+                entry.grid(row=row, column=(j + 1), padx=5)
 
                 try:
-                    e.insert(ctk.END, i[j].capitalize())
+                    entry.insert(ctk.END, i[j].capitalize())
                 except AttributeError:
-                    e.insert(ctk.END, i[j])
+                    entry.insert(ctk.END, i[j])
 
-                e.configure(state=ctk.DISABLED)
+                entry.configure(state=ctk.DISABLED)
 
             order_checkbox = ctk.CTkCheckBox(
                 self.scrollbar_frame,
@@ -397,7 +403,7 @@ class Dashboard:
             font=self.text_font,
         )
 
-        mrec = self.db.get_medicine_record(self.user_id)
+        mrec = self.db_object.get_medicine_record(self.user_id)
 
         if mrec == []:
             no_rec.grid(row=1, column=0, padx=20, pady=20, sticky=ctk.NSEW)
@@ -424,7 +430,7 @@ class Dashboard:
                 col_cell.grid(row=1, column=i, pady=(10, 20), ipady=1, padx=5)
 
             for i in range(0, len(mrec)):
-                m_row = self.db.get_medicine_details(mrec[i][1])
+                m_row = self.db_object.get_medicine_details(mrec[i][1])
                 for j in range(0, len(m_row) - 1):
                     e = ctk.CTkEntry(
                         self.mrec_frame,
@@ -459,7 +465,7 @@ class Dashboard:
         ).pack(padx=20, pady=20)
         ctk.CTkLabel(
             self.dashboard_frame,
-            text="""Hello. Welcome to Asclepius: Your Wellness Partner. The following are your details 
+            text="""Hello. Welcome to Asclepius: Your Wellness Partner. The following are your details
 saved in our database.""",
             font=self.text_font,
             anchor=ctk.CENTER,
@@ -472,7 +478,7 @@ saved in our database.""",
             "ROOM No.: ",
             "PHONE NUMBER: ",
         ]
-        user_details = self.db.get_signupdetails(self.user_id)
+        user_details = self.db_object.get_signupdetails(self.user_id)
 
         for i in range(len(user_details) - 1):
 
