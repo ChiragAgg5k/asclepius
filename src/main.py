@@ -1,6 +1,11 @@
+import faulthandler
+
+faulthandler.enable()
 from asclepius import dashboard, home_screen
 
-home_window = home_screen.HomeScreen(width=500, height=500)
+home_window = home_screen.HomeScreen(
+    width=500, height=500, appearance_mode="light", color_theme="green"
+)
 home_window.show_homescreen()
 
 dash_board = dashboard.Dashboard(

@@ -13,11 +13,11 @@ class Dashboard:
 
     def __init__(
         self,
-        width: int,
-        height: int,
-        appearance: str,
-        theme_color: str,
-        enrollment_id: str,
+        width: int = 1280,
+        height: int = 720,
+        appearance: str = "dark",
+        theme_color: str = "green",
+        enrollment_id: str = "",
     ) -> None:
         """Constructor for Dashboard class for Asclepius.
 
@@ -43,7 +43,7 @@ class Dashboard:
         ctk.set_default_color_theme(theme_color)
 
         self.root = ctk.CTk()
-        self.root.title("Asclepius")
+        self.root.title("Asclepius - Your Wellness Partner")
         self.root.resizable(False, False)
 
         self.title_logo = ctk.CTkImage(
@@ -58,8 +58,8 @@ class Dashboard:
             family="Franklin Gothic", size=30, weight="bold", underline=True
         )
         self.title_font = ctk.CTkFont(family="Rockwell", size=60, weight="bold")
-        self.text_font_bold = ctk.CTkFont(family="Rockwell", size=20, weight="bold")
         self.text_font = ctk.CTkFont(family="Rockwell", size=20, weight="normal")
+        self.text_font_bold = ctk.CTkFont(family="Rockwell", size=20, weight="bold")
         self.small_text_font = ctk.CTkFont(family="Arial", size=18, weight="normal")
         self.tagline_font = ctk.CTkFont(family="Rockwell", size=30, weight="normal")
         # ------------------------ Fonts ------------------------#
@@ -215,6 +215,11 @@ class Dashboard:
         ctk.set_appearance_mode(new_appearance_mode)
 
     def order_check_button(self, mid: str):
+        """Check button pressed. Add or remove the medicine from the order list.
+
+        Args:
+            mid (str): Medicine ID
+        """
         if mid == "0":
             try:
                 self.order_list.pop()
@@ -386,6 +391,7 @@ class Dashboard:
             row += 1
 
     def display_mrec(self):
+        """Display the medicine records of the user."""
 
         no_rec = ctk.CTkLabel(
             self.mrec_frame,
@@ -396,8 +402,9 @@ class Dashboard:
         mrec = self.db.get_medicine_record(self.user_id)
 
         if mrec == []:
-            no_rec.grid(row=1, column=0, padx=20, pady=20)
+            no_rec.grid(row=1, column=0, padx=20, pady=20, sticky=ctk.NSEW)
         else:
+
             for i in range(0, len(mrec)):
                 m_row = self.db.get_medicine_details(mrec[i][1])
                 for j in range(0, len(m_row) - 1):
@@ -418,6 +425,7 @@ class Dashboard:
         self.mrec_frame.pack(fill=ctk.BOTH, expand=True, padx=(0, 20), pady=(0, 20))
 
     def dashboard_frame(self):
+        """Display the user dashboard."""
 
         # ------------------------ User Dashboard ------------------------#
         self.dashboard_frame = ctk.CTkFrame(self.root)

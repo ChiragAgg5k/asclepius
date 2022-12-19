@@ -60,15 +60,23 @@ class Database:
             print("Error: Enrollment ID already exists")
             return False
 
-    def get_signupdetails(self, enrollment_id) -> list:
+    def get_signupdetails(self, enrollment_id: str) -> list:
         self.cursor.execute(
-            "SELECT * FROM credentials WHERE ENROLLID = (?)", (enrollment_id,)
+            "SELECT * FROM credentials WHERE ENROLLID = (?)", (enrollment_id.upper(),)
         )
         return self.cursor.fetchone()
 
     def login(self, credentials: tuple) -> bool:
+        """Verify the login credentials of the user.
+
+        Args:
+            credentials (tuple): [Enrollment ID, Password]
+
+        Returns:
+            bool: True if credentials are correct, False otherwise
+        """
         self.cursor.execute(
-            "SELECT * FROM credentials WHERE ENROLLID = (?)", (credentials[0],)
+            "SELECT * FROM credentials WHERE ENROLLID = (?)", (credentials[0].upper(),)
         )
 
         fetched = self.cursor.fetchone()
@@ -76,7 +84,7 @@ class Database:
         if fetched:
 
             if fetched[5] == credentials[1]:
-                print("Credentials verified")
+                print("Login Credentials verified")
                 return True
 
             else:
@@ -106,6 +114,12 @@ class Database:
         return self.cursor.fetchone()
 
     def add_orders(self, mid_list: list, enrollment_id: str) -> None:
+        """Add orders to the database.
+
+        Args:
+            mid_list (list): List of medicine IDs
+            enrollment_id (str): Enrollment ID of the user
+        """
 
         for mid in mid_list:
             self.cursor.execute(
