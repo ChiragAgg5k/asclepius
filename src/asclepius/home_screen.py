@@ -64,15 +64,14 @@ class HomeScreen:
             if login_object.login_completed:
                 print("User logged in successfully.")
                 self.__user_enrollment_id = login_object.get_credentials()[0]
-                self.root.destroy()
                 break
 
             elif signup_object.signup_completed:
                 print("User signed up successfully.")
                 self.__user_enrollment_id = signup_object.get_credentials()[1]
-                self.root.destroy()
                 break
 
+        self.root.destroy()
         self.root.mainloop()
 
     def get_user_enrollment_id(self) -> str:

@@ -64,6 +64,20 @@ class Dashboard:
         self.tagline_font = ctk.CTkFont(family="Rockwell", size=30, weight="normal")
         # ------------------------ Fonts ------------------------#
 
+        self.dashboard_frame = ctk.CTkFrame(self.root)
+        self.mrec_frame = ctk.CTkFrame(self.root)
+        self.mhelp_frame = ctk.CTkFrame(self.root)
+
+        self.meds_frame = ctk.CTkFrame(self.root)
+        self.meds_canvas = ctk.CTkCanvas(self.meds_frame)
+        self.scrollable_frame = ctk.CTkFrame(self.meds_canvas)
+        self.scrollbar = ctk.CTkScrollbar(
+            self.meds_frame,
+            orientation=ctk.VERTICAL,
+            command=self.meds_canvas.yview,
+            width=30,
+        )
+
     def title_frame(self, title: str) -> None:
         """Create the title frame.
 
@@ -215,7 +229,7 @@ class Dashboard:
         """
 
         ctk.set_appearance_mode(new_appearance_mode)
-        print("Appearance mode changed to", new_appearance_mode)
+        print("Appearance mode changed to", new_appearance_mode, "mode")
 
     def order_check_button(self, mid: str):
         """Check button pressed. Add or remove the medicine from the order list.
@@ -327,7 +341,7 @@ class Dashboard:
         for pos, text in enumerate(self.col_headers):
 
             col_cell = ctk.CTkLabel(
-                self.scrollbar_frame,
+                self.scrollable_frame,
                 text=text.capitalize(),
                 font=self.text_font,
                 width=self.column_widths[pos],
@@ -336,7 +350,7 @@ class Dashboard:
             col_cell.grid(row=1, column=(pos + 1), pady=(10, 20), ipady=1, padx=5)
 
             col = ctk.CTkEntry(
-                self.scrollbar_frame,
+                self.scrollable_frame,
                 width=self.column_widths[pos],
                 height=50,
                 font=self.text_font,
@@ -348,7 +362,7 @@ class Dashboard:
             col.grid(row=1, column=(pos + 1), pady=(10, 20), ipady=1, padx=5)
 
         order_entry = ctk.CTkEntry(
-            self.scrollbar_frame, height=50, font=self.text_font, width=80
+            self.scrollable_frame, height=50, font=self.text_font, width=80
         )
         order_entry.insert(ctk.END, "Order")
         order_entry.grid(row=1, column=6, pady=(10, 20), ipady=1, padx=5)
@@ -358,7 +372,7 @@ class Dashboard:
 
             for j in range(0, len(i)):
                 entry = ctk.CTkEntry(
-                    self.scrollbar_frame,
+                    self.scrollable_frame,
                     width=self.column_widths[j],
                     font=self.small_text_font,
                 )
@@ -372,7 +386,7 @@ class Dashboard:
                 entry.configure(state=ctk.DISABLED)
 
             order_checkbox = ctk.CTkCheckBox(
-                self.scrollbar_frame,
+                self.scrollable_frame,
                 text="",
                 variable=check_box_var,
                 onvalue=i[0],
@@ -383,7 +397,7 @@ class Dashboard:
 
             if i[-1].lower() == "no":
                 ctk.CTkLabel(
-                    self.scrollbar_frame,
+                    self.scrollable_frame,
                     text="  -",
                     font=self.small_text_font,
                     anchor=ctk.W,
@@ -408,7 +422,7 @@ class Dashboard:
         if mrec == []:
             no_rec.grid(row=1, column=0, padx=20, pady=20, sticky=ctk.NSEW)
         else:
-
+            no_rec.grid_forget()
             mrec_col_headers = [
                 "Mid",
                 "Name",
@@ -432,17 +446,17 @@ class Dashboard:
             for i in range(0, len(mrec)):
                 m_row = self.db_object.get_medicine_details(mrec[i][1])
                 for j in range(0, len(m_row) - 1):
-                    e = ctk.CTkEntry(
+                    entry = ctk.CTkEntry(
                         self.mrec_frame,
                         width=self.column_widths[j],
                         font=self.small_text_font,
                     )
                     try:
-                        e.insert(ctk.END, m_row[j].capitalize())
+                        entry.insert(ctk.END, m_row[j].capitalize())
                     except AttributeError:
-                        e.insert(ctk.END, m_row[j])
-                    e.configure(state=ctk.DISABLED)
-                    e.grid(row=(i + 2), column=j, padx=5)
+                        entry.insert(ctk.END, m_row[j])
+                    entry.configure(state=ctk.DISABLED)
+                    entry.grid(row=(i + 2), column=j, padx=5)
 
             for i in range(len(mrec)):
                 e = ctk.CTkEntry(self.mrec_frame, width=mrec_col_widths[4])
@@ -452,7 +466,7 @@ class Dashboard:
 
         self.mrec_frame.pack(fill=ctk.BOTH, expand=True, padx=(0, 20), pady=(0, 20))
 
-    def dashboard_frame(self):
+    def show_dashboard_frame(self):
         """Display the user dashboard."""
 
         # ------------------------ User Dashboard ------------------------#
@@ -465,7 +479,7 @@ class Dashboard:
         ).pack(padx=20, pady=20)
         ctk.CTkLabel(
             self.dashboard_frame,
-            text="""Hello. Welcome to Asclepius: Your Wellness Partner. The following are your details
+            text="""Hello. Welcome to Asclepius: Your Wellness Partner. Following are your details
 saved in our database.""",
             font=self.text_font,
             anchor=ctk.CENTER,
@@ -504,20 +518,8 @@ saved in our database.""",
         # ------------------------ User Dashboard ------------------------#
 
         # ----------------------- Medicines Dashboard -----------------------#
-        self.meds_frame = ctk.CTkFrame(self.root)
 
-        self.meds_canvas = ctk.CTkCanvas(
-            self.meds_frame,
-        )
-        self.scrollbar = ctk.CTkScrollbar(
-            self.meds_frame,
-            orientation=ctk.VERTICAL,
-            command=self.meds_canvas.yview,
-            width=30,
-        )
-        self.scrollbar_frame = ctk.CTkFrame(self.meds_canvas)
-
-        self.scrollbar_frame.bind(
+        self.scrollable_frame.bind(
             "<Configure>",
             lambda e: self.meds_canvas.configure(
                 scrollregion=self.meds_canvas.bbox("all")
@@ -530,7 +532,7 @@ saved in our database.""",
         place_order_button.pack(padx=(0, 25), side="bottom", anchor=ctk.E)
 
         self.meds_canvas.create_window(
-            (0, 0), window=self.scrollbar_frame, anchor=ctk.N
+            (0, 0), window=self.scrollable_frame, anchor=ctk.N
         )
         self.meds_canvas.configure(yscrollcommand=self.scrollbar.set)
 
@@ -542,7 +544,6 @@ saved in our database.""",
         # ----------------------- Medicines Dashboard -----------------------#
 
         # ----------------------- Med Help Dashboard -----------------------#
-        self.mhelp_frame = ctk.CTkFrame(self.root)
 
         wellness_description = """
 To ensure students’s well-being, Bennett provides a well-equipped wellness centre with four beds and round-the-clock,
@@ -594,7 +595,7 @@ services and information about the wellness centre.
 
         self.navigation_frame()
         self.title_frame("Asclepius")
-        self.dashboard_frame()
+        self.show_dashboard_frame()
 
         CenterWindow.center_window(self.root, self.width, self.height)
         self.root.mainloop()

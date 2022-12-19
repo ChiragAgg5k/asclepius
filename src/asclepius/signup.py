@@ -162,7 +162,7 @@ class Signup:
             ).place(relx=0.5, rely=0.95, anchor=ctk.CENTER)
 
         else:
-            self.signup_frame.after(1000, self.signup_frame.destroy)
+            self.signup_frame.after(1000, self.signin_delay)
 
             ctk.set_appearance_mode("dark")
 
@@ -170,10 +170,11 @@ class Signup:
                 widget.destroy()
 
             ctk.CTkLabel(
-                self.signup_frame, text="SIGNING IN", font=self.text_font
+                self.signup_frame, text="Signing In...", font=self.text_font
             ).pack(pady=40, padx=50, fill=ctk.BOTH, expand=True)
 
-            self.signup_completed = True
+    def signin_delay(self):
+        self.signup_completed = True
 
     def get_credentials(self) -> tuple:
         """Returns the signup information"""

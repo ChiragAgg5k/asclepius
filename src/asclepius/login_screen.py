@@ -134,8 +134,20 @@ class Login:
             ).place(relx=0.51, rely=0.9, anchor=ctk.CENTER)
 
         else:
-            self.login_frame.destroy()
-            self.login_completed = True
+            self.login_frame.after(1000, self.login_delay)
+
+            for widget in self.login_frame.winfo_children():
+                widget.destroy()
+
+            ctk.set_appearance_mode("dark")
+
+            ctk.CTkLabel(
+                self.login_frame, text="Logging in...", font=("Arial", 20, "bold")
+            ).place(relx=0.5, rely=0.5, anchor=ctk.CENTER)
+
+    def login_delay(self):
+        """Delay the login screen."""
+        self.login_completed = True
 
     def get_credentials(self) -> tuple:
         """Get the credentials entered by the user.
