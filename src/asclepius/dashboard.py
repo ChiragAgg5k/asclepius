@@ -34,7 +34,7 @@ class Dashboard:
         self.height = height
         self.user_id = enrollment_id
 
-        self.db = Database()
+        self.db = Database("Dashboard")
 
         self.dataset = self.db.get_medicines()
         self.col_headers = self.db.get_col_headings("medicines")
@@ -220,12 +220,9 @@ class Dashboard:
         Args:
             mid (str): Medicine ID
         """
-        if mid == "0":
-            try:
-                self.order_list.pop()
-            except IndexError:
-                pass
-        else:
+        try:
+            self.order_list.remove(mid)
+        except ValueError:
             self.order_list.append(mid)
 
     def final_confirm_button_pressed(self):
@@ -373,6 +370,7 @@ class Dashboard:
                 text="",
                 variable=check_box_var,
                 onvalue=i[0],
+                offvalue=i[0],
                 command=lambda: self.order_check_button(check_box_var.get()),
                 width=70,
             )

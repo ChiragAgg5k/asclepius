@@ -39,7 +39,7 @@ class Login:
 
         self.login_completed = False
 
-        self.db = Database()
+        self.db = Database("Login Screen")
 
     def display(self):
         """Display the login screen."""

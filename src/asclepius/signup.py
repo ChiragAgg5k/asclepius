@@ -25,7 +25,7 @@ class Signup:
         self.text_font = ctk.CTkFont(family="Arial", size=20, weight="bold")
         self.small_text_font = ctk.CTkFont(family="Arial", size=13, weight="bold")
 
-        self.db = Database()
+        self.db = Database("Signup Screen")
 
     def widgets(self, app):
         """Function to create widgets for the login screen.

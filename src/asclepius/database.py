@@ -4,12 +4,12 @@ import sqlite3
 class Database:
     """Database class for Asclepius."""
 
-    def __init__(self) -> None:
+    def __init__(self, module_name: str = "Not Provided") -> None:
         """Initialize the database connection and cursor."""
         try:
             self.connection = sqlite3.connect("src/data/asclepius.db")
             self.cursor = self.connection.cursor()
-            print("Database connection successful")
+            print("Database connection successful -", module_name)
 
         except sqlite3.OperationalError as e:
             print("Error: ", e)
