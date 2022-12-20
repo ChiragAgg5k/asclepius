@@ -41,7 +41,7 @@ class Login:
 
         self.db = Database("Login Screen")
 
-    def display(self):
+    def display(self) -> None:
         """Display the login screen."""
 
         self.bgimage = ctk.CTkImage(
@@ -145,7 +145,7 @@ class Login:
                 self.login_frame, text="Logging in...", font=("Arial", 20, "bold")
             ).place(relx=0.5, rely=0.5, anchor=ctk.CENTER)
 
-    def login_delay(self):
+    def login_delay(self) -> None:
         """Delay the login screen."""
         self.login_completed = True
 

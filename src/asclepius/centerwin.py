@@ -7,7 +7,7 @@ class CenterWindow:
     def __init__(self) -> None:
         pass
 
-    def center_window(root: ctk.CTk, width: int, height: int):
+    def center_window(root: ctk.CTk, width: int, height: int) -> None:
         """Centers window the tkinter window passed
 
         Args:

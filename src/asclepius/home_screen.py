@@ -32,7 +32,7 @@ class HomeScreen:
         self.selected_tab = ""
         self.__user_enrollment_id = ""
 
-    def homescreen(self):
+    def homescreen(self) -> None:
         """Display the homescreen."""
 
         CenterWindow.center_window(self.root, self.width, self.height)
