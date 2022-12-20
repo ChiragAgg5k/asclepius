@@ -1,7 +1,8 @@
+import re
+
 import customtkinter as ctk
 from PIL import Image
 
-from asclepius.centerwin import CenterWindow
 from asclepius.database import Database
 
 
@@ -134,7 +135,6 @@ class Signup:
             corner_radius=10,
         ).place(relx=0.5, rely=0.87, width=150, height=40, anchor=ctk.CENTER)
 
-    # callbacks
     def enableEntry(self):
         self.room_entry.configure(state="normal")
         self.room_entry.update()
@@ -144,6 +144,7 @@ class Signup:
         self.room_entry.update()
 
     def submit(self):
+        """Function to check meet the requirements and submit the data to the database."""
 
         if (
             (self.__name.get() == "")
@@ -154,6 +155,14 @@ class Signup:
         ):
             ctk.CTkLabel(
                 self.app, text="Please fill all the fields", font=self.small_text_font
+            ).place(relx=0.5, rely=0.95, anchor=ctk.CENTER)
+
+        elif not re.match(r"^e[1-2][0-9][a-z]{4}[0-9]{4}", self.__enrollid.get()):
+            ctk.CTkLabel(
+                self.app,
+                text="Please enter a valid enrollment ID!",
+                corner_radius=10,
+                font=self.small_text_font,
             ).place(relx=0.5, rely=0.95, anchor=ctk.CENTER)
 
         elif not (self.db.signup(self.get_credentials())):
@@ -174,6 +183,7 @@ class Signup:
             ).pack(pady=40, padx=50, fill=ctk.BOTH, expand=True)
 
     def signin_delay(self):
+        """Loading screen for 1 second before redirecting to the dashboard page."""
         self.signup_completed = True
 
     def get_credentials(self) -> tuple:
@@ -181,7 +191,7 @@ class Signup:
 
         return (
             self.__name.get(),
-            self.__enrollid.get(),
+            self.__enrollid.get().upper(),
             self.__phoneno.get(),
             self.__room_no.get(),
             self.__is_hosteller.get(),
