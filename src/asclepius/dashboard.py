@@ -411,18 +411,15 @@ class Dashboard:
     def display_mrec(self):
         """Display the medicine records of the user."""
 
-        no_rec = ctk.CTkLabel(
-            self.mrec_frame,
-            text="No records found",
-            font=self.text_font,
-        )
-
         mrec = self.db_object.get_medicine_record(self.user_id)
 
         if mrec == []:
-            no_rec.grid(row=1, column=0, padx=20, pady=20, sticky=ctk.NSEW)
+            ctk.CTkLabel(
+                self.mrec_frame,
+                text="No records found",
+                font=self.text_font,
+            ).grid(row=1, column=0, padx=20, pady=20, sticky=ctk.NSEW)
         else:
-            no_rec.grid_forget()
             mrec_col_headers = [
                 "Mid",
                 "Name",
@@ -459,7 +456,9 @@ class Dashboard:
                     entry.grid(row=(i + 2), column=j, padx=5)
 
             for i in range(len(mrec)):
-                e = ctk.CTkEntry(self.mrec_frame, width=mrec_col_widths[4])
+                e = ctk.CTkEntry(
+                    self.mrec_frame, width=mrec_col_widths[4], font=self.small_text_font
+                )
                 e.insert(ctk.END, mrec[i][2])
                 e.configure(state=ctk.DISABLED)
                 e.grid(row=(i + 2), column=4, padx=5)

@@ -157,7 +157,9 @@ class Signup:
                 self.app, text="Please fill all the fields", font=self.small_text_font
             ).place(relx=0.5, rely=0.95, anchor=ctk.CENTER)
 
-        elif not re.match(r"^e[1-2][0-9][a-z]{4}[0-9]{4}", self.__enrollid.get()):
+        elif not re.match(
+            r"^e[1-2][0-9][a-z]{4}[0-9]{4}", self.__enrollid.get().lower()
+        ):
             ctk.CTkLabel(
                 self.app,
                 text="Please enter a valid enrollment ID!",
