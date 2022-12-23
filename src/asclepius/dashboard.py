@@ -44,7 +44,7 @@ class Dashboard:
 
         self.root = ctk.CTk()
         self.root.title("Asclepius - Your Wellness Partner")
-        self.root.resizable(False, False)
+        # self.root.resizable(False, False)
 
         self.title_logo = ctk.CTkImage(
             Image.open("assets/images/logo-no-background.png"), size=(125, 100)
@@ -231,7 +231,7 @@ class Dashboard:
         ctk.set_appearance_mode(new_appearance_mode)
         print("Appearance mode changed to", new_appearance_mode, "mode")
 
-    def order_check_button(self, mid: str):
+    def order_check_button(self, mid: str) -> None:
         """Check button pressed. Add or remove the medicine from the order list.
 
         Args:
@@ -244,7 +244,7 @@ class Dashboard:
             self.order_list.append(mid)
             print("Added", mid)
 
-    def final_confirm_button_pressed(self):
+    def final_confirm_button_pressed(self) -> None:
         """Final confirm button pressed. Place the order."""
 
         self.db_object.add_orders(self.order_list, self.user_id)
@@ -253,7 +253,7 @@ class Dashboard:
         self.order_confirmation.destroy()
         print("Order placed.")
 
-    def place_order(self):
+    def place_order(self) -> None:
         """Pop up a window to confirm the order. Displays the order list."""
 
         self.order_confirmation = ctk.CTkToplevel(self.root)
@@ -408,7 +408,7 @@ class Dashboard:
 
             row += 1
 
-    def display_mrec(self):
+    def display_mrec(self) -> None:
         """Display the medicine records of the user."""
 
         mrec = self.db_object.get_medicine_record(self.user_id)
@@ -465,7 +465,7 @@ class Dashboard:
 
         self.mrec_frame.pack(fill=ctk.BOTH, expand=True, padx=(0, 20), pady=(0, 20))
 
-    def show_dashboard_frame(self):
+    def show_dashboard_frame(self) -> None:
         """Display the user dashboard."""
 
         # ------------------------ User Dashboard ------------------------#
