@@ -40,6 +40,9 @@ class Login:
         self.login_completed = False
 
         self.db = Database("Login Screen")
+        self.title_font = ctk.CTkFont(family="Rockwell", size=30, weight="bold")
+        self.text_font = ctk.CTkFont(family="Rockwell", size=15)
+        self.button_font = ctk.CTkFont(family="Rockwell", size=16, weight="bold")
 
     def display(self) -> None:
         """Display the login screen."""
@@ -52,24 +55,27 @@ class Login:
         self.title = ctk.CTkLabel(
             self.login_frame,
             text="Login Here!",
-            font=("Arial", 20, "bold"),
+            font=self.title_font,
             corner_radius=10,
         )
 
         self.enrollmentid = ctk.CTkLabel(
             self.login_frame,
             text="Enrollment ID:",
-            font=("Arial", 15, "bold"),
+            font=self.text_font,
             corner_radius=10,
         )
         self.enrollmentid_entry = ctk.CTkEntry(
-            self.login_frame, textvariable=self.__enrollment_id, width=220
+            self.login_frame,
+            textvariable=self.__enrollment_id,
+            width=220,
+            font=self.text_font,
         )
 
         self.pswrd_CTkLabel = ctk.CTkLabel(
             self.login_frame,
             text="Password:",
-            font=("Arial", 15, "bold"),
+            font=self.text_font,
             corner_radius=10,
         )
         self.pswrd_entry = ctk.CTkEntry(
@@ -79,7 +85,7 @@ class Login:
         self.submit_button = ctk.CTkButton(
             self.login_frame,
             text="Submit",
-            font=("Arial", 20, "bold"),
+            font=self.button_font,
             width=150,
             height=40,
             corner_radius=10,
@@ -112,7 +118,7 @@ class Login:
                 self.login_frame,
                 text="Please enter all the details!",
                 corner_radius=10,
-                font=("Arial", 15, "bold"),
+                font=self.text_font,
             ).place(relx=0.51, rely=0.9, anchor=ctk.CENTER)
 
         elif not re.match(
@@ -122,7 +128,7 @@ class Login:
                 self.login_frame,
                 text="Please enter a valid enrollment ID!",
                 corner_radius=10,
-                font=("Arial", 15, "bold"),
+                font=self.text_font,
             ).place(relx=0.51, rely=0.9, anchor=ctk.CENTER)
 
         elif not (self.db.login(self.get_credentials())):
@@ -130,7 +136,7 @@ class Login:
                 self.login_frame,
                 text="Invalid credentials!",
                 corner_radius=10,
-                font=("Arial", 15, "bold"),
+                font=self.text_font,
             ).place(relx=0.51, rely=0.9, anchor=ctk.CENTER)
 
         else:
@@ -142,7 +148,7 @@ class Login:
             ctk.set_appearance_mode("dark")
 
             ctk.CTkLabel(
-                self.login_frame, text="Logging in...", font=("Arial", 20, "bold")
+                self.login_frame, text="Logging in...", font=self.text_font
             ).place(relx=0.5, rely=0.5, anchor=ctk.CENTER)
 
     def login_delay(self) -> None:

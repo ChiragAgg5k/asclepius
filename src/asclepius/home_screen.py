@@ -47,6 +47,7 @@ class HomeScreen:
             root=self.tabview.tab("Login"),
             width=self.width,
             height=self.height,
+            appearance_mode="light",
         )
         login_tab_frame = login_object.return_login_frame()
         login_tab_frame.pack(fill="both", expand=True, anchor=ctk.CENTER)

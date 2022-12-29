@@ -36,7 +36,7 @@ class Database:
         self.cursor.execute(f"SELECT * FROM {table_name}")
         return [description[0] for description in self.cursor.description]
 
-    def signup(self, credentials: tuple) -> None:
+    def signup(self, credentials: tuple) -> bool:
 
         username = credentials[0]
         Enrollid = credentials[1]

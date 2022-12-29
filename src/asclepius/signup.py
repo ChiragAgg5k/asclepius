@@ -30,8 +30,8 @@ class Signup:
         self.__is_hosteller = ctk.StringVar()
         self.__password = ctk.StringVar()
 
-        self.text_font = ctk.CTkFont(family="Arial", size=20, weight="bold")
-        self.small_text_font = ctk.CTkFont(family="Arial", size=13, weight="bold")
+        self.text_font = ctk.CTkFont(family="Helvetica", size=20, weight="bold")
+        self.small_text_font = ctk.CTkFont(family="Helvetica", size=13, weight="bold")
 
         self.db = Database("Signup Screen")
 
@@ -128,9 +128,8 @@ class Signup:
 
         self.register = ctk.CTkButton(
             self.app,
-            text="REGISTER",
+            text="Register",
             font=self.text_font,
-            bg_color="sky blue",
             command=self.submit,
             corner_radius=10,
         ).place(relx=0.5, rely=0.87, width=150, height=40, anchor=ctk.CENTER)
