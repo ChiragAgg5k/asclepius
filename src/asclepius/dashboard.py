@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from PIL import Image
 
-from asclepius.centerwin import CenterWindow
+from asclepius.centerwin import center_window
 from asclepius.database import Database
 
 
@@ -260,7 +260,7 @@ class Dashboard:
         self.order_confirmation.title("Order Confirmation")
         self.order_confirmation.resizable(False, False)
 
-        CenterWindow.center_window(self.order_confirmation, 1000, 400)
+        center_window(self.order_confirmation, 1000, 400)
 
         if not self.order_list:
 
@@ -596,5 +596,5 @@ services and information about the wellness centre.
         self.title_frame("Asclepius")
         self.show_dashboard_frame()
 
-        CenterWindow.center_window(self.root, self.width, self.height)
+        center_window(self.root, self.width, self.height)
         self.root.mainloop()

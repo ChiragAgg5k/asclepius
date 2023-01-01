@@ -1,3 +1,4 @@
+"""Database module for Asclepius."""
 import sqlite3
 
 
@@ -11,8 +12,8 @@ class Database:
             self.cursor = self.connection.cursor()
             print("Database connection successful -", module_name)
 
-        except sqlite3.OperationalError as e:
-            print("Error: ", e)
+        except sqlite3.OperationalError as error:
+            print("Error: ", error)
 
     def get_medicines(self) -> list:
         """Get a medicine from the database.
@@ -37,18 +38,26 @@ class Database:
         return [description[0] for description in self.cursor.description]
 
     def signup(self, credentials: tuple) -> bool:
+        """Add a new user to the database.
+
+        Args:
+            credentials (tuple): User credentials
+
+        Returns:
+            bool: True if signup successful, False otherwise
+        """
 
         username = credentials[0]
-        Enrollid = credentials[1]
+        enrollid = credentials[1]
         contact = credentials[2]
         roomno = credentials[3]
-        Hosteller = credentials[4]
+        hosteller = credentials[4]
         password = credentials[5]
 
         try:
             self.cursor.execute(
                 "INSERT INTO credentials VALUES (?, ?, ?, ?, ?,?)",
-                (Enrollid, username, Hosteller, roomno, contact, password),
+                (enrollid, username, hosteller, roomno, contact, password),
             )
             self.connection.commit()
 
@@ -61,8 +70,16 @@ class Database:
             return False
 
     def get_signupdetails(self, enrollment_id: str) -> list:
+        """Get the signup details of the user.
+
+        Args:
+            enrollment_id (str): Enrollment ID of the user
+
+        Returns:
+            list: Signup details
+        """
         self.cursor.execute(
-            "SELECT * FROM credentials WHERE ENROLLID = (?)", (enrollment_id.upper(),)
+            "SELECT * FROM credentials WHERE enrollid = (?)", (enrollment_id.upper(),)
         )
         return self.cursor.fetchone()
 
@@ -76,7 +93,7 @@ class Database:
             bool: True if credentials are correct, False otherwise
         """
         self.cursor.execute(
-            "SELECT * FROM credentials WHERE ENROLLID = (?)", (credentials[0].upper(),)
+            "SELECT * FROM credentials WHERE enrollid = (?)", (credentials[0].upper(),)
         )
 
         fetched = self.cursor.fetchone()
@@ -87,8 +104,7 @@ class Database:
                 print("Login Credentials verified")
                 return True
 
-            else:
-                print("Wrong password entered")
+            print("Wrong password entered")
 
         print("Wrong enrollment ID entered")
         return False
@@ -100,7 +116,7 @@ class Database:
             list: Medicine record
         """
         self.cursor.execute(
-            "SELECT * FROM MRECORD WHERE ENROLLID = (?)", (enrollment_id,)
+            "SELECT * FROM MRECORD WHERE enrollid = (?)", (enrollment_id,)
         )
         return self.cursor.fetchall()
 
@@ -123,7 +139,7 @@ class Database:
 
         for mid in mid_list:
             self.cursor.execute(
-                "INSERT INTO MRECORD (ENROLLID ,MID) VALUES (?, ?)",
+                "INSERT INTO MRECORD (enrollid ,MID) VALUES (?, ?)",
                 (
                     enrollment_id,
                     mid,

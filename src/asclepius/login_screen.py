@@ -40,7 +40,7 @@ class Login:
         self.login_completed = False
 
         self.db = Database("Login Screen")
-        self.title_font = ctk.CTkFont(family="Rockwell", size=30, weight="bold")
+        self.title_font = ctk.CTkFont(family="Rockwell", size=25, weight="bold")
         self.text_font = ctk.CTkFont(family="Rockwell", size=15)
         self.button_font = ctk.CTkFont(family="Rockwell", size=16, weight="bold")
 
@@ -100,6 +100,7 @@ class Login:
 
         self.enrollmentid_entry.place(relx=0.6, rely=0.4, anchor=ctk.CENTER)
         self.enrollmentid.place(relx=0.2, rely=0.4, anchor=ctk.CENTER)
+        self.enrollmentid_entry.focus()
 
         self.pswrd_entry.place(relx=0.6, rely=0.55, anchor=ctk.CENTER)
         self.pswrd_CTkLabel.place(relx=0.2, rely=0.55, anchor=ctk.CENTER)
