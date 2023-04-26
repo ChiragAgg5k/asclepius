@@ -79,7 +79,8 @@ class Database:
             list: Signup details
         """
         self.cursor.execute(
-            "SELECT * FROM credentials WHERE enrollid = (?)", (enrollment_id.upper(),)
+            "SELECT * FROM credentials WHERE enrollid = (?)",
+            (enrollment_id.upper(),),
         )
         return self.cursor.fetchone()
 
@@ -93,7 +94,8 @@ class Database:
             bool: True if credentials are correct, False otherwise
         """
         self.cursor.execute(
-            "SELECT * FROM credentials WHERE enrollid = (?)", (credentials[0].upper(),)
+            "SELECT * FROM credentials WHERE enrollid = (?)",
+            (credentials[0].upper(),),
         )
 
         fetched = self.cursor.fetchone()

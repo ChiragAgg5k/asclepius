@@ -10,7 +10,12 @@ class Signup:
     """Class to create the signup screen."""
 
     def __init__(
-        self, root, width=500, height=500, appearance_mode="light", color_theme="green"
+        self,
+        root,
+        width=500,
+        height=500,
+        appearance_mode="light",
+        color_theme="green",
     ) -> None:
         """Constructor for the Signup class.
 
@@ -36,7 +41,9 @@ class Signup:
         self.__password = ctk.StringVar()
 
         self.text_font = ctk.CTkFont(family="Rockwell", size=20, weight="bold")
-        self.small_text_font = ctk.CTkFont(family="Rockwell", size=14, weight="normal")
+        self.small_text_font = ctk.CTkFont(
+            family="Rockwell", size=14, weight="normal"
+        )
 
         self.database = Database("Signup Screen")
 
@@ -51,7 +58,9 @@ class Signup:
             Image.open("assets/images/login_bg.png"),
             size=(self.width, self.height + 100),
         )
-        self.bgLabel = ctk.CTkLabel(self.signup_frame, image=self.bgimage, text="")
+        self.bgLabel = ctk.CTkLabel(
+            self.signup_frame, image=self.bgimage, text=""
+        )
         self.bgLabel.place(relx=0.5, rely=0.5, anchor=ctk.CENTER)
 
         self.title = ctk.CTkLabel(
@@ -63,9 +72,13 @@ class Signup:
         ).place(relx=0.1, rely=0.1, anchor=ctk.NW)
 
         self.name_entry = ctk.CTkEntry(
-            self.signup_frame, textvariable=self.__name, font=self.small_text_font
+            self.signup_frame,
+            textvariable=self.__name,
+            font=self.small_text_font,
         )
-        self.name_entry.place(relx=0.1, rely=0.15, width=300, height=30, anchor=ctk.NW)
+        self.name_entry.place(
+            relx=0.1, rely=0.15, width=300, height=30, anchor=ctk.NW
+        )
 
         ctk.CTkLabel(
             self.signup_frame,
@@ -74,7 +87,9 @@ class Signup:
         ).place(relx=0.1, rely=0.25, anchor=ctk.NW)
 
         ctk.CTkEntry(
-            self.signup_frame, textvariable=self.__enrollid, font=self.small_text_font
+            self.signup_frame,
+            textvariable=self.__enrollid,
+            font=self.small_text_font,
         ).place(relx=0.1, rely=0.3, width=300, height=30, anchor=ctk.NW)
 
         ctk.CTkLabel(
@@ -91,7 +106,9 @@ class Signup:
         self.room_entry.configure(state=ctk.DISABLED)
 
         self.hostel_label = ctk.CTkLabel(
-            self.signup_frame, text="Choose an Option*\n", font=self.small_text_font
+            self.signup_frame,
+            text="Choose an Option*\n",
+            font=self.small_text_font,
         ).place(relx=0.1, rely=0.4)
 
         self.disableEntryRadioButton = ctk.CTkRadioButton(
@@ -121,7 +138,9 @@ class Signup:
         ).place(relx=0.1, rely=0.57, anchor=ctk.NW)
 
         ctk.CTkEntry(
-            self.signup_frame, textvariable=self.__phoneno, font=self.small_text_font
+            self.signup_frame,
+            textvariable=self.__phoneno,
+            font=self.small_text_font,
         ).place(relx=0.1, rely=0.62, width=300, height=30, anchor=ctk.NW)
 
         ctk.CTkLabel(
@@ -180,7 +199,9 @@ class Signup:
 
         elif not self.database.signup(self.get_credentials()):
             ctk.CTkLabel(
-                self.signup_frame, text="User already exists", font=self.small_text_font
+                self.signup_frame,
+                text="User already exists",
+                font=self.small_text_font,
             ).place(relx=0.5, rely=0.95, anchor=ctk.CENTER)
 
         else:

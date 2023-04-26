@@ -32,7 +32,9 @@ class Login:
 
         ctk.set_appearance_mode(appearance_mode)
         ctk.set_default_color_theme(color_theme)
-        self.login_frame = ctk.CTkFrame(root, width=self.width, height=self.height)
+        self.login_frame = ctk.CTkFrame(
+            root, width=self.width, height=self.height
+        )
 
         self.__enrollment_id = ctk.StringVar()
         self.__password = ctk.StringVar()
@@ -40,17 +42,24 @@ class Login:
         self.login_completed = False
 
         self.db = Database("Login Screen")
-        self.title_font = ctk.CTkFont(family="Rockwell", size=25, weight="bold")
+        self.title_font = ctk.CTkFont(
+            family="Rockwell", size=25, weight="bold"
+        )
         self.text_font = ctk.CTkFont(family="Rockwell", size=15)
-        self.button_font = ctk.CTkFont(family="Rockwell", size=16, weight="bold")
+        self.button_font = ctk.CTkFont(
+            family="Rockwell", size=16, weight="bold"
+        )
 
     def display(self) -> None:
         """Display the login screen."""
 
         self.bgimage = ctk.CTkImage(
-            Image.open("assets/images/login_bg.png"), size=(self.width, self.height)
+            Image.open("assets/images/login_bg.png"),
+            size=(self.width, self.height),
         )
-        self.bgCTkLabel = ctk.CTkLabel(self.login_frame, image=self.bgimage, text="")
+        self.bgCTkLabel = ctk.CTkLabel(
+            self.login_frame, image=self.bgimage, text=""
+        )
 
         self.title = ctk.CTkLabel(
             self.login_frame,

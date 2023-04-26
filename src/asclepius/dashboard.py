@@ -57,11 +57,21 @@ class Dashboard:
         self.op_font = ctk.CTkFont(
             family="Franklin Gothic", size=30, weight="bold", underline=True
         )
-        self.title_font = ctk.CTkFont(family="Rockwell", size=60, weight="bold")
-        self.text_font = ctk.CTkFont(family="Rockwell", size=20, weight="normal")
-        self.text_font_bold = ctk.CTkFont(family="Rockwell", size=20, weight="bold")
-        self.small_text_font = ctk.CTkFont(family="Arial", size=18, weight="normal")
-        self.tagline_font = ctk.CTkFont(family="Rockwell", size=30, weight="normal")
+        self.title_font = ctk.CTkFont(
+            family="Rockwell", size=60, weight="bold"
+        )
+        self.text_font = ctk.CTkFont(
+            family="Rockwell", size=20, weight="normal"
+        )
+        self.text_font_bold = ctk.CTkFont(
+            family="Rockwell", size=20, weight="bold"
+        )
+        self.small_text_font = ctk.CTkFont(
+            family="Arial", size=18, weight="normal"
+        )
+        self.tagline_font = ctk.CTkFont(
+            family="Rockwell", size=30, weight="normal"
+        )
         # ------------------------ Fonts ------------------------#
 
         self.dashboard_frame = ctk.CTkFrame(self.root)
@@ -89,13 +99,17 @@ class Dashboard:
             self.root, width=self.width - 200, height=50, corner_radius=10
         )
 
-        title_label = ctk.CTkLabel(title_frame, text=title, font=self.title_font)
+        title_label = ctk.CTkLabel(
+            title_frame, text=title, font=self.title_font
+        )
 
         tagline_label = ctk.CTkLabel(
             title_frame, text="- Your Wellness Partner", font=self.tagline_font
         )
 
-        title_logo_label = ctk.CTkLabel(title_frame, image=self.title_logo, text="")
+        title_logo_label = ctk.CTkLabel(
+            title_frame, image=self.title_logo, text=""
+        )
 
         title_label.pack(side=ctk.LEFT, padx=(20, 0))
         tagline_label.pack(side=ctk.LEFT, padx=(0, 20))
@@ -203,7 +217,9 @@ class Dashboard:
             self.dashboard_frame.pack_forget()
 
         if frame_name == "meds":
-            self.meds_frame.pack(fill=ctk.BOTH, expand=True, padx=(0, 20), pady=(0, 20))
+            self.meds_frame.pack(
+                fill=ctk.BOTH, expand=True, padx=(0, 20), pady=(0, 20)
+            )
         else:
             self.meds_frame.pack_forget()
 
@@ -331,7 +347,9 @@ class Dashboard:
             )
 
             total_amount_label.pack(padx=20, pady=20, anchor=ctk.CENTER)
-            self.final_confirmation_button.pack(padx=20, pady=20, anchor=ctk.CENTER)
+            self.final_confirmation_button.pack(
+                padx=20, pady=20, anchor=ctk.CENTER
+            )
 
     def display_table(self) -> None:
         """Display the table of medicines."""
@@ -347,7 +365,9 @@ class Dashboard:
                 width=self.column_widths[pos],
                 height=50,
             )
-            col_cell.grid(row=1, column=(pos + 1), pady=(10, 20), ipady=1, padx=5)
+            col_cell.grid(
+                row=1, column=(pos + 1), pady=(10, 20), ipady=1, padx=5
+            )
 
             col = ctk.CTkEntry(
                 self.scrollable_frame,
@@ -457,13 +477,17 @@ class Dashboard:
 
             for i in range(len(mrec)):
                 e = ctk.CTkEntry(
-                    self.mrec_frame, width=mrec_col_widths[4], font=self.small_text_font
+                    self.mrec_frame,
+                    width=mrec_col_widths[4],
+                    font=self.small_text_font,
                 )
                 e.insert(ctk.END, mrec[i][2])
                 e.configure(state=ctk.DISABLED)
                 e.grid(row=(i + 2), column=4, padx=5)
 
-        self.mrec_frame.pack(fill=ctk.BOTH, expand=True, padx=(0, 20), pady=(0, 20))
+        self.mrec_frame.pack(
+            fill=ctk.BOTH, expand=True, padx=(0, 20), pady=(0, 20)
+        )
 
     def show_dashboard_frame(self) -> None:
         """Display the user dashboard."""
@@ -561,11 +585,13 @@ services and information about the wellness centre.
             anchor=ctk.CENTER,
         ).pack(padx=(20, 20), pady=20)
         ctk.CTkLabel(
-            self.mhelp_frame, text=wellness_description, font=self.small_text_font
+            self.mhelp_frame,
+            text=wellness_description,
+            font=self.small_text_font,
         ).pack(anchor=ctk.CENTER, padx=20)
-        ctk.CTkLabel(self.mhelp_frame, text="Contact Us", font=self.op_font).pack(
-            anchor=ctk.W, padx=20, pady=20
-        )
+        ctk.CTkLabel(
+            self.mhelp_frame, text="Contact Us", font=self.op_font
+        ).pack(anchor=ctk.W, padx=20, pady=20)
         ctk.CTkLabel(
             self.mhelp_frame,
             text="For general queries- 0120-7199300",
@@ -580,9 +606,9 @@ services and information about the wellness centre.
 
         # -------------------- Medical Records Dashboard --------------------#
         self.mrec_frame = ctk.CTkFrame(self.root)
-        ctk.CTkLabel(self.mrec_frame, text="Medical Records", font=self.op_font).grid(
-            row=0, column=0, padx=20, pady=20, columnspan=7
-        )
+        ctk.CTkLabel(
+            self.mrec_frame, text="Medical Records", font=self.op_font
+        ).grid(row=0, column=0, padx=20, pady=20, columnspan=7)
         # -------------------- Medical Records Dashboard --------------------#
 
         self.dashboard_frame.pack(
