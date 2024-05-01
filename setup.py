@@ -8,10 +8,10 @@ here = os.path.abspath(os.path.dirname(__file__))
 with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
     long_description = "\n" + fh.read()
 
-VERSION = "0.0.1"
+VERSION = "1.0.0"
 DESCRIPTION = "Medicine Management System"
 LONG_DESCRIPTION = (
-    "A package that allows you to create a medicine management system"
+    "A Medicine Management System that helps in managing the medicines in a pharmacy."
 )
 
 # Setting up

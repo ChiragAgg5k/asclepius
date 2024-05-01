@@ -3,7 +3,7 @@
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![License: MIT](https://img.shields.io/github/license/ChiragAgg5k/asclepius)](https://github.com/ChiragAgg5k/asclepius/blob/master/LICENSE.md) [![Github Repo Size](https://img.shields.io/github/repo-size/ChiragAgg5k/asclepius)](https://github.com/ChiragAgg5k/asclepius)
 
-Asclepius is a medical record management system for the students of Bennett University. It is a desktop application built using Python and Custom Tkinter. It allows the students to view available medicines at the University's Wellness center, look the medicine's details, check the availability of the medicine, and request for it. It also allows the students to order medicines from the Wellness center to their hostel rooms.
+Asclepius is a medical record management system for the University students. It is a desktop application built using Python and Custom Tkinter. It allows the students to view available medicines at the University's Wellness center, look the medicine's details, check the availability of the medicine, and request for it. It also allows the students to order medicines from the Wellness center to their hostel rooms.
 
 ## Table of Contents
 - [Installation](#installation)
@@ -17,27 +17,33 @@ Make sure you have Python 3.8 or above installed on your system. If not, you can
 
 1) Clone the repository:
 
-```bash
-cd {path}
-git clone https://github.com/ChiragAgg5k/asclepius.git
-cd asclepius
-```
+    ```bash
+    cd {path}
+    git clone https://github.com/ChiragAgg5k/asclepius.git
+    cd asclepius
+    ```
 
-2) Install the required dependencies:
+2) Install the required dependencies manually:
 
-```bash
-python3 -m pip install -r requirements.txt
-```
+    ```bash
+    python3 -m pip install -r requirements.txt
+    ```
+
+    Or, you can use `setup.py` to install the dependencies:
+
+    ```bash
+    python3 setup.py install
+    ```
 
 3) Run the main script:
 
-```bash
-python -u src/main.py
-```
+    ```bash
+    python3 -u src/main.py
+    ```
 
 ## Usage
 
-1) Login using your Bennett University credentials. If you are a new user, you can create a new account by clicking on the "Sign Up" button on top.
+1) Login using your credentials. If you are a new user, you can create a new account by clicking on the "Sign Up" button on top.
 
 2) Once logged in, you will be presented with a dashboard that shows the information about you stored in the database.
 
@@ -57,7 +63,6 @@ python -u src/main.py
 3) Markdown Editor: [Obsdian](https://obsidian.md/)
 4) DB Browser: [DB Browser for SQLite](https://sqlitebrowser.org/)
 5) Custom Tkinter Widgets: [Custom Tkinter](https://github.com/TomSchimansky/CustomTkinter)
-6) Fira Code Font: [Fira Code](https://github.com/tonsky/FiraCode)
 
 ## Contributors
 
