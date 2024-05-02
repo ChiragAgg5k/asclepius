@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "asclepius"
+version = "1.0.0"
+description = "A Medicine Management System that helps in managing the medicines in a pharmacy"
+authors = ["ChiragAgg5k <110609663+ChiragAgg5k@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+customtkinter = "5.0.3"
+pillow = "9.0.1"
+setuptools = "68.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
